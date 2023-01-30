@@ -15,7 +15,46 @@ The main app features and functionalities are as follows:
 There are three groups of user categories namely `Admin`, `Mentor Manager(MM)`, and `Mentor`. The expected access levels for the group
 users is listed as follows:
 
-##  Mentor
+## Admin Category:
+
+- Login/Logout
+- Create program
+- Add MM
+- Add mentor
+- Label/unlabel MM
+- Label/unlabel mentors
+- See the list of all MM
+- See the list of all mentors
+- Browse MM details
+- Browse mentor’s details
+- Search by name, category, region, program, engagement status
+- Assign/unassign MM to program
+- Assign/unassign mentor to program
+- Archive a program
+- Delete a program
+- Generate program report at interval
+- Download program report
+- Share program report via email
+- Generate MM report
+- Delete MM
+- Delete mentor
+- Receive notification from MM activities
+- Generate MM certificate
+- Generate mentor certificate
+- Approve mentor certificate generated and shared by MM
+- Send broadcast message to all MM
+- Send broadcast message to all mentors
+- Chat 1:1 with any user
+- See the list of mentors’ applicants
+- Set up criteria for selection
+- Generate the list of selected mentors
+- Message the list of selected mentors
+- Generate the list of unselected mentors
+- Message the list of unselected mentors
+- Engage on the discussion forum etc.
+
+## Mentor
+
 - Apply to be a mentor
 - Receive application status message
 - Login/Logout
@@ -31,6 +70,28 @@ users is listed as follows:
 - Apply for mentor certificate
 - Receive notification to download or not qualify for the certificate
 - Chat 1:1 with any user
+
+## Mentor Manager
+
+- Login/Logout
+- Set up my profile
+- Access assigned programs
+- Add mentor to the system
+- See the list of all mentors
+- Browse mentor’s details
+- Search mentors by name, category, region, program, engagement status
+- Assign/unassign mentor to program
+- Generate mentors’ report
+- Share the report
+- Delete mentor
+- Receive notification from mentor activities
+- Generate mentor certificate
+- Share the certificate with Admin
+- Send approval request for mentor certificate
+- Send broadcast message to all MM
+- Send broadcast message to all mentors
+- Chat 1:1 with any user
+- Engage on the discussion forum
 
 ## Techonologies 
 * Frontend - React TypeScript
