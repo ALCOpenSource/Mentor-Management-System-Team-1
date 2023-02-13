@@ -1,9 +1,9 @@
 # Mentor-Management-System
 
-This is the app for the Mentors Management system admin. MMS is a people management app that enables proper 
-coordination of mentors needed to execute projects, ranging from recruitment to off-boarding.
+This is the app for the Mentors Management system admin. MMS is a people management app that enables proper.
+coordination of mentors needed to execute projects, ranging from recruitment to off-boarding. Ensue to go through the app doc below to readmore.
 
-*[App Features doc](https://github.com/ALCOpenSource/Mentor-Management-System-Team-1/wiki)
+*[App doc](https://github.com/ALCOpenSource/Mentor-Management-System-Team-1/wiki)
 
 
 ## Techonologies 
@@ -44,4 +44,3 @@ To get it up and running on your local machine, follow the steps below:
 - `npm run build` - Builds the app for production to the `dist` folder.
 - `npm run lint` - Lints the codebase.
 - `npm run lint:fix` - Lints the codebase and fixes auto-fixable error.
-
