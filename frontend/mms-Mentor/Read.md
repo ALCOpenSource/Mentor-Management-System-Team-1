@@ -1,17 +1,6 @@
 ## Mentor
 
-- Apply to be a mentor
-- Receive application status message
-- Login/Logout
-- Set up my profile
-- Access assigned programs
-- Access the list of assigned tasks
-- Apply to be assigned to a program/tasks
-- Engage on the discussion forum
-- Browse assigned MM’s details
-- Compose updates on your assigned tasks
-- Share tasks’ update with your assigned MM
-- Receive notification from task’s assignment
-- Apply for mentor certificate
-- Receive notification to download or not qualify for the certificate
-- Chat 1:1 with any user
+Mentors Management system is a people management app that enables proper
+coordination of mentors needed to execute projects, ranging from recruitment to off-boarding. Ensue to go through the contributor's wiki below to read more and follow all the instructions.
+
+*[Contributor's wiki](https://github.com/ALCOpenSource/Mentor-Management-System-Team-1/wiki)
