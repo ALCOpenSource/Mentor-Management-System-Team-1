@@ -6,11 +6,12 @@ coordination of mentors needed to execute projects, ranging from recruitment to 
 
 
 ## Techonologies 
+
 * Frontend - 
 * Backend - 
 * Database -
 * Deployment env - 
-
+  
 ## How to contributing to this project:
 To get it up and running on your local machine, follow the steps below:
 - Clone the repo with the command `git clone`
@@ -29,12 +30,12 @@ To get it up and running on your local machine, follow the steps below:
 - Start the app with the command `npm run dev`
 - Navigate to the app on your browser with the url `http://localhost:****` where **** is the port number displayed on your terminal.
 ##### Backend
-- Beckend is available here.
+- Beckend -
 ## Design
 - The design can be find [here](https://www.figma.com/file/JNZKj3lachPypSOMBOhC1e/MMS-ALC-0pen-Source-Project?node-id=6784%3A7593&t=dnwBBGHPZRxryUnJ-0)
 - Find the Prototype [here](https://www.figma.com/proto/JNZKj3lachPypSOMBOhC1e/MMS-ALC-0pen-Source-Project?page-id=6782%3A4428&node-id=6784%3A6712&viewport=565%2C382%2C0.02&scaling=min-zoom&starting-point-node-id=6784%3A6712)
 - Work on your Team assigned task eg. Team 1, Team 2 etc.
-- NOTE: Stickly adhere to the style guide on the design, buttons, texts etc. 
+- NOTE: Stickly adhere to the style guide on the design, buttons, texts etc.
 
 # Creating issue 
 - Raise any identified issue with your TTL.
