@@ -1,5 +1,7 @@
 # Mentor-Management-System
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/09bdd5f1124147408b442623f17ebdd0)](https://app.codacy.com/gh/ALCOpenSource/Mentor-Management-System-Team-1?utm_source=github.com&utm_medium=referral&utm_content=ALCOpenSource/Mentor-Management-System-Team-1&utm_campaign=Badge_Grade)
+
 Mentors Management system is a people management app that enables proper.
 coordination of mentors needed to execute projects, ranging from recruitment to off-boarding. Ensue to go through the app doc below to read more and follow all the instructions.
 
