@@ -5,4 +5,4 @@ coordination of mentors needed to execute projects, ranging from recruitment to 
 
 *[Contributor's wiki](https://github.com/ALCOpenSource/Mentor-Management-System-Team-1/wiki)
 
-Go through the Project README.md
+Go through the project README.md.
