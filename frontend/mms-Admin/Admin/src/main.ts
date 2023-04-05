@@ -1,11 +1,11 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import VueFormulate from '@braid/vue-formulate'
 
 import App from './App.vue'
 import router from './router'
+import { plugin, defaultConfig } from '@formkit/vue'
 
-import './assets/main.css'
+import './assets/main.scss'
 import 'virtual:uno.css'
 
 import 'vuetify/styles'
@@ -20,7 +20,7 @@ const vuetify = createVuetify({
 
 const app = createApp(App)
 
-app.use(VueFormulate)
+app.use(plugin, defaultConfig)
 app.use(createPinia())
 app.use(router)
 app.use(vuetify)
