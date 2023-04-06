@@ -1,10 +1,60 @@
+@import url("https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700;800&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root{
-  --btn-primary: #058B94;
-  --btn-primary-hover: #035D63;
-  --btn-secondary-hover: #E6FDFE;
-  --btn-secondary: #FFF;
+:root {
+  --btn-primary: #058b94;
+  --btn-primary-hover: #035d63;
+  --btn-secondary-hover: #e6fdfe;
+  --btn-secondary: #fff;
+  --text-inactive: #808080;
+  --text-active: #000;
+  --border: #ccc;
+  --card-dark: #058b94;
+  --card-light: #e6fdfe;
+  --card-dark-hover: #035d63;
+  --card-light-hover: #9cf6fc;
+  --light-grid-background: #f7feff;
+  --dashboard-icon-color: #058b94;
+}
+
+body {
+  font-family: "Mukta", sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  width: 100%;
+}
+
+[data-complete] .formkit-inner::after {
+  content: "✅";
+  display: block;
+  padding: 0.5em;
+}
+
+.v-field__field {
+  border: 1.6px solid var(--border);
+  border-radius: 6px;
+  padding-left: 0.8em;
+}
+
+.v-field__input {
+  font-size: large;
+  padding: 0 !important;
+  
+}
+
+.v-field--active {
+  border-radius: 6px !important;
+
+  .v-field__field {
+    border: 2px solid var(--btn-primary);
+  }
+
+}
+
+.v-field--variant-solo {
+  box-shadow: none !important;
 }

@@ -10,6 +10,7 @@
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "@formkit/themes": "^0.16.4",
     "@formkit/vue": "^0.16.4",
     "axios": "^1.3.4",
     "pinia": "^2.0.32",

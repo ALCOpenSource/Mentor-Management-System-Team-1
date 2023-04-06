@@ -1,14 +1,18 @@
 <template>
-  <div>
-    <h1 class="text-2xl text-center font-semibold my-20">Welcome to the Auth Layout</h1>
-    <router-view></router-view>
+  <div class="h-screen grid grid-cols-2">
+    <div>
+      <Splash />
+    </div>
+    <div>
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import Splash from '@/components/Auth/Splash.vue';
+
 
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
