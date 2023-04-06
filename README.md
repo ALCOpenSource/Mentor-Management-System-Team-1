@@ -34,9 +34,11 @@ To get it up and running on your local machine, follow the steps below:
 
 ### Frontend
 
-* Navigate to the project directory with the command `cd conversational-app-team3`
+* Navigate to the project directory with the command `cd Mentor-Management-System-Team-1`
   
 * Navigate to the frontend directory with the command `cd frontend`
+  
+* Navigate to the frontend directory with the command `cd frontend mms-Admin`
   
 * Install all the dependencies with the command `npm install`
   
