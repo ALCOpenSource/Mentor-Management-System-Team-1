@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700;800&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root{
+:root {
   --btn-primary: #058b94;
   --btn-primary-hover: #035d63;
   --btn-secondary-hover: #e6fdfe;
@@ -20,7 +20,7 @@
 }
 
 body {
-  font-family: 'Mukta', sans-serif;
+  font-family: "Mukta", sans-serif;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -29,7 +29,7 @@ body {
 }
 
 [data-complete] .formkit-inner::after {
-  content: '✅';
+  content: "✅";
   display: block;
   padding: 0.5em;
 }
@@ -43,12 +43,18 @@ body {
 .v-field__input {
   font-size: large;
   padding: 0 !important;
+  
 }
 
 .v-field--active {
+  border-radius: 6px !important;
 
-  .v-field__field{
+  .v-field__field {
     border: 2px solid var(--btn-primary);
   }
-  
+
+}
+
+.v-field--variant-solo {
+  box-shadow: none !important;
 }
