@@ -20,7 +20,7 @@ To get it up and running on your local machine, follow the steps below:
   
 * Indicate your interest to work on any issue. "eg. I want to work on this issue or I am interested in this issue"
   
-*EOpen a feature branch from the 'develop' branch. eg feat/
+* Open a feature branch from the 'develop' branch. eg feat/
 
 * Make sure the name is descriptive for your branch but not too long. Lead with what the the branch is doing eg new feature or bug but follow this pattern `type/branch-description` eg `feature/add-login-functionality`.
   
