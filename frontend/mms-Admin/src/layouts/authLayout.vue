@@ -14,3 +14,4 @@ import Splash from "@/components/Auth/Splash.vue";
 </script>
 
 <style scoped></style>
+<style scoped></style>

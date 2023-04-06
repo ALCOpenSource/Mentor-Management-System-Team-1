@@ -1,7 +1,9 @@
 <template>
-  <v-text-field 
-    v-model="email" variant="solo" 
-    placeholder="Email" required
+  <v-text-field
+    v-model="email"
+    variant="solo"
+    placeholder="Email"
+    required
     :rules="emailRules"
     @input="$emit('update:email', email)"
   >
@@ -9,18 +11,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from "vue";
 
-defineEmits(['update:email'])
+defineEmits(["update:email"]);
 
-const email = ref('')
+const email = ref("");
 const emailRules = [
-  (v: string) => !!v || 'Email is required',
-  (v: string) => /.+@.+\..+/.test(v) || 'Email must be valid',
-]
-
+  (v: string) => !!v || "Email is required",
+  (v: string) => /.+@.+\..+/.test(v) || "Email must be valid",
+];
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
