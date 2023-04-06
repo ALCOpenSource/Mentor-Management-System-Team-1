@@ -7,6 +7,7 @@ import { plugin, defaultConfig } from '@formkit/vue'
 
 import './assets/main.scss'
 import 'virtual:uno.css'
+import '@formkit/themes/genesis'
 
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
