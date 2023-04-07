@@ -19,10 +19,11 @@
 </template>
 
 <script setup lang="ts">
-import PrimaryBtn from "@/components/Buttons/PrimaryBtn.vue";
-import Email from "@/components/Forms/Email.vue";
-import Password from "@/components/Forms/Password.vue";
-import { ref } from "vue";
+import {ref} from "vue";
+
+import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
+import Email from "../../components/Forms/Email.vue";
+import Password from "../../components/Forms/Password.vue";
 
 const loginData = ref({
   email: "",
