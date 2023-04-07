@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import Splash from "@/components/Auth/Splash.vue";
+import Splash from "../components/Auth/Splash.vue";
 </script>
 
 <style scoped></style>
