@@ -7,14 +7,12 @@
 </template>
 
 <script setup lang="ts">
-
 interface Props {
   title: string;
-  type?: 'submit' | 'reset' | 'button';
+  type?: "submit" | "reset" | "button";
 }
 
 defineProps<Props>();
-
 </script>
 
 <style scoped lang="scss">
@@ -22,10 +20,9 @@ button {
   border-radius: 10px;
   border: 1px solid var(--btn-primary);
   background-color: var(--btn-secondary);
-  color: #023C40;
+  color: #023c40;
   width: 100%;
-  padding: 10px 40px;
-  margin: 10px;
+  padding: 12px 40px;
   transition: all 0.2s cubic-bezier(0.77, 0, 0.175, 1);
   font-weight: 600;
 
