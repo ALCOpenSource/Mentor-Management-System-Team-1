@@ -1,3 +1,27 @@
+<script lang="ts">
+import PrimaryBtn from "@/components/Buttons/PrimaryBtn.vue";
+import Email from "@/components/Forms/Email.vue";
+
+export default {
+  components: {
+    PrimaryBtn,
+    Email,
+  },
+  data() {
+    return {
+      email: "",
+    };
+  },
+  computed: {
+    isButtonDisabled() {
+      return !this.email.length;
+    },
+  },
+};
+
+</script>
+
+
 <template>
   <div class="w-3/5 mx-auto flex flex-col justify-center h-full">
     <div>
@@ -22,28 +46,6 @@
   </div>
 </template>
 
-<script lang="ts">
-import PrimaryBtn from "@/components/Buttons/PrimaryBtn.vue";
-import Email from "@/components/Forms/Email.vue";
-
-export default {
-  components: {
-    PrimaryBtn,
-    Email,
-  },
-  data() {
-    return {
-      email: "",
-    };
-  },
-  computed: {
-    isButtonDisabled() {
-      return !this.email.length;
-    },
-  },
-};
-
-</script>
 
 <style scoped lang="scss">
 h1 {

@@ -1,21 +1,35 @@
 <template>
   <div class="pass">
-    <v-text-field :rules="[rules.required, rules.min]" :type="show ? 'text' : 'password'" hint="At least 8 characters"
-      placeholder="Password" variant="solo" v-model="password" required @input="$emit('update:password', password)">
+    <v-text-field
+      v-model="password"
+      :rules="[rules.required, rules.min]"
+      :type="show ? 'text' : 'password'"
+      hint="At least 8 characters"
+      placeholder="Password"
+      variant="solo"
+      required
+      @input="$emit('update:password', password)"
+    >
     </v-text-field>
-    <img :src="show ? eyeHide : eyeShow" @click="show = !show" alt="eye" class="eye" />
+    <img
+      :src="show ? eyeHide : eyeShow"
+      alt="eye"
+      class="eye"
+      @click="show = !show"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import {ref} from "vue";
+
 import eyeShow from "../../assets/images/eye-password-hide 1.png";
 import eyeHide from "../../assets/images/eye-password-show 1.png";
 
 const show = ref(false);
 const password = ref("");
 const rules = {
-  required: (passwrd: string) => !!passwrd || "Password Required.",
+  required: (passwrd: string) => Boolean(passwrd) || "Password Required.",
   min: (value: string) => value.length >= 8 || "Min 8 characters",
 };
 

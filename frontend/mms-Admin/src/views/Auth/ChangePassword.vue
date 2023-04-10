@@ -17,10 +17,10 @@ export default {
   methods: {
     onPasswordChange() {
     // handle on password change
-},
-toggleModal() {
-    this.isModalOpen = !this.isModalOpen;
-},
+    },
+    toggleModal() {
+      this.isModalOpen = !this.isModalOpen;
+    },
   },
 };
 </script>
