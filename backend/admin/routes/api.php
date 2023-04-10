@@ -24,7 +24,6 @@ Route::prefix('v1')->group(function () {
 
     Route::post('test', function (Request $request) {
         return new ApiResource([
-            'success' => false,
             'status' => 400,
             'errors' => [
                 'test' => 'Test error',

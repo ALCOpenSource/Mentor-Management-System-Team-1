@@ -29,17 +29,11 @@ class ApiResource extends ResourceCollection
         $default = [
             'status' => $response->getStatusCode(),
 
-            // 100 series status codes are informational and is not considered successful or failure in this context,
-            // 200 series status codes are considered successful,
-            // 300 series are redirection, and is not considered successful or failure in this context,
-            // 400 series are client errors,
-            // 500 series are server errors
-            'success' => $response->getStatusCode() >= 200 && $response->getStatusCode() < 300,
-
             // Metadata
             'links' => [],
             'meta' => [],
             'errors' => [],
+            'error' => '',
             'message' => '',
             'code' => '',
         ];
@@ -83,6 +77,19 @@ class ApiResource extends ResourceCollection
             ]
         );
 
+        // Sets the response status code
+        $response->setStatusCode($response_data['status'] ?? $response->getStatusCode());
+
+        /*
+         * 100 series status codes are informational and is not considered successful or failure in this context,
+         * 200 series status codes are considered successful,
+         * 300 series are redirection, and is not considered successful or failure in this context,
+         * 400 series are client errors,
+         * 500 series are server errors
+         * @see https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+         */
+        $response_data['success'] = $response->isSuccessful();
+
         // Remove empty values
         $response_data = array_filter($response_data, function ($value) {
             if (is_array($value)) {
@@ -100,9 +107,6 @@ class ApiResource extends ResourceCollection
         if (true === $response_data['success'] && ! isset($response_data['data'])) {
             $response_data['data'] = [];
         }
-
-        // Set the response status code
-        $response->setStatusCode($response_data['status']);
 
         // Sets the response content
         $response->setContent(
