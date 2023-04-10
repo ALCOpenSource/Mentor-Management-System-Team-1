@@ -7,14 +7,12 @@
 </template>
 
 <script setup lang="ts">
-
 interface Props {
   title: string;
-  type?: 'submit' | 'reset' | 'button';
+  type?: "submit" | "reset" | "button";
 }
 
 defineProps<Props>();
-
 </script>
 
 <style scoped lang="scss">

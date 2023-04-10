@@ -1,7 +1,7 @@
 # Mentor-Management-System
 
 Mentors Management system is a people management app that enables proper.
-coordination of mentors needed to execute projects, ranging from recruitment to off-boarding. Ensue to go through the app doc below to read more and follow all the instructions.
+coordination of mentors needed to execute projects, ranging from recruitment to off-boarding. Ensure to go through the app doc below to read more and follow all the instructions.
 
 *[Contributor's wiki](https://github.com/ALCOpenSource/Mentor-Management-System-Team-1/wiki)
 
@@ -98,5 +98,5 @@ $ yarn run test:cov
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
