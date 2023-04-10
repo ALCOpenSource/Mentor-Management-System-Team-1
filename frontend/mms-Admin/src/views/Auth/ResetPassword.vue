@@ -6,8 +6,8 @@
     </div>
     <form class="mt-14 mb-5">
       <Email
-        @update:email="(value: string ) => (email = value)"
         placeholder="Email"
+        @update:email="(value: string ) => (email = value)"
       />
       <PrimaryBtn
         :disabled="isButtonDisabled"
@@ -25,7 +25,6 @@
 <script lang="ts">
 import PrimaryBtn from "@/components/Buttons/PrimaryBtn.vue";
 import Email from "@/components/Forms/Email.vue";
-import { ref } from "vue";
 
 export default {
   components: {
@@ -39,14 +38,11 @@ export default {
   },
   computed: {
     isButtonDisabled() {
-      return this.email.length > 1 ? false : true;
+      return !this.email.length
     },
   },
 };
 
-const resetInfo = ref({
-  email: "",
-});
 </script>
 
 <style scoped lang="scss">

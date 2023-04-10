@@ -1,29 +1,26 @@
 <script lang="ts">
 import PrimaryBtn from "@/components/Buttons/PrimaryBtn.vue";
 import Password from "@/components/Forms/Password.vue";
-import { ref } from "vue";
+
 
 export default {
+  data() {
+    return {
+      password: "",
+      isModalOpen: false,
+    };
+  },
   components: {
     PrimaryBtn,
     Password,
   },
   methods: {
-    async onPasswordChange(e: any) {
-      console.log("changing password", e);
+      onPasswordChange(event: any) {
+      // handle on password change
     },
     toggleModal() {
       this.isModalOpen = !this.isModalOpen;
     },
-    printHi() {
-      alert("hola");
-    },
-  },
-  data() {
-    return {
-      password: "",
-      isModalOpen: true,
-    };
   },
 };
 </script>
@@ -40,11 +37,11 @@ export default {
         placeholder="Email"
       />
       <PrimaryBtn
-        :disabled="password.length < 1 ? true : false"
+        :disabled="!password.length"
         title="Reset Password"
-        @click="toggleModal"
-        type="submit"
         class="mt-5"
+        type="submit"
+        @click="toggleModal"
       />
     </form>
     <p class="flex justify-end font-semibold underline">

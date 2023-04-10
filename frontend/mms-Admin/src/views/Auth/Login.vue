@@ -22,7 +22,7 @@
 import PrimaryBtn from "@/components/Buttons/PrimaryBtn.vue";
 import Email from "@/components/Forms/Email.vue";
 import Password from "@/components/Forms/Password.vue";
-import { ref } from "vue";
+import {ref} from "vue";
 
 const loginData = ref({
   email: "",

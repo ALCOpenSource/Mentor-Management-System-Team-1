@@ -6,14 +6,14 @@
       hint="At least 8 characters"
       placeholder="Password"
       variant="solo"
-      required
       v-model="password"
+      required
       @input="$emit('update:password', password)"
     >
     </v-text-field>
     <img
-      @click="show = !show"
       :src="show ? eyeHide : eyeShow"
+      @click="show = !show"
       alt="eye"
       class="eye"
     />
@@ -21,15 +21,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import {ref} from "vue";
 import eyeShow from "../../assets/images/eye-password-hide 1.png";
 import eyeHide from "../../assets/images/eye-password-show 1.png";
 
 const show = ref(false);
 const password = ref("");
 const rules = {
-  required: (v: string) => !!v || "Password Required.",
-  min: (v: string) => v.length >= 8 || "Min 8 characters",
+  required: (rule: string) => !!rule || "Password Required.",
+  min: (rule: string) => rule.length >= 8 || "Min 8 characters",
 };
 
 defineEmits(["update:password"]);
