@@ -4,23 +4,23 @@ import Password from "@/components/Forms/Password.vue";
 
 
 export default {
+  components: {
+    PrimaryBtn,
+    Password,
+  },
   data() {
     return {
       password: "",
       isModalOpen: false,
     };
   },
-  components: {
-    PrimaryBtn,
-    Password,
-  },
   methods: {
-      onPasswordChange(event: any) {
-      // handle on password change
-    },
-    toggleModal() {
-      this.isModalOpen = !this.isModalOpen;
-    },
+    onPasswordChange() {
+    // handle on password change
+},
+toggleModal() {
+    this.isModalOpen = !this.isModalOpen;
+},
   },
 };
 </script>
@@ -33,8 +33,8 @@ export default {
     </div>
     <form class="mt-14 mb-5" @submit.prevent="onPasswordChange">
       <Password
-        @update:password="(value: string) => (password = value)"
         placeholder="Email"
+        @update:password="(value: string) => (password = value)"
       />
       <PrimaryBtn
         :disabled="!password.length"

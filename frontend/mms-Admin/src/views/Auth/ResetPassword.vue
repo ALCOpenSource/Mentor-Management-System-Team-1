@@ -38,7 +38,7 @@ export default {
   },
   computed: {
     isButtonDisabled() {
-      return !this.email.length
+      return !this.email.length;
     },
   },
 };
