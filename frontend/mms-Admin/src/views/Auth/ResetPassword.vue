@@ -44,8 +44,6 @@ export default {
   },
 };
 
-console.log(2 + 4);
-
 const resetInfo = ref({
   email: "",
 });
