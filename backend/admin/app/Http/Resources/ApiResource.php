@@ -52,6 +52,14 @@ class ApiResource extends ResourceCollection
             }
         }
 
+        // Get headers from the resource
+        if (isset($this->collection['headers'])) {
+            foreach ($this->collection['headers'] as $key => $value) {
+                $response->header($key, $value);
+            }
+            unset($this->collection['headers']);
+        }
+
         // If response is paginated then add pagination data
         if ($this->resource instanceof AbstractPaginator) {
             $default['pagination'] = [
