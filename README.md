@@ -1,9 +1,9 @@
 # Mentor-Management-System
 
 Mentors Management system is a people management app that enables proper.
-coordination of mentors needed to execute projects, ranging from recruitment to off-boarding. Ensue to go through the app doc below to read more and follow all the instructions.
+coordination of mentors needed to execute projects, ranging from recruitment to off-boarding. Ensure to go through the app doc below to read more and follow all the instructions.
 
-*[Contributor's wiki](https://github.com/ALCOpenSource/Mentor-Management-System-Team-1/wiki)
+[Contributor's wiki](https://github.com/ALCOpenSource/Mentor-Management-System-Team-1/wiki)
 
 ## Techonologies
 
@@ -34,9 +34,11 @@ To get it up and running on your local machine, follow the steps below:
 
 ### Frontend
 
-* Navigate to the project directory with the command `cd conversational-app-team3`
+* Navigate to the project directory with the command `cd Mentor-Management-System-Team-1`
   
 * Navigate to the frontend directory with the command `cd frontend`
+  
+* Navigate to the frontend directory with the command `cd frontend mms-Admin`
   
 * Install all the dependencies with the command `npm install`
   
@@ -46,7 +48,7 @@ To get it up and running on your local machine, follow the steps below:
   
 #### Backend
 
-* Beckend is available here.
+* Beckend .
 
 ## Design
 
@@ -58,7 +60,7 @@ NOTE: Stickly adhere to the style guide on the design, buttons, texts etc.
 
 ### Creating issue
 
-Raise any identified issue with your mentor.
+Raise any identified issue with your TTL.
 
 #### Other commands available
 

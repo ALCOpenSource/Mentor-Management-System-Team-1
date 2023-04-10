@@ -22,7 +22,7 @@ export default {
   data() {
     return {
       password: "",
-      isModalOpen: false,
+      isModalOpen: true,
     };
   },
 };
@@ -53,11 +53,9 @@ export default {
   </div>
   <!-- MODAL -->
   <v-row justify="center">
-    <v-dialog v-model="isModalOpen" width="800">
-      <v-card class="border-2 border-rose-600 bg-slate-200">
-        <v-card-title>
-          <span class="text-h5 font-bold">Password Reset Successful</span>
-        </v-card-title>
+    <v-dialog v-model="isModalOpen" width="600">
+      <div class="border-2 flex py-6 rounded-lg gap-8 flex-col items-center bg-white">
+          <h2 class="font-bold text-2xl">Password Reset Successful</h2>
         <v-card-text>
           <img
             src="../../assets/images/reset_successful.png"
@@ -69,7 +67,7 @@ export default {
           <v-spacer></v-spacer>
           <PrimaryBtn title="Done" @click="toggleModal" />
         </v-card-actions>
-      </v-card>
+      </div>
     </v-dialog>
   </v-row>
 </template>

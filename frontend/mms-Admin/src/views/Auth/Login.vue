@@ -1,5 +1,5 @@
 <template>
-  <div class="w-3/5 mx-auto flex flex-col justify-center h-full">
+  <div class="mx-auto flex h-full w-3/5 flex-col justify-center">
     <div>
       <h1 class="mb-1">Welcome!</h1>
       <h3>Login to continue</h3>
@@ -55,6 +55,7 @@ p {
   border: 1px solid var(--btn-primary);
   background-color: var(--btn-secondary);
   color: #023c40;
+  color: #023c40;
   width: 100%;
   padding: 5px 40px;
   transition: all 0.2s cubic-bezier(0.77, 0, 0.175, 1);
@@ -69,3 +70,4 @@ p {
   }
 }
 </style>
+
