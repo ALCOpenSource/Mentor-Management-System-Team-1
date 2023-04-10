@@ -90,9 +90,7 @@ All changes should be made using the feat/ or fix/ prefix. For example, if you a
 
 Note: **Do not make changes to the master branch.**
 
-Note: **Once you have finished making your changes, you need to fix the code styling by running `php-cs-fixer fix` and then commit your changes. You also need to run `composer test` to make sure all tests are passing. A github action scripts are included and will (hopefully) run these commands for you.
-
-You can then push your changes to your fork and create a pull request.**
+Note: **Once you have finished making your changes, you need to fix the code styling by running `php-cs-fixer fix` and then commit your changes. You also need to run `composer test` to make sure all tests are passing. You can then push your changes to your fork and create a pull request.**
 
 ## Security Vulnerabilities
 

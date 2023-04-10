@@ -21,13 +21,4 @@ Route::prefix('v1')->group(function () {
     // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     //     return $request->user();
     // });
-
-    Route::post('test', function (Request $request) {
-        return new ApiResource([
-            'status' => 400,
-            'errors' => [
-                'test' => 'Test error',
-            ],
-        ]);
-    });
 });
