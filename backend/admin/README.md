@@ -4,8 +4,8 @@
 
 ### Prerequisites
 
-- PHP 8.1 or higher
-- Composer
+-   PHP 8.1 or higher
+-   Composer
 
 ### Installation
 
@@ -24,7 +24,7 @@
 
 ## API Response Format
 
-We have included an APIResource class [Here](app/Http/Resources/ApiResource.php)  whose purpose is to ensure that all API responses are consistent. To use it, simply extend the class and implement the `toArray()` method. The `toArray()` method should return an array with the following structure:
+We have included an APIResource class [Here](app/Http/Resources/ApiResource.php) whose purpose is to ensure that all API responses are consistent. To use it, simply extend the class and implement the `toArray()` method. The `toArray()` method should return an array with the following structure:
 
 Example:
 
@@ -39,7 +39,7 @@ return new ApiResource([
         // Links to other resources
     ],
     'meta' => [
-        // Meta data    
+        // Meta data
     ],
     'message' => 'Used for success message',
 ]);
@@ -68,7 +68,7 @@ return new ApiResource(User::paginate(10));
 
 ### Prerequisites
 
-- Docker
+-   Docker
 
 ### Installation
 
