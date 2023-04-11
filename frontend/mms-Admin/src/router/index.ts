@@ -15,6 +15,11 @@ const router = createRouter({
           name: "dashboard",
           component: Dashboard,
         },
+        {
+          path: "/profile",
+          name: "profile",
+          component: () => import("@/views/Dashboard/Profile.vue"),
+        },
       ],
     },
     {
@@ -26,6 +31,21 @@ const router = createRouter({
           path: "/login",
           name: "login",
           component: () => import("@/views/Auth/Login.vue"),
+        },
+        {
+          path: "/reset-password",
+          name: "reset-password",
+          component: () => import("@/views/Auth/ResetPassword.vue"),
+        },
+        {
+          path: "/change-password",
+          name: "change-password",
+          component: () => import("@/views/Auth/ChangePassword.vue"),
+        },
+        {
+          path: "/confirm-reset",
+          name: "confirm-reset",
+          component: () => import("@/views/Auth/AcknowledgePasswordReset.vue"),
         },
       ],
     },
