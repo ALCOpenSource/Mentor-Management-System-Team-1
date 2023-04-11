@@ -9,18 +9,18 @@
 
 ### Installation
 
-1. Clone the repository
-2. Run `composer install` to install the dependencies
-3. Copy `.env.example` to `.env` and fill in the database credentials
-4. Run `php artisan key:generate` to generate the application key
-5. Create a database and run `php artisan migrate`
-6. Run `php artisan db:seed` to seed the database with test data
+1.  Clone the repository
+2.  Run `composer install` to install the dependencies
+3.  Copy `.env.example` to `.env` and fill in the database credentials
+4.  Run `php artisan key:generate` to generate the application key
+5.  Create a database and run `php artisan migrate`
+6.  Run `php artisan db:seed` to seed the database with test data
 
 ## Usage
 
 ### Development
 
-1. Run `php artisan serve` to start the development server or use Laravel Valet or Laravel Homestead
+1.  Run `php artisan serve` to start the development server or use Laravel Valet or Laravel Homestead
 
 ## API Response Format
 
