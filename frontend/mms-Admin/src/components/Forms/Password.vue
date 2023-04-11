@@ -12,7 +12,7 @@
     >
     </v-text-field>
     <img
-      :src="show ? eyeOff : eye"
+      :src="show ? eyeHide : eyeShow"
       alt="eye"
       class="eye"
       @click="show = !show"
@@ -23,12 +23,13 @@
 <script setup lang="ts">
 import {ref} from "vue";
 
-import {eye, eyeOff} from "../../assets/images";
+import eyeShow from "../../assets/images/eye-password-hide 1.png";
+import eyeHide from "../../assets/images/eye-password-show 1.png";
 
 const show = ref(false);
 const password = ref("");
 const rules = {
-  required: (value: string) => Boolean(value) || "Password Required.",
+  required: (passwrd: string) => Boolean(passwrd) || "Password Required.",
   min: (value: string) => value.length >= 8 || "Min 8 characters",
 };
 
