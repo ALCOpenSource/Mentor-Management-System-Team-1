@@ -3,7 +3,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 :root {
   --btn-primary: #058b94;
   --btn-primary-hover: #035d63;
@@ -21,11 +20,23 @@
   --dashboard-icon-color: #058b94;
 }
 
+.red_log {
+  outline: 2px solid crimson;
+}
+
+.blue_log {
+  outline: 2px solid blue;
+}
+
+.green_log {
+  outline: 2px solid green;
+}
 body {
   font-family: "Mukta", sans-serif;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  scroll-behavior: smooth;
   min-height: 100vh;
   width: 100%;
 }
