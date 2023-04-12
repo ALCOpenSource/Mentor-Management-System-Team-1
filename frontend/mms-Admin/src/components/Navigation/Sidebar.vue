@@ -10,14 +10,11 @@
         :to="link.path"
         v-for="link in sidebarLinks"
         :key="link.pathname"
-        active-class="active"
+        active-class="active_link"
+        class="flex link text-black gap-2 mb-6 items-center py-4 text-lg pl-16"
       >
-        <div
-          class="flex link text-black gap-2 mb-6 items-center py-4 text-lg pl-16"
-        >
-          <div><component :is="link.icon" :color="'#808080'"></component></div>
-          <span>{{ link.pathname }}</span>
-        </div>
+        <div><component :is="link.icon" :color="'#808080'"></component></div>
+        <span class="link_pathname">{{ link.pathname }}</span>
       </router-link>
     </section>
   </div>
@@ -39,7 +36,7 @@ import {
   IconMessage,
 } from "@/components/Icons";
 
-const parentPath = "";
+const parentPath = "/admin";
 
 const sidebarLinks = [
   {
@@ -105,16 +102,17 @@ const sidebarLinks = [
 ];
 </script>
 
-<style>
+<style lang="scss">
 .sidebar {
   background: var(--light-grid-background);
 }
 
-.active {
-  color: crimson;
-}
+.active_link {
+  transition: background-color 200ms ease-out;
+  background-color: #fff;
 
-.link {
-  /*background: #fff;*/
+  .link_pathname {
+    font-weight: bold;
+  }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-2xl text-center font-semibold my-20">
+    <h1 class="text-2xl text-center font-semibold my-[4.5rem]">
       Welcome to the Dashboard
     </h1>
     <HeadGrid />

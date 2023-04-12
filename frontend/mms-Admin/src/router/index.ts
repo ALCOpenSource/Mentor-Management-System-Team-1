@@ -25,7 +25,7 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      redirect: (to) => ({ path: "/admin" }),
+      redirect: (to) => ({ path: "/admin/dashboard" }),
     },
     {
       path: "/admin",
@@ -33,65 +33,63 @@ const router = createRouter({
       component: dashboardLayoutVue,
       children: [
         {
-          path: "/",
+          path: "dashboard",
           name: "dashboard",
           component: Dashboard,
-          children: [
-            {
-              path: "/profile",
-              name: "profile",
-              component: Profile,
-            },
-            {
-              path: "/programs",
-              name: "programs",
-              component: Programs,
-            },
-            {
-              path: "/tasks",
-              name: "tasks",
-              component: Tasks,
-            },
-            {
-              path: "/reports",
-              name: "reports",
-              component: Reports,
-            },
-            {
-              path: "/mentors",
-              name: "mentors",
-              component: Mentors,
-            },
-            {
-              path: "/mentor-managers",
-              name: "mentor-managers",
-              component: MentorManagers,
-            },
-            {
-              path: "/approval-requests",
-              name: "approval-requests",
-              component: ApprovalRequests,
-            },
-            {
-              path: "/certificates",
-              name: "certificates",
-              component: Certificates,
-            },
-            {
-              path: "/messages",
-              name: "messages",
-              component: Messages,
-            },
-            {
-              path: "/discussion-forum",
-              component: DiscussionForum,
-            },
-            {
-              path: "/settings",
-              name: "settings",
-              component: Settings,
-            },
-          ],
+        },
+        {
+          path: "profile",
+          name: "profile",
+          component: Profile,
+        },
+        {
+          path: "programs",
+          name: "programs",
+          component: Programs,
+        },
+        {
+          path: "tasks",
+          name: "tasks",
+          component: Tasks,
+        },
+        {
+          path: "reports",
+          name: "reports",
+          component: Reports,
+        },
+        {
+          path: "mentors",
+          name: "mentors",
+          component: Mentors,
+        },
+        {
+          path: "mentor-managers",
+          name: "mentor-managers",
+          component: MentorManagers,
+        },
+        {
+          path: "approval-requests",
+          name: "approval-requests",
+          component: ApprovalRequests,
+        },
+        {
+          path: "certificates",
+          name: "certificates",
+          component: Certificates,
+        },
+        {
+          path: "messages",
+          name: "messages",
+          component: Messages,
+        },
+        {
+          path: "discussion-forum",
+          component: DiscussionForum,
+        },
+        {
+          path: "settings",
+          name: "settings",
+          component: Settings,
         },
       ],
     },
