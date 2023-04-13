@@ -59,12 +59,12 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import { ref } from "vue";
 
 import Email from "../../components/Forms/Email.vue";
 import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 import Modal from "../../components/Forms/Modal.vue";
-import {profileSuccess} from "../../assets/images";
+import { profileSuccess } from "../../assets/images";
 
 const supportDetails = ref({
   name: "",

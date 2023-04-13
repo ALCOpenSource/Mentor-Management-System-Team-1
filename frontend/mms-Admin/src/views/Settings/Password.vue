@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <v-form ref="form" v-model="valid" @submit.prevent="handleSubmit">
+  <div class="mt-3">
+    <v-form v-model="valid" @submit.prevent="handleSubmit">
       <v-row no-gutters class="mb-2">
         <v-col cols="4"
           ><h1 class="font-semibold pt-4">Current Password</h1></v-col
@@ -68,11 +68,11 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import { ref } from "vue";
 
 import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 import Modal from "../../components/Forms/Modal.vue";
-import {profileSuccess} from "../../assets/images";
+import { profileSuccess } from "../../assets/images";
 
 const valid = ref(false);
 const currentpassword = ref("");

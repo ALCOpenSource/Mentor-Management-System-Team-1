@@ -30,8 +30,8 @@ ul {
   border: 1px solid var(--card-light);
   color: var(--text-inactive);
   text-align: center;
-  width: 230px;
-  height: 290px;
+  min-width: 230px;
+  height: 282px;
   border-radius: 5px;
 
   li {

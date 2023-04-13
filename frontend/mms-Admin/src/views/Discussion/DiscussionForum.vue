@@ -1,7 +1,9 @@
 <template>
   <div>
-    <h1>Approval Requests</h1>
+    <h1>Discussion Forum</h1>
   </div>
 </template>
+
 <script setup lang="ts"></script>
-<style></style>
+
+<style scoped></style>

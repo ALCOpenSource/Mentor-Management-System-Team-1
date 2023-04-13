@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import { ref } from "vue";
 
 import Checkbox from "../../components/Forms/Checkbox.vue";
 
@@ -162,22 +162,30 @@ const discussionNotifications = ref([
 
 const toggleGenEmail = (id: String) => {
   const index = generalNotifications.value.findIndex((item) => item.id === id);
-  generalNotifications.value[index].email = !generalNotifications.value[index].email;
+  generalNotifications.value[index].email =
+    !generalNotifications.value[index].email;
 };
 
 const toggleGenInApp = (id: String) => {
   const index = generalNotifications.value.findIndex((item) => item.id === id);
-  generalNotifications.value[index].inApp = !generalNotifications.value[index].inApp;
+  generalNotifications.value[index].inApp =
+    !generalNotifications.value[index].inApp;
 };
 
 const toggleEmail = (id: String) => {
-  const index = discussionNotifications.value.findIndex((item) => item.id === id);
-  discussionNotifications.value[index].email = !discussionNotifications.value[index].email;
+  const index = discussionNotifications.value.findIndex(
+    (item) => item.id === id
+  );
+  discussionNotifications.value[index].email =
+    !discussionNotifications.value[index].email;
 };
 
 const toggleInApp = (id: String) => {
-  const index = discussionNotifications.value.findIndex((item) => item.id === id);
-  discussionNotifications.value[index].inApp = !discussionNotifications.value[index].inApp;
+  const index = discussionNotifications.value.findIndex(
+    (item) => item.id === id
+  );
+  discussionNotifications.value[index].inApp =
+    !discussionNotifications.value[index].inApp;
 };
 </script>
 

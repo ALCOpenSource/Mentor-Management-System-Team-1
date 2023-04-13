@@ -1,6 +1,5 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import { placeholderImg } from "../../assets/images";
 export default defineComponent({
   props: {
     imageLink: String,
@@ -12,7 +11,7 @@ export default defineComponent({
   <img
     class="avatar"
     :src="
-      placeholderImg ||
+      imageLink ||
       'https://blog.readyplayer.me/content/images/2021/04/IMG_0689.PNG'
     "
     alt=""

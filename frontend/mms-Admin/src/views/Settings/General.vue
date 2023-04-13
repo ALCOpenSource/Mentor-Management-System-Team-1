@@ -200,7 +200,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import { ref } from "vue";
 
 import LinkedIn from "../../assets/icons/LinkedIn.vue";
 import Twitter from "../../assets/icons/Twitter.vue";
@@ -209,7 +209,7 @@ import GitHub from "../../assets/icons/GitHub.vue";
 import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 import UploadProfilePic from "../../components/Settings/UploadProfilePic.vue";
 import Modal from "../../components/Forms/Modal.vue";
-import {profileSuccess} from "../../assets/images";
+import { profileSuccess } from "../../assets/images";
 
 const isModalOpen = ref(false);
 const userBio = ref({
