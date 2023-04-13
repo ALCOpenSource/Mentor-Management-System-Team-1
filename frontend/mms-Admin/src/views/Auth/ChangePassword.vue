@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import {ref} from "vue";
+import { ref } from "vue";
 
 import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 import Password from "../../components/Forms/Password.vue";
 import Modal from "../../components/Forms/Modal.vue";
-import {profileSuccess} from "../../assets/images";
+import { profileSuccess } from "../../assets/images";
 
 const password = ref("");
 const isModalOpen = ref(false);

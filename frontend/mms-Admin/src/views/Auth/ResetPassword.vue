@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {ref, computed} from 'vue';
+import { ref, computed } from "vue";
 
 import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 import Email from "../../components/Forms/Email.vue";
@@ -7,9 +7,7 @@ import Email from "../../components/Forms/Email.vue";
 const email = ref("");
 
 const isButtonDisabled = computed(() => !email.value.length);
-
 </script>
-
 
 <template>
   <div class="w-3/5 mx-auto flex flex-col justify-center h-full">
@@ -34,7 +32,6 @@ const isButtonDisabled = computed(() => !email.value.length);
     </p>
   </div>
 </template>
-
 
 <style scoped lang="scss">
 h1 {

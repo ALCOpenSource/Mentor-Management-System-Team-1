@@ -70,3 +70,44 @@ body {
   box-shadow: none !important;
   --v-input-control-height: 50px !important;
 }
+
+.v-expansion-panel__shadow {
+  box-shadow: none !important;
+}
+.v-expansion-panel-title--active > .v-expansion-panel-title__overlay {
+  background-color: var(--btn-primary);
+}
+.v-expansion-panel {
+  &:hover {
+    .v-expansion-panel-title__overlay {
+      background-color: var(--btn-primary-hover);
+    }
+  }
+
+  .v-expansion-panel-title {
+    line-height: 1.5 !important;
+    font-size: 16px !important;
+    padding-left: 12px !important;
+  }
+
+  .v-expansion-panel-text {
+    border-bottom: 2px solid var(--btn-primary);
+  }
+}
+
+.archive-card {
+  .v-expansion-panel {
+    .v-expansion-panel-title {
+      line-height: 1.5 !important;
+      font-size: 16px !important;
+      padding-left: 30px !important;
+      padding-right: 30px !important;
+      height: 71px;
+      border: 1px solid var(--border);
+    }
+
+    .v-expansion-panel-text {
+      border-bottom: 2px solid var(--btn-primary);
+    }
+  }
+}

@@ -2,19 +2,6 @@ import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../views/Dashboard/Dashboard.vue";
 import dashboardLayout from "@/layouts/dashboardLayout.vue";
 import settingsLayout from "@/layouts/settingsLayout.vue";
-import {
-  Mentors,
-  Profile,
-  Programs,
-  Reports,
-  Tasks,
-  MentorManagers,
-  Certificates,
-  ApprovalRequests,
-  Messages,
-  Settings,
-  DiscussionForum,
-} from "@/views/Admin";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,62 +28,57 @@ const router = createRouter({
         {
           path: "profile",
           name: "profile",
-          component: Profile,
+          component: () => import("@/views/Profile/Profile.vue"),
         },
         {
           path: "programs",
           name: "programs",
-          component: Programs,
+          component: () => import("@/views/Programs/Programs.vue"),
         },
         {
           path: "tasks",
           name: "tasks",
-          component: Tasks,
+          component: () => import("@/views/Tasks/Tasks.vue"),
         },
         {
           path: "reports",
           name: "reports",
-          component: Reports,
+          component: () => import("@/views/Reports/Reports.vue"),
         },
         {
           path: "mentors",
           name: "mentors",
-          component: Mentors,
+          component: () => import("@/views/Mentors/Mentors.vue"),
         },
         {
           path: "mentor-managers",
           name: "mentor-managers",
-          component: MentorManagers,
+          component: () => import("@/views/MentorManagers/MentorManagers.vue"),
         },
         {
           path: "approval-requests",
           name: "approval-requests",
-          component: ApprovalRequests,
+          component: () => import("@/views/Approval/ApprovalRequests.vue"),
         },
         {
           path: "certificates",
           name: "certificates",
-          component: Certificates,
+          component: () => import("@/views/Certificates/Certificates.vue"),
         },
         {
           path: "messages",
           name: "messages",
-          component: Messages,
+          component: () => import("@/views/Messages/Messages.vue"),
         },
         {
           path: "discussion-forum",
-          component: DiscussionForum,
-        },
-        {
-          path: "settings",
-          name: "settings",
-          component: Settings,
+          component: () => import("@/views/Discussion/DiscussionForum.vue"),
         },
         {
           path: "settings",
           name: "settings",
           component: settingsLayout,
-          redirect: "general",
+          redirect: () => "/admin/settings/general",
           children: [
             {
               path: "general",

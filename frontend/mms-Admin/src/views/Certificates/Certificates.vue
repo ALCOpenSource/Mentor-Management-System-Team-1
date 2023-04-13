@@ -3,5 +3,7 @@
     <h1>Certificates</h1>
   </div>
 </template>
-<script setup></script>
-<style></style>
+
+<script setup lang="ts"></script>
+
+<style scoped></style>

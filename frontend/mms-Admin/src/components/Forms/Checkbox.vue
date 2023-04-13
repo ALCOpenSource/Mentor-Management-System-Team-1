@@ -2,7 +2,13 @@
   <div class="flex items-center">
     <label :for="switchName" class="inline-flex items-center cursor-pointer">
       <span class="relative">
-        <input :id="switchName" v-model="checked" type="checkbox" class="hidden peer" @change="updateChecked" />
+        <input
+          :id="switchName"
+          v-model="checked"
+          type="checkbox"
+          class="hidden peer"
+          @change="updateChecked"
+        />
         <div
           class="w-[35px] h-[20px] rounded-full shadow-inner bg-[#B3B3B3] peer-checked:dark:bg-[#058B94]"
         ></div>
@@ -34,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, watch} from "vue";
+import { ref, watch } from "vue";
 
 interface Props {
   id: string;
@@ -56,9 +62,8 @@ watch(
   () => props.checked,
   (val) => {
     checked.value = val;
-  },
+  }
 );
-
 </script>
 
 <style scoped>
