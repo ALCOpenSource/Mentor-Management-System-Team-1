@@ -1,9 +1,9 @@
 <script lang="ts">
 import PrimaryBtn from "@/components/Buttons/PrimaryBtn.vue";
 import Password from "@/components/Forms/Password.vue";
+import { defineComponent } from "vue";
 
-
-export default {
+export default defineComponent({
   components: {
     PrimaryBtn,
     Password,
@@ -16,13 +16,13 @@ export default {
   },
   methods: {
     onPasswordChange() {
-    // handle on password change
+      // handle on password change
     },
     toggleModal() {
       this.isModalOpen = !this.isModalOpen;
     },
   },
-};
+});
 </script>
 
 <template>
@@ -51,8 +51,10 @@ export default {
   <!-- MODAL -->
   <v-row justify="center">
     <v-dialog v-model="isModalOpen" width="600">
-      <div class="border-2 flex py-6 rounded-lg gap-8 flex-col items-center bg-white">
-          <h2 class="font-bold text-2xl">Password Reset Successful</h2>
+      <div
+        class="border-2 flex py-6 rounded-lg gap-8 flex-col items-center bg-white"
+      >
+        <h2 class="font-bold text-2xl">Password Reset Successful</h2>
         <v-card-text>
           <img
             src="../../assets/images/reset_successful.png"
