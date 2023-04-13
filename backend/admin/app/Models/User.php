@@ -43,4 +43,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get the preferences for the user.
+     */
+    public function preferences(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Preference::class);
+    }
+
+    /**
+     * Get the support tickets for the user.
+     */
+    public function supportTickets(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(SupportTicket::class);
+    }
 }

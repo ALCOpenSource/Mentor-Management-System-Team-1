@@ -22,6 +22,7 @@ return $config->setRules([
         '@PSR12' => true,
         '@PHP81Migration' => true,
         '@Symfony' => true,
+        // '@PhpCsFixer' => true,
         'array_syntax' => ['syntax' => 'short'],
         'array_indentation' => true,
         'ordered_imports' => ['sort_algorithm' => 'alpha'],
@@ -47,11 +48,27 @@ return $config->setRules([
         ],
         'no_trailing_comma_in_singleline' => true,
 
-        // PGP Doc related
+        // PHP Doc related
         'phpdoc_add_missing_param_annotation' => [
             'only_untyped' => false,
         ],
+        'phpdoc_order' => false,
+        'phpdoc_align' => [
+            'align' => 'left',
+        ],
+        'phpdoc_separation' => true,
+        'phpdoc_trim' => true,
+        'phpdoc_types_order' => [
+            'null_adjustment' => 'always_last',
+            'sort_algorithm' => 'none',
+        ],
+        'phpdoc_var_annotation_correct_order' => true,
+        // 'phpdoc_to_return_type' => true,
+        // 'phpdoc_to_param_type' => true,
+        'phpdoc_single_line_var_spacing' => true,
+        'phpdoc_indent' => true,
 
+        // Others
         'no_useless_return' => true,
         'simplified_null_return' => true,
         'array_indentation' => true,

@@ -21,8 +21,6 @@ class ApiResource extends ResourceCollection
 
     /**
      * Add the additional meta data to the response.
-     *
-     * @return void
      */
     public function withResponse(Request $request, JsonResponse $response)
     {
