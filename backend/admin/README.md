@@ -4,8 +4,8 @@
 
 ### Prerequisites
 
--   PHP 8.1 or higher
--   Composer
+*   PHP 8.1 or higher
+*   Composer
 
 ### Installation
 
@@ -68,7 +68,7 @@ return new ApiResource(User::paginate(10));
 
 ### Prerequisites
 
--   Docker
+*   Docker
 
 ### Installation
 
