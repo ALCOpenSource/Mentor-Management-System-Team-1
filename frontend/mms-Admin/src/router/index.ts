@@ -2,6 +2,19 @@ import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../views/Dashboard/Dashboard.vue";
 import dashboardLayout from "@/layouts/dashboardLayout.vue";
 import settingsLayout from "@/layouts/settingsLayout.vue";
+import {
+  Mentors,
+  Profile,
+  Programs,
+  Reports,
+  Tasks,
+  MentorManagers,
+  Certificates,
+  ApprovalRequests,
+  Messages,
+  Settings,
+  DiscussionForum,
+} from "@/views/Admin";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,7 +41,56 @@ const router = createRouter({
         {
           path: "profile",
           name: "profile",
-          component: () => import("@/views/Profile/Profile.vue"),
+          component: Profile,
+        },
+        {
+          path: "programs",
+          name: "programs",
+          component: Programs,
+        },
+        {
+          path: "tasks",
+          name: "tasks",
+          component: Tasks,
+        },
+        {
+          path: "reports",
+          name: "reports",
+          component: Reports,
+        },
+        {
+          path: "mentors",
+          name: "mentors",
+          component: Mentors,
+        },
+        {
+          path: "mentor-managers",
+          name: "mentor-managers",
+          component: MentorManagers,
+        },
+        {
+          path: "approval-requests",
+          name: "approval-requests",
+          component: ApprovalRequests,
+        },
+        {
+          path: "certificates",
+          name: "certificates",
+          component: Certificates,
+        },
+        {
+          path: "messages",
+          name: "messages",
+          component: Messages,
+        },
+        {
+          path: "discussion-forum",
+          component: DiscussionForum,
+        },
+        {
+          path: "settings",
+          name: "settings",
+          component: Settings,
         },
         {
           path: "settings",
