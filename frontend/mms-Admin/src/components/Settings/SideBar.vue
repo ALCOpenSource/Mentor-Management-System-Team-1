@@ -1,24 +1,19 @@
 <template>
   <ul>
-    <li
+    <router-link
       v-for="item in list"
       :key="item"
-      :class="{
-        active: active === item,
-      }"
+      :to="`/admin/settings/${item.toLowerCase()}`"
+      active-class="active"
     >
-      <router-link :to="`/settings/${item.toLowerCase()}`" class="block py-2">
+      <li class="block py-2">
         {{ item }}
-      </router-link>
-    </li>
+      </li>
+    </router-link>
   </ul>
 </template>
 
 <script setup lang="ts">
-import {computed} from "vue";
-import {useRoute} from "vue-router";
-
-const route = useRoute();
 const list = [
   "General",
   "Password",
@@ -28,10 +23,6 @@ const list = [
   "Support",
   "FAQ",
 ];
-
-const active = computed(() => {
-  return list.find((item) => route.path === `/settings/${item.toLowerCase()}`);
-});
 </script>
 
 <style scoped lang="scss">
@@ -49,17 +40,22 @@ ul {
     &:last-child {
       border-bottom: none;
     }
-    &.active {
-      background-color: #fff;
-      color: #333;
-      font-weight: 600;
-    }
-
     &:hover {
       background-color: #fff;
       color: #333;
       font-weight: 600;
     }
+  }
+}
+.active {
+  background-color: #fff;
+  color: #333;
+  font-weight: 600;
+
+  li {
+    background-color: #fff;
+    color: #333;
+    font-weight: 600;
   }
 }
 </style>

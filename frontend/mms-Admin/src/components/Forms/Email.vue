@@ -17,7 +17,7 @@ defineEmits(["update:email"]);
 
 const email = ref("");
 const emailRules = [
-  (value: string) => !value || "Email is required",
+  (value: string) => Boolean(value) || "Email is required",
   (value: string) => /.+@.+\..+/.test(value) || "Email must be valid",
 ];
 </script>

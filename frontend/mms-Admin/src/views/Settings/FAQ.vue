@@ -1,5 +1,64 @@
 <template>
-  <div>FAQ</div>
+  <div>
+    <h1 class="text-xl font-semibold mb-5">General FAQ</h1>
+    <div v-for="item in 5" :key="item" class="flex border-b p-3 mb-2">
+      <div>
+        <svg
+          width="24"
+          height="25"
+          viewBox="0 0 24 25"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M12 7.5V17.5V7.5ZM7 12.5H17H7Z" fill="#058B94" />
+          <path
+            d="M12 7.5V17.5M7 12.5H17"
+            stroke="#058B94"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M12 22.5C17.5228 22.5 22 18.0228 22 12.5C22 6.97715 17.5228 2.5 12 2.5C6.47715 2.5 2 6.97715 2 12.5C2 18.0228 6.47715 22.5 12 22.5Z"
+            stroke="#058B94"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
+      <p class="font-semibold ml-6">General Frequently Asked Question?</p>
+    </div>
+    <h1 class="text-xl font-semibold my-5">Technical FAQ</h1>
+    <div v-for="item in 5" :key="item" class="flex border-b p-3 mb-2">
+      <div>
+        <svg
+          width="24"
+          height="25"
+          viewBox="0 0 24 25"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M12 7.5V17.5V7.5ZM7 12.5H17H7Z" fill="#058B94" />
+          <path
+            d="M12 7.5V17.5M7 12.5H17"
+            stroke="#058B94"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M12 22.5C17.5228 22.5 22 18.0228 22 12.5C22 6.97715 17.5228 2.5 12 2.5C6.47715 2.5 2 6.97715 2 12.5C2 18.0228 6.47715 22.5 12 22.5Z"
+            stroke="#058B94"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
+      <p class="font-semibold ml-6">Technical Frequently Asked Question?</p>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts"></script>

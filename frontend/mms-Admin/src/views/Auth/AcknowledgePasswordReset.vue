@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import PrimaryBtn from "@/components/Buttons/PrimaryBtn.vue";
+import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 </script>
 
 <style scoped lang="scss">

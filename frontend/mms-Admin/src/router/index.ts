@@ -1,62 +1,73 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../views/Dashboard/Dashboard.vue";
-import dashboardLayoutVue from "@/layouts/dashboardLayout.vue";
+import dashboardLayout from "@/layouts/dashboardLayout.vue";
+import settingsLayout from "@/layouts/settingsLayout.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  scrollBehavior() {
+    return { top: 0, behavior: "smooth" };
+  },
   routes: [
     {
       path: "/",
+      name: "home",
+      redirect: "/admin/dashboard",
+    },
+    {
+      path: "/admin",
       name: "dashboardLayout",
-      component: dashboardLayoutVue,
+      component: dashboardLayout,
+      redirect: "/admin/dashboard",
       children: [
         {
-          path: "/",
+          path: "dashboard",
           name: "dashboard",
           component: Dashboard,
         },
         {
-          path: "/profile",
+          path: "profile",
           name: "profile",
           component: () => import("@/views/Profile/Profile.vue"),
         },
         {
-          path: "/settings/general",
+          path: "settings",
           name: "settings",
-          component: () => import("@/layouts/settingsLayout.vue"),
+          component: settingsLayout,
+          redirect: "general",
           children: [
             {
-              path: "/settings/general",
+              path: "general",
               name: "general",
               component: () => import("@/views/Settings/General.vue"),
             },
             {
-              path: "/settings/notifications",
+              path: "notifications",
               name: "notifications",
               component: () => import("@/views/Settings/Notifications.vue"),
             },
             {
-              path: "/settings/privacy",
+              path: "privacy",
               name: "privacy",
               component: () => import("@/views/Settings/Privacy.vue"),
             },
             {
-              path: "/settings/archive",
+              path: "archive",
               name: "archive",
               component: () => import("@/views/Settings/Archive.vue"),
             },
             {
-              path: "/settings/password",
+              path: "password",
               name: "password",
               component: () => import("@/views/Settings/Password.vue"),
             },
             {
-              path: "/settings/FAQ",
+              path: "FAQ",
               name: "FAQ",
               component: () => import("@/views/Settings/FAQ.vue"),
             },
             {
-              path: "/settings/support",
+              path: "support",
               name: "support",
               component: () => import("@/views/Settings/Support.vue"),
             },

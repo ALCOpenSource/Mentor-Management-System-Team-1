@@ -1,5 +1,5 @@
 <template>
-  <div>Privacy</div>
+  <div>Archivee</div>
 </template>
 
 <script setup lang="ts"></script>
