@@ -7,11 +7,27 @@ use App\Http\Resources\ApiResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use Laravel\Sanctum\PersonalAccessToken;
 use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
+    /**
+     * Create a new AuthController instance.
+     *
+     * @param User $user
+     */
+    protected function createAuthToken($user, array $scopes = ['*']): PersonalAccessToken
+    {
+        // Get expiry time from config
+        $expiryTime = config('sanctum.expiration');
+        $expiryTime = $expiryTime ? now()->addMinutes($expiryTime) : null;
+
+        $token = $user->createToken('authToken', $scopes, $expiryTime)->accessToken;
+
+        return $token;
+    }
+
     /**
      * Create a new AuthController instance.
      *
@@ -36,9 +52,16 @@ class AuthController extends Controller
 
         $user = new User($validatedData);
         $user->save();
-        $accessToken = $user->createToken('authToken')->accessToken;
+        $accessToken = $this->createAuthToken($user);
 
-        return new ApiResource(['user' => $user, 'access_token' => $accessToken->token]);
+        return new ApiResource([
+            'user' => $user,
+            'access_token' => $accessToken->token,
+            'status' => 201,
+            'message' => 'User successfully registered',
+            'expires_at' => $accessToken->expires_at->timestamp,
+            'expires_in' => $accessToken->expires_at->diffInSeconds(now()),
+        ]);
     }
 
     /**
@@ -65,9 +88,15 @@ class AuthController extends Controller
         }
 
         $user = auth()->user();
-        $accessToken = $user->createToken('authToken')->accessToken;
+        $accessToken = $this->createAuthToken($user);
 
-        return new ApiResource(['user' => $user, 'access_token' => $accessToken->token]);
+        return new ApiResource([
+            'user' => $user,
+            'access_token' => $accessToken->token,
+            'message' => 'User successfully logged in',
+            'expires_at' => $accessToken->expires_at->timestamp,
+            'expires_in' => $accessToken->expires_at->diffInSeconds(now()),
+        ]);
     }
 
     /**
@@ -77,7 +106,8 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $request->user()->token()->revoke();
+        // Check if the user is logged in
+        $request->user()->currentAccessToken()->delete();
 
         return new ApiResource(['message' => 'Successfully logged out']);
     }
@@ -89,9 +119,13 @@ class AuthController extends Controller
      */
     public function refresh()
     {
-        $accessToken = auth()->user()->createToken('authToken')->accessToken;
+        $accessToken = $this->createAuthToken(auth()->user());
 
-        return new ApiResource(['access_token' => $accessToken->token]);
+        return new ApiResource([
+            'access_token' => $accessToken->token,
+            'expires_at' => $accessToken->expires_at->timestamp,
+            'expires_in' => $accessToken->expires_at->diffInSeconds(now()),
+        ]);
     }
 
     /**
@@ -128,27 +162,29 @@ class AuthController extends Controller
         $socialUser = $socialite->__callStatic('driver', [$provider])->userFromToken($accessToken);
         $user = User::where('email', $socialUser->getEmail())->first();
 
-        if ($user) {
-            $accessToken = $user->createToken('authToken')->accessToken;
+        if (! $user) {
+            $user = new User([
+                'name' => $socialUser->getName(),
+                'email' => $socialUser->getEmail(),
+                'password' => callStatic(Hash::class, 'make', strHelper('random', 24)),
+                'role' => AppConstants::ROLE_ADMIN,
+                'provider' => $provider,
+                'provider_id' => $socialUser->getId(),
+                'avatar' => $socialUser->getAvatar(),
+                'email_verified_at' => now(),
+            ]);
 
-            return new ApiResource(['user' => $user, 'access_token' => $accessToken->token]);
+            $user->save();
         }
 
-        $user = new User([
-            'name' => $socialUser->getName(),
-            'email' => $socialUser->getEmail(),
-            'password' => callStatic(Hash::class, 'make', strHelper('random', 24)),
-            'role' => AppConstants::ROLE_ADMIN,
-            'provider' => $provider,
-            'provider_id' => $socialUser->getId(),
-            'avatar' => $socialUser->getAvatar(),
-            'email_verified_at' => now(),
+        $accessToken = $this->createAuthToken($user);
+
+        return new ApiResource([
+            'user' => $user,
+            'access_token' => $accessToken->token,
+            'expires_at' => $accessToken->expires_at->timestamp,
+            'expires_in' => $accessToken->expires_at->diffInSeconds(now()),
         ]);
-
-        $user->save();
-        $accessToken = $user->createToken('authToken')->accessToken;
-
-        return new ApiResource(['user' => $user, 'access_token' => $accessToken]);
     }
 
     /**
@@ -175,27 +211,26 @@ class AuthController extends Controller
 
         // Here the logic should be to redirect to the frontend with the access token
 
-        if ($user) {
-            $accessToken = $user->createToken('authToken')->accessToken;
+        if (! $user) {
+            $user = new User([
+                'name' => $socialUser->getName(),
+                'email' => $socialUser->getEmail(),
+                'password' => callStatic(Hash::class, 'make', strHelper('random', 24)),
+                'role' => AppConstants::ROLE_ADMIN,
+                'provider' => $provider,
+                'provider_id' => $socialUser->getId(),
+                'avatar' => $socialUser->getAvatar(),
+                'email_verified_at' => now(),
+            ]);
 
-            return redirect()->to(config('services.frontend.url').'/login#access_token='.$accessToken->token);
+            $user->save();
         }
 
-        $user = new User([
-            'name' => $socialUser->getName(),
-            'email' => $socialUser->getEmail(),
-            'password' => callStatic(Hash::class, 'make', strHelper('random', 24)),
-            'role' => AppConstants::ROLE_ADMIN,
-            'provider' => $provider,
-            'provider_id' => $socialUser->getId(),
-            'avatar' => $socialUser->getAvatar(),
-            'email_verified_at' => now(),
-        ]);
+        $accessToken = $this->createAuthToken($user);
 
-        $user->save();
-        $accessToken = $user->createToken('authToken')->accessToken;
-
-        return redirect()->to(config('services.frontend.url').'/login#access_token='.$accessToken->token);
+        return redirect()->to(
+            config('services.frontend.url').'/login#access_token='.$accessToken->token & 'expires_at='.$accessToken->expires_at->timestamp & 'expires_in='.$accessToken->expires_at->diffInSeconds(now())
+        );
     }
 
     /**

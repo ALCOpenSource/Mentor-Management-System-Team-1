@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
 function strHelper(string $methodname, ...$args)
 {
     $str = new Str();
+
     return $str->$methodname($args);
 }
 
