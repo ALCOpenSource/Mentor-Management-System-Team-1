@@ -3,6 +3,21 @@
 // Helper functions will be written here
 // Path: app\Helpers\Helper.php
 
+use Illuminate\Support\Str;
+
+/**
+ * Call a string helper method.
+ *
+ * @param mixed ...$args
+ *
+ * @return mixed
+ */
+function strHelper(string $methodname, ...$args)
+{
+    $str = new Str();
+    return $str->$methodname($args);
+}
+
 /**
  * Call a static method of a class.
  *

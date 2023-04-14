@@ -137,7 +137,7 @@ class AuthController extends Controller
         $user = new User([
             'name' => $socialUser->getName(),
             'email' => $socialUser->getEmail(),
-            'password' => Hash::make(Str::random(24)),
+            'password' => callStatic(Hash::class, 'make', strHelper('random', 24)),
             'role' => AppConstants::ROLE_ADMIN,
             'provider' => $provider,
             'provider_id' => $socialUser->getId(),
@@ -184,9 +184,7 @@ class AuthController extends Controller
         $user = new User([
             'name' => $socialUser->getName(),
             'email' => $socialUser->getEmail(),
-            'password' => Hash::make(
-                Str::random(24)
-            ),
+            'password' => callStatic(Hash::class, 'make', strHelper('random', 24)),
             'role' => AppConstants::ROLE_ADMIN,
             'provider' => $provider,
             'provider_id' => $socialUser->getId(),
