@@ -1,20 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../views/Dashboard/Dashboard.vue";
-import dashboardLayoutVue from "@/layouts/dashboardLayout.vue";
-import adminLayout from "@/layouts/adminLayout.vue";
-import {
-  Mentors,
-  Profile,
-  Programs,
-  Reports,
-  Tasks,
-  MentorManagers,
-  Certificates,
-  ApprovalRequests,
-  Messages,
-  Settings,
-  DiscussionForum,
-} from "@/views/Admin";
+import dashboardLayout from "@/layouts/dashboardLayout.vue";
+import settingsLayout from "@/layouts/settingsLayout.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,12 +12,13 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      redirect: (to) => ({ path: "/admin/dashboard" }),
+      redirect: "/admin/dashboard",
     },
     {
       path: "/admin",
-      name: "admin",
-      component: dashboardLayoutVue,
+      name: "dashboardLayout",
+      component: dashboardLayout,
+      redirect: "/admin/dashboard",
       children: [
         {
           path: "dashboard",
@@ -40,94 +28,90 @@ const router = createRouter({
         {
           path: "profile",
           name: "profile",
-          component: Profile,
+          component: () => import("@/views/Profile/Profile.vue"),
         },
         {
           path: "programs",
           name: "programs",
-          component: Programs,
+          component: () => import("@/views/Programs/Programs.vue"),
         },
         {
           path: "tasks",
           name: "tasks",
-          component: Tasks,
+          component: () => import("@/views/Tasks/Tasks.vue"),
         },
         {
           path: "reports",
           name: "reports",
-          component: Reports,
+          component: () => import("@/views/Reports/Reports.vue"),
         },
         {
           path: "mentors",
           name: "mentors",
-          component: Mentors,
+          component: () => import("@/views/Mentors/Mentors.vue"),
         },
         {
           path: "mentor-managers",
           name: "mentor-managers",
-          component: MentorManagers,
+          component: () => import("@/views/MentorManagers/MentorManagers.vue"),
         },
         {
           path: "approval-requests",
           name: "approval-requests",
-          component: ApprovalRequests,
+          component: () => import("@/views/Approval/ApprovalRequests.vue"),
         },
         {
           path: "certificates",
           name: "certificates",
-          component: Certificates,
+          component: () => import("@/views/Certificates/Certificates.vue"),
         },
         {
           path: "messages",
           name: "messages",
-          component: Messages,
+          component: () => import("@/views/Messages/Messages.vue"),
         },
         {
           path: "discussion-forum",
-          component: DiscussionForum,
+          component: () => import("@/views/Discussion/DiscussionForum.vue"),
         },
         {
           path: "settings",
           name: "settings",
-          component: Settings,
-        },
-        {
-          path: "/settings/general",
-          name: "settings",
-          component: () => import("@/layouts/settingsLayout.vue"),
+          component: settingsLayout,
+          redirect: () => "/admin/settings/general",
           children: [
             {
-              path: "/settings/general",
+              path: "general",
               name: "general",
               component: () => import("@/views/Settings/General.vue"),
             },
             {
-              path: "/settings/notifications",
+              path: "notifications",
               name: "notifications",
               component: () => import("@/views/Settings/Notifications.vue"),
             },
             {
-              path: "/settings/privacy",
+              path: "privacy",
               name: "privacy",
               component: () => import("@/views/Settings/Privacy.vue"),
             },
             {
-              path: "/settings/archive",
+              path: "archive",
               name: "archive",
               component: () => import("@/views/Settings/Archive.vue"),
             },
             {
-              path: "/settings/password",
+              path: "password",
               name: "password",
               component: () => import("@/views/Settings/Password.vue"),
             },
             {
-              path: "/settings/FAQ",
+              path: "FAQ",
               name: "FAQ",
               component: () => import("@/views/Settings/FAQ.vue"),
             },
             {
-              path: "/settings/support",
+              path: "support",
               name: "support",
               component: () => import("@/views/Settings/Support.vue"),
             },

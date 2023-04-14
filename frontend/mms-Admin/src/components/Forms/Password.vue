@@ -21,10 +21,9 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import { ref } from "vue";
 
-import eyeShow from "../../assets/images/eye-password-hide 1.png";
-import eyeHide from "../../assets/images/eye-password-show 1.png";
+import { eyeShow, eyeHide } from "../../assets/images";
 
 const show = ref(false);
 const password = ref("");

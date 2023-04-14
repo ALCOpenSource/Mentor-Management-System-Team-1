@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import {gads} from "../../../assets/images";
+import { gads } from "../../../assets/images";
 </script>
 
 <style scoped lang="scss">

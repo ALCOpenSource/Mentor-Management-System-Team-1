@@ -1,26 +1,13 @@
-<script lang="ts">
-import PrimaryBtn from "@/components/Buttons/PrimaryBtn.vue";
-import Email from "@/components/Forms/Email.vue";
+<script lang="ts" setup>
+import { ref, computed } from "vue";
 
-export default {
-  components: {
-    PrimaryBtn,
-    Email,
-  },
-  data() {
-    return {
-      email: "",
-    };
-  },
-  computed: {
-    isButtonDisabled() {
-      return !this.email.length;
-    },
-  },
-};
+import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
+import Email from "../../components/Forms/Email.vue";
 
+const email = ref("");
+
+const isButtonDisabled = computed(() => !email.value.length);
 </script>
-
 
 <template>
   <div class="w-3/5 mx-auto flex flex-col justify-center h-full">
@@ -41,11 +28,10 @@ export default {
       />
     </form>
     <p class="flex justify-end font-semibold underline">
-      Remeber Password? Login
+      Remember Password? Login
     </p>
   </div>
 </template>
-
 
 <style scoped lang="scss">
 h1 {

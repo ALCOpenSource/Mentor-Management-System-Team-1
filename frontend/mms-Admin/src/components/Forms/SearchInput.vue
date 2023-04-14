@@ -1,10 +1,10 @@
 <template>
   <div class="w-2/4 relative">
-    <span class="search_icon absolute top-4 left-4">
+    <span class="search_icon absolute top-[10px] left-4">
       <IconSearch color="#808080" />
     </span>
     <input
-      class="p-4 pl-12 text-xl bg-white rounded-md w-full"
+      class="p-4 py-2 pl-12 text-xl bg-white rounded-md w-full focus:outline-[#058b94]"
       type="text"
       placeholder="Search for anything"
     />
