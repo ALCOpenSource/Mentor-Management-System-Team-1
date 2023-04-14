@@ -27,8 +27,9 @@ class AuthController extends Controller
             return new ApiResource(['errors' => $validator->errors(), 'status' => 422]);
         }
 
+        $validatedData = $validator->validated();
         $validatedData['password'] = bcrypt($request->password);
-        $validatedDate['role'] = AppConstants::ROLE_ADMIN;
+        $validatedData['role'] = AppConstants::ROLE_ADMIN;
 
         $user = User::create($validatedData);
         $accessToken = $user->createToken('authToken')->accessToken;
@@ -82,7 +83,7 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function refresh(Request $request)
+    public function refresh()
     {
         $accessToken = auth()->user()->createToken('authToken')->accessToken;
 
