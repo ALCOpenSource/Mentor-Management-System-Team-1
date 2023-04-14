@@ -114,7 +114,7 @@ class ApiResource extends ResourceCollection
             if (isset($this->collection[$key])) {
                 $default[$key] = $this->collection[$key];
                 unset($this->collection[$key]);
-            } else {
+            } else if(! isset($this->collection[$key])) {
                 // Set the default value, serves to fix Codacy warning issue
                 $default[$key] = $value;
             }

@@ -7,25 +7,25 @@ coordination of mentors needed to execute projects, ranging from recruitment to 
 
 ## Techonologies
 
-- Frontend
-- Backend
-- Database
-- Deployment env
+-  Frontend
+-  Backend
+-  Database
+-  Deployment env
 
 ### How to contributing to this project
 
 To get it up and running on your local machine, follow the steps below:
 
-- Clone the repo with the command `git clonn
-- Indicate your interest to work on any issue. "eg. I want to work on this issue or I am interested in this issue"
+-  Clone the repo with the command `git clonn
+-  Indicate your interest to work on any issue. "eg. I want to work on this issue or I am interested in this issue"
 
 \*EOpen a feature branch from the 'develop' branch. eg feat/
 
-- Make sure the name is descriptive for your branch but not too long. Lead with what the the branch is doing eg new feature or bug but follow this pattern `type/branch-description` eg `feature/add-login-functionality`.
-- Ensure your branch is up to date with latest changes before pushing
-- Create a pull request against develop branch
-- Reference the issue you worked on in your PR
-- Open a pull request against the develop branch and request a review from your
+-  Make sure the name is descriptive for your branch but not too long. Lead with what the the branch is doing eg new feature or bug but follow this pattern `type/branch-description` eg `feature/add-login-functionality`.
+-  Ensure your branch is up to date with latest changes before pushing
+-  Create a pull request against develop branch
+-  Reference the issue you worked on in your PR
+-  Open a pull request against the develop branch and request a review from your
 
 #### Backend
 
