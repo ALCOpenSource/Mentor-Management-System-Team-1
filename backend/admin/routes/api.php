@@ -25,6 +25,15 @@ Route::prefix('auth')->group(function () {
         Route::post('refresh', [App\Http\Controllers\AuthController::class, 'refresh']);
         Route::post('user', [App\Http\Controllers\AuthController::class, 'user']);
     });
+
+    // Add login with social media
+    Route::prefix('social')->group(function () {
+        Route::post('login', [App\Http\Controllers\AuthController::class, 'socialLogin']);
+    });
+
+    Route::prefix('password')->group(function () {
+        Route::post('reset', [App\Http\Controllers\AuthController::class, 'resetPassword']);
+    });
 });
 
 // Version 1
