@@ -16,6 +16,9 @@ class ApiResource extends ResourceCollection
      */
     public function toArray(Request $request): array
     {
+        // This is the default response
+        $request->headers->set('Accept', 'application/json');
+
         return $this->collection->toArray();
     }
 
@@ -63,7 +66,7 @@ class ApiResource extends ResourceCollection
      *
      * @param array<string, mixed> $response_data
      */
-    protected function removeEmptyData($response_data): void
+    protected function removeEmptyData(&$response_data): void
     {
         // Remove empty values
         $response_data = array_filter($response_data, function ($value) {
@@ -111,6 +114,9 @@ class ApiResource extends ResourceCollection
             if (isset($this->collection[$key])) {
                 $default[$key] = $this->collection[$key];
                 unset($this->collection[$key]);
+            } else {
+                // Set the default value, serves to fix Codacy warning issue
+                $default[$key] = $value;
             }
         }
 
@@ -127,9 +133,6 @@ class ApiResource extends ResourceCollection
         );
 
         // Sets the response status code
-        $response->setStatusCode($response_data['status'] ?? $response->getStatusCode());
-        $this->removeEmptyData($response_data);
-
         /*
          * 100 series status codes are informational and is not considered successful or failure in this context,
          * 200 series status codes are considered successful,
@@ -138,7 +141,9 @@ class ApiResource extends ResourceCollection
          * 500 series are server errors
          * @see https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
          */
-        $response_data['success'] = $response->isSuccessful();
+        $response_data['success'] = $response_data['status'] >= 200 && $response_data['status'] < 300;
+        $response->setStatusCode($response_data['status'] ?? $response->getStatusCode());
+        $this->removeEmptyData($response_data);
 
         // Sets the response content
         $response->setContent(

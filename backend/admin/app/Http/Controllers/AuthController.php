@@ -31,7 +31,8 @@ class AuthController extends Controller
         $validatedData['password'] = bcrypt($request->password);
         $validatedData['role'] = AppConstants::ROLE_ADMIN;
 
-        $user = User::create($validatedData);
+        $user = new User($validatedData);
+        $user->save();
         $accessToken = $user->createToken('authToken')->accessToken;
 
         return new ApiResource(['user' => $user, 'access_token' => $accessToken]);
