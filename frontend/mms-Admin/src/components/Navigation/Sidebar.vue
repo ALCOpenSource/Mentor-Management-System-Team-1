@@ -1,5 +1,5 @@
 <template>
-  <div class="w-72 absolute z-10 pt-12 sidebar">
+  <div class="w-72 z-10 pt-12 sidebar">
     <div class="pl-16 mb-14">
       <h2 class="font-bold text-xl">Hi, Kabiru</h2>
       <span class="text-mute">Admin</span>
@@ -104,7 +104,32 @@ const sidebarLinks = [
 
 <style lang="scss">
 .sidebar {
+  z-index: 1;
+  height: 87vh;
+  overflow-y: scroll;
+  position: fixed;
+  top: 13vh;
+  left: 0;
   background: var(--light-grid-background);
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #e4e4e4;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgb(201, 201, 201);
+    height: 40px;
+    border-radius: 50px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--btn-primary);
+    opacity: 0.2;
+  }
 }
 
 .active_link {
