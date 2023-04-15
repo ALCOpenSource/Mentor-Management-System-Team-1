@@ -1,12 +1,16 @@
+<script setup lang="ts">
+import Sidebar from "../components/Navigation/Sidebar.vue";
+import TopNavigation from "../components/Navigation/TopNavigation.vue";
+</script>
+
 <template>
-  <div>
-    <h1 class="text-2xl text-center font-semibold my-20">
-      Welcome to the Dashboard Layout
-    </h1>
-    <router-view></router-view>
+  <div class="flex flex-col">
+    <TopNavigation />
+    <div class="dashboard_page flex">
+      <Sidebar />
+      <div class="content ml-72 w-full pl-8 py-8 pr-14">
+        <router-view></router-view>
+      </div>
+    </div>
   </div>
 </template>
-
-<script setup lang="ts"></script>
-
-<style scoped></style>
