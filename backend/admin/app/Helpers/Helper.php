@@ -16,7 +16,7 @@ function strHelper(string $methodname, ...$args)
 {
     $str = new Str();
 
-    return $str->$methodname($args);
+    return $str->$methodname(...$args);
 }
 
 /**
@@ -43,4 +43,37 @@ function callStatic(string $className, string $methodname, ...$args)
 function callStaticMethod(object $class, string $methodname, ...$args)
 {
     return $class->__callStatic($methodname, $args);
+}
+
+/**
+ * Add new user session.
+ *
+ * @param mixed $user
+ * @param mixed $request
+ */
+function addUserSession($request)
+{
+    $user = $request->user();
+    $token = hash('md5', $user->currentAccessToken()->token);
+    $session = $user->userSessions()->where('id', $token)->first();
+
+    if (! $session) {
+        $session = $user->userSessions()->create([
+            'id' => $token,
+        ]);
+    }
+
+    $session->update([
+        'ip_address' => $request->ip(),
+        'user_agent' => $request->userAgent(),
+        'last_activity' => now(),
+        'payload' => [
+            'user_id' => $user->id,
+            'scopes' => $user->currentAccessToken()->scopes,
+
+            // Other tracking data
+            'language' => $request->header('Accept-Language'),
+            'country' => $request->header('CF-IPCountry'),
+        ],
+    ]);
 }
