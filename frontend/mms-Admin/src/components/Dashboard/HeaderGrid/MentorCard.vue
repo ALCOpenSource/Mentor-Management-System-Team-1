@@ -1,5 +1,5 @@
 <template>
-  <div class="mentor">
+  <div class="mentor w-2/5">
     <div>
       <h1>Mentors</h1>
       <p class="flex items-center">
@@ -43,8 +43,6 @@
   padding-right: 15px;
   background-color: var(--card-light);
   border-radius: 7px;
-  min-width: 178px;
-  max-width: 240px;
   cursor: pointer;
 
   &:hover {
