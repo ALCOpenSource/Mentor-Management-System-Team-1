@@ -114,6 +114,42 @@ class AuthController extends Controller
     }
 
     /**
+     * Logout a user from all devices.
+     * This will revoke all the tokens for the user.
+     */
+    public function logoutAll(Request $request)
+    {
+        // Check if the user is logged in
+        $request->user()->tokens()->delete();
+
+        return new ApiResource(['message' => 'Successfully logged out from all devices']);
+    }
+
+    /**
+     * Logout a user from a specific device.
+     *
+     * @param mixed $tokenId
+     */
+    public function logoutDevice(Request $request, $tokenId)
+    {
+        // Check if the user is logged in
+        $request->user()->tokens()->where('id', $tokenId)->delete();
+
+        return new ApiResource(['message' => 'Successfully logged out from the device']);
+    }
+
+    /**
+     * Logout a user from all devices except the current one.
+     */
+    public function logoutOther(Request $request)
+    {
+        // Check if the user is logged in
+        $request->user()->tokens()->where('id', '!=', $request->user()->currentAccessToken()->id)->delete();
+
+        return new ApiResource(['message' => 'Successfully logged out from all devices except the current one']);
+    }
+
+    /**
      * Refresh a token.
      *
      * @return void
