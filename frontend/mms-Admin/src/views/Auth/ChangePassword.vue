@@ -33,6 +33,7 @@ const toggleModal = () => {
         :disabled="!password.length"
         title="Reset Password"
         class="mt-5"
+        :full-width="true"
         type="submit"
         @click="toggleModal"
       />

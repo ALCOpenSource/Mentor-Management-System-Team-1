@@ -11,6 +11,7 @@
         title="Login"
         type="submit"
         class="mt-5"
+        :full-width="true"
         :disabled="!loginData.email || !loginData.password"
       />
     </v-form>
