@@ -8,7 +8,7 @@ import TopNavigation from "../components/Navigation/TopNavigation.vue";
     <TopNavigation />
     <div class="dashboard_page flex">
       <Sidebar />
-      <div class="content ml-72 w-full pl-8 py-8 pr-14">
+      <div class="content mt-28 ml-72 w-full pl-8 py-8 pr-14">
         <router-view></router-view>
       </div>
     </div>
