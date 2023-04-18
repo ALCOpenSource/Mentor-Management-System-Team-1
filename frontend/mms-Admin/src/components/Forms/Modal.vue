@@ -11,7 +11,12 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <SecondaryBtn v-if="secondaryText" class="mr-6" :title="secondaryText" @click="toggleModal"/>
+          <SecondaryBtn
+            v-if="secondaryText"
+            class="mr-6"
+            :title="secondaryText"
+            @click="toggleModal"
+          />
           <PrimaryBtn :title="primaryText" @click="toggleModal" />
         </v-card-actions>
       </div>
@@ -20,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, watch} from "vue";
+import { ref, watch } from "vue";
 
 import PrimaryBtn from "../Buttons/PrimaryBtn.vue";
 import SecondaryBtn from "../Buttons/SecondaryBtn.vue";
@@ -49,7 +54,7 @@ watch(
   () => props.isModalOpen,
   (val) => {
     isModalOpen.value = val;
-  },
+  }
 );
 </script>
 

@@ -1,0 +1,16 @@
+export { default as IconCircleAdd } from "./IconCircleAdd.vue";
+export { default as IconCircleMinus } from "./IconCircleMinus.vue";
+export { default as GitHub } from "./GitHub.vue";
+export { default as Twitter } from "./Twitter.vue";
+export { default as LinkedIn } from "./LinkedIn.vue";
+export { default as Instagram } from "./Instagram.vue";
+export { default as IconArrowUp } from "./IconArrowUp.vue";
+export { default as IconArrowDown } from "./IconArrowDown.vue";
+export { default as IconCalendar } from "./IconCalendar.vue";
+export { default as IconTime } from "./IconTime.vue";
+export { default as Google } from "./Google.vue";
+export { default as ArrowLeft } from "./ArrowLeft.vue";
+export { default as ArrowRight } from "./ArrowRight.vue";
+export { default as ArrowLeft2 } from "./ArrowLeft2.vue";
+export { default as ArrowRight2 } from "./ArrowRight2.vue";
+export { default as IconSearch } from "./IconSearch.vue";

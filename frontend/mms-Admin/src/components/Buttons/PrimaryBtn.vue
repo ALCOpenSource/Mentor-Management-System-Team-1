@@ -1,6 +1,11 @@
 <template>
   <!-- Dynamic button types -->
-  <button :type="type" @click="onClick">
+  <button
+    :type="type"
+    @click="onClick"
+    :class="class"
+    :style="{ width: fullWidth ? '100%' : 'max-content' }"
+  >
     <!-- Title of buttons passed in as Props -->
     {{ title }}
   </button>
@@ -10,6 +15,8 @@
 interface Props {
   title: string;
   type?: "submit" | "reset" | "button";
+  fullWidth?: boolean;
+  class?: string;
   onClick?: () => void;
 }
 
@@ -22,7 +29,7 @@ button {
   border: none;
   background-color: var(--btn-primary);
   color: #fff;
-  width: 100%;
+  width: max-content;
   padding: 12px 40px;
   transition: all 0.2s cubic-bezier(0.77, 0, 0.175, 1);
   font-weight: 600;
@@ -41,4 +48,3 @@ button {
   }
 }
 </style>
-

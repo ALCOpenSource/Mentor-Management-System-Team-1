@@ -40,7 +40,9 @@
         </div>
       </div>
       <div>
-        <PrimaryBtn title="Edit Profile" />
+        <router-link to="/admin/settings/general"
+          ><PrimaryBtn title="Edit Profile"
+        /></router-link>
       </div>
     </div>
     <div class="card p-6">
@@ -212,10 +214,7 @@
 </template>
 
 <script setup lang="ts">
-import GitHub from "../../assets/icons/GitHub.vue";
-import Twitter from "../../assets/icons/Twitter.vue";
-import Instagram from "../../assets/icons/Instagram.vue";
-import LinkedIn from "../../assets/icons/LinkedIn.vue";
+import { GitHub, Twitter, Instagram, LinkedIn } from "@/assets/icons";
 import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 </script>
 

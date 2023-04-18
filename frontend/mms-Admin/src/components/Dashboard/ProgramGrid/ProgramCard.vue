@@ -1,5 +1,5 @@
 <template>
-  <div class="pCard flex flex-col">
+  <div class="pCard w-3/5 gap-4 flex flex-col">
     <div class="flex items-center mb-2">
       <img :src="gads" alt="gads logo" />
       <div class="flex flex-col g-2 ml-6">
@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import {gads} from "../../../assets/images";
+import { gads } from "../../../assets/images";
 </script>
 
 <style scoped lang="scss">
@@ -30,8 +30,6 @@ import {gads} from "../../../assets/images";
   padding: 15px;
   border-radius: 7px;
   background-color: var(--card-light);
-  min-width: 330px;
-  max-width: 350px;
   cursor: pointer;
 
   &:hover {
