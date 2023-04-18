@@ -23,7 +23,11 @@
 import DropdownButton from "./DropdownButton.vue";
 
 type Props = {
-  options?: Object[];
+  options?: OptionType[];
+};
+
+type OptionType = {
+  text: string;
 };
 
 defineProps<Props>();
