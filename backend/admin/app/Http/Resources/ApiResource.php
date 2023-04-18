@@ -114,7 +114,7 @@ class ApiResource extends ResourceCollection
             if (isset($this->collection[$key])) {
                 $default[$key] = $this->collection[$key];
                 unset($this->collection[$key]);
-            } else if(! isset($this->collection[$key])) {
+            } elseif (! isset($this->collection[$key])) {
                 // Set the default value, serves to fix Codacy warning issue
                 $default[$key] = $value;
             }
@@ -146,6 +146,7 @@ class ApiResource extends ResourceCollection
         $this->removeEmptyData($response_data);
 
         // Sets the response content
+        $response->header('Content-Type', 'application/json');
         $response->setContent(
             json_encode($response_data)
         );

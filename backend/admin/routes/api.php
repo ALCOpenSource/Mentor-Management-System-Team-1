@@ -21,9 +21,21 @@ Route::prefix('auth')->group(function () {
     Route::post('login', [App\Http\Controllers\AuthController::class, 'login']);
 
     Route::middleware('auth:sanctum')->group(function () {
+        // GET
+        Route::get('user', [App\Http\Controllers\AuthController::class, 'user']);
+
+        // POST
         Route::post('logout', [App\Http\Controllers\AuthController::class, 'logout']);
         Route::post('refresh', [App\Http\Controllers\AuthController::class, 'refresh']);
-        Route::post('user', [App\Http\Controllers\AuthController::class, 'user']);
+    });
+
+    // Add login with social media
+    Route::prefix('social')->group(function () {
+        Route::post('login', [App\Http\Controllers\AuthController::class, 'socialLogin']);
+    });
+
+    Route::prefix('password')->group(function () {
+        Route::post('reset', [App\Http\Controllers\AuthController::class, 'resetPassword']);
     });
 });
 

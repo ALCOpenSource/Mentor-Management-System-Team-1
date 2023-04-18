@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Add login with social media
+Route::prefix('auth/social')->group(function () {
+    Route::get('redirect/{provider}', [App\Http\Controllers\AuthController::class, 'socialLoginRedirect']);
+    Route::get('callback/{provider}', [App\Http\Controllers\AuthController::class, 'socialLoginCallback']);
 });
