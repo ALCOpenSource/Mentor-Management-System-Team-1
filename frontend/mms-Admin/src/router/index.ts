@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../views/Dashboard/Dashboard.vue";
-import SampleView from "../views/Sample.vue";
 import dashboardLayout from "@/layouts/dashboardLayout.vue";
 import settingsLayout from "@/layouts/settingsLayout.vue";
 
@@ -13,7 +12,7 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: SampleView,
+      redirect: "/admin/dashboard",
     },
     {
       path: "/admin",
