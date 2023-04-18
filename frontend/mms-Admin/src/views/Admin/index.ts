@@ -1,0 +1,11 @@
+export { default as Certificates } from "./Certificates.vue";
+export { default as ApprovalRequests } from "./ApprovalRequests.vue";
+export { default as Profile } from "./Profile.vue";
+export { default as Programs } from "./Programs.vue";
+export { default as Tasks } from "./Tasks.vue";
+export { default as Reports } from "./Reports.vue";
+export { default as Mentors } from "./Mentors.vue";
+export { default as Messages } from "./Messages.vue";
+export { default as Settings } from "./Settings.vue";
+export { default as MentorManagers } from "./MentorManagers.vue";
+export { default as DiscussionForum } from "./DiscussionForum.vue";
