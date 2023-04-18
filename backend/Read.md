@@ -1,7 +1,7 @@
 # Mentor-Management-System
 
-Mentors Management system is a people management app that enables proper.
-coordination of mentors needed to execute projects, ranging from recruitment to off-boarding. Ensure to go through the app doc below to read more and follow all the instructions.
+Mentors Management system is a people management app that enables proper
+coordination of mentors needed to execute projects, ranging from recruitment to off-boarding. Ensue to go through the app doc below to read more and follow all the instructions
 
 \*[Contributor's wiki](https://github.com/ALCOpenSource/Mentor-Management-System-Team-1/wiki)
 
@@ -12,7 +12,8 @@ coordination of mentors needed to execute projects, ranging from recruitment to 
 - Database
 - Deployment env
 
-### How to contributing to this project
+
+## How to contributing to this project
 
 To get it up and running on your local machine, follow the steps below:
 
@@ -27,14 +28,15 @@ To get it up and running on your local machine, follow the steps below:
 - Reference the issue you worked on in your PR
 - Open a pull request against the develop branch and request a review from your
 
-#### Backend
+
+### Backend
 
 Backend
 
-##### Design
+### Design
 
 The design can be find [here](https://www.figma.com/file/JNZKj3lachPypSOMBOhC1e/MMS-ALC-0pen-Source-Project?t=oxc4As0deSW7RNa8-0)
-Find the Prototype [here](https://www.figma.com/proto/JNZKj3lachPypSOMBOhC1e/MMS-ALC-0pen-Source-Project?page-id=6782%3A4428&node-id=6784%3A6712&viewport=565%2C382%2C0.02&scaling=min-zoom&starting-point-node-id=6784%3A6712)
+Find the Prototype [here](https://www.figma.com/proto/JNZKj3lachPypSOMBOhC1e/MMS-ALC-0pen-Source-Project?page-id=6782%3A4428\&node-id=6784%3A6712\&viewport=565%2C382%2C0.02\&scaling=min-zoom\&starting-point-node-id=6784%3A6712)
 Work on your Team assigned task eg. Team 1, Team 2 etc.
 
 NOTE: Stickly adhere to the style guide on the design, buttons, texts etc.
@@ -45,9 +47,9 @@ Raise any identified issue with your mentor.
 
 #### Local Database Setup
 
-1. Install and create a MySQL database (Can be change)
-2. Create a .env file in the root directory
-3. Set the environment variables with your local database credentials (see .env.example for reference)
+1.  Install and create a MySQL database (Can be change)
+2.  Create a .env file in the root directory
+3.  Set the environment variables with your local database credentials (see .env.example for reference)
 
 #### Installation
 
@@ -84,10 +86,13 @@ $ yarn run test:cov
 ##### Contributors
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+
 <!-- prettier-ignore-start -->
+
 <!-- markdownlint-disable -->
 
 <!-- markdownlint-restore -->
+
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
