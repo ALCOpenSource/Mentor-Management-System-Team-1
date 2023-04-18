@@ -3,29 +3,34 @@
 Mentors Management system is a people management app that enables proper.
 coordination of mentors needed to execute projects, ranging from recruitment to off-boarding. Ensure to go through the app doc below to read more and follow all the instructions.
 
-\*[Contributor's wiki](https://github.com/ALCOpenSource/Mentor-Management-System-Team-1/wiki)
+*[Contributor's wiki](https://github.com/ALCOpenSource/Mentor-Management-System-Team-1/wiki)
 
 ## Techonologies
 
-- Frontend
-- Backend
-- Database
-- Deployment env
+* Frontend
+* Backend
+* Database
+* Deployment env
 
 ### How to contributing to this project
 
 To get it up and running on your local machine, follow the steps below:
 
-- Clone the repo with the command `git clonn
-- Indicate your interest to work on any issue. "eg. I want to work on this issue or I am interested in this issue"
+* Clone the repo with the command `git clonn
+  
+* Indicate your interest to work on any issue. "eg. I want to work on this issue or I am interested in this issue"
+  
+*EOpen a feature branch from the 'develop' branch. eg feat/
 
-\*EOpen a feature branch from the 'develop' branch. eg feat/
-
-- Make sure the name is descriptive for your branch but not too long. Lead with what the the branch is doing eg new feature or bug but follow this pattern `type/branch-description` eg `feature/add-login-functionality`.
-- Ensure your branch is up to date with latest changes before pushing
-- Create a pull request against develop branch
-- Reference the issue you worked on in your PR
-- Open a pull request against the develop branch and request a review from your
+* Make sure the name is descriptive for your branch but not too long. Lead with what the the branch is doing eg new feature or bug but follow this pattern `type/branch-description` eg `feature/add-login-functionality`.
+  
+* Ensure your branch is up to date with latest changes before pushing
+  
+* Create a pull request against develop branch
+  
+* Reference the issue you worked on in your PR
+  
+* Open a pull request against the develop branch and request a review from your
 
 #### Backend
 
@@ -36,7 +41,7 @@ Backend
 The design can be find [here](https://www.figma.com/file/JNZKj3lachPypSOMBOhC1e/MMS-ALC-0pen-Source-Project?t=oxc4As0deSW7RNa8-0)
 Find the Prototype [here](https://www.figma.com/proto/JNZKj3lachPypSOMBOhC1e/MMS-ALC-0pen-Source-Project?page-id=6782%3A4428&node-id=6784%3A6712&viewport=565%2C382%2C0.02&scaling=min-zoom&starting-point-node-id=6784%3A6712)
 Work on your Team assigned task eg. Team 1, Team 2 etc.
-
+  
 NOTE: Stickly adhere to the style guide on the design, buttons, texts etc.
 
 ### Creating issue
@@ -93,7 +98,5 @@ $ yarn run test:cov
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-
 [![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors)
-
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
