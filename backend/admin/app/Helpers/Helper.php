@@ -54,6 +54,11 @@ function callStaticMethod(object $class, string $methodname, ...$args)
 function addUserSession($request)
 {
     $user = $request->user();
+
+    if (! $user->currentAccessToken() || ! $user->currentAccessToken()->token) {
+        return;
+    }
+
     $token = hash('md5', $user->currentAccessToken()->token);
     $session = $user->userSessions()->where('id', $token)->first();
 
