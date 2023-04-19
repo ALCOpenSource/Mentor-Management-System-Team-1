@@ -77,7 +77,7 @@
 import { ref, onMounted } from "vue";
 import PrimaryBtn from "@/components/Buttons/PrimaryBtn.vue";
 import { IconSearch } from "@/components/Icons";
-import { Tick, DoubleTick, Smiley, Docs } from "@/assets/icons";
+import { Tick, DoubleTick, Smiley } from "@/assets/icons";
 import ChatCard from "@/components/Messages/ChatCard.vue";
 import { Picker, EmojiIndex } from "emoji-mart-vue-fast/src";
 import data from "emoji-mart-vue-fast/data/all.json";

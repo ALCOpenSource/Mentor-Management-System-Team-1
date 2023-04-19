@@ -37,7 +37,9 @@
     </div>
     <div class="flex justify-between items-center">
       <div class="flex gap-6 items-center">
-        <Comment class="cursor-pointer" />
+        <router-link :to="{ name: 'comments', params: { id: props.id } }"
+          ><Comment class="cursor-pointer"
+        /></router-link>
         <Bookmark class="cursor-pointer" />
         <Share class="cursor-pointer" />
       </div>
@@ -52,6 +54,10 @@
 <script setup lang="ts">
 import { MoreIcon, IconTime, Share, Comment, Bookmark } from "@/assets/icons";
 const emit = defineEmits(["updateModal"]);
+
+const props = defineProps<{
+  id: string;
+}>();
 
 const updateModal = () => {
   emit("updateModal");

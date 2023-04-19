@@ -98,7 +98,7 @@ const router = createRouter({
                 import("@/views/DiscussionForum/Discussions.vue"),
             },
             {
-              path: "comments",
+              path: "comments/:id",
               name: "comments",
               component: () => import("@/views/DiscussionForum/Comments.vue"),
             },

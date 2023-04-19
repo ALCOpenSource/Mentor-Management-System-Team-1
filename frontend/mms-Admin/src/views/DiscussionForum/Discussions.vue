@@ -6,10 +6,10 @@
       <IconCircleAdd />
     </div>
     <div class="discussion-area">
-      <DiscussionCard @update-modal="updateModal" />
-      <DiscussionCard />
-      <DiscussionCard />
-      <DiscussionCard />
+      <DiscussionCard id="1" @update-modal="updateModal" />
+      <DiscussionCard id="2" />
+      <DiscussionCard id="3" />
+      <DiscussionCard id="4" />
     </div>
     <v-row justify="center">
       <v-dialog v-model="isTopicModalOpen" width="866" persistent>
@@ -52,7 +52,7 @@
     </v-row>
   </div>
   <Modal
-    title="Post Created Successfully!"
+    :title="modalTitle"
     :src="profileSuccess"
     :is-modal-open="isModalOpen"
     primary-text="Done"
@@ -72,6 +72,7 @@ const valid = ref(false);
 const isTopicModalOpen = ref(false);
 const isModalOpen = ref(false);
 const isUpdate = ref(false);
+const modalTitle = ref("Post Created Successfully!");
 
 // Demo State
 const topicState = ref({
@@ -83,6 +84,11 @@ const toggleTopicModal = () => {
   isTopicModalOpen.value = !isTopicModalOpen.value;
 };
 const toggleModal = () => {
+  if (isUpdate.value) {
+    modalTitle.value = "Post Updated Successfully!";
+  } else {
+    modalTitle.value = "Post Created Successfully!";
+  }
   isModalOpen.value = !isModalOpen.value;
 };
 
@@ -106,6 +112,7 @@ const handleSubmit = () => {
     title: "",
     body: "",
   };
+  isUpdate.value = false;
 };
 
 const updateModal = () => {
