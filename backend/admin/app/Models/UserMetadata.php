@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Preferences extends Model
+class UserMetadata extends Model
 {
     use HasFactory;
 
@@ -18,6 +18,9 @@ class Preferences extends Model
         'user_id',
         'key',
         'value',
+        'type',
+        'group',
+        'options',
     ];
 
     /**
@@ -26,12 +29,11 @@ class Preferences extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'key' => 'string',
-        'value' => 'string',
+        'options' => 'array',
     ];
 
     /**
-     * Get the user that owns the preference.
+     * Get the user that owns the metadata.
      */
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
