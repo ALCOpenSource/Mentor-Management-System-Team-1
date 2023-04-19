@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <h1>Discussion Forum</h1>
-  </div>
+  <div>Comments</div>
 </template>
 
 <script setup lang="ts"></script>

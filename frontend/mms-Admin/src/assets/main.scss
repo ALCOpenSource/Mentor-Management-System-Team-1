@@ -41,12 +41,6 @@ body {
   width: 100%;
 }
 
-[data-complete] .formkit-inner::after {
-  content: "✅";
-  display: block;
-  padding: 0.5em;
-}
-
 .v-field__field {
   border: 1.6px solid var(--border);
   border-radius: 6px;
@@ -112,5 +106,15 @@ body {
     .v-expansion-panel-text {
       border-bottom: 2px solid var(--btn-primary);
     }
+  }
+}
+
+.picker {
+  position: relative;
+
+  .emoji-mart {
+    position: absolute !important;
+    z-index: 9999 !important;
+    bottom: 50px !important;
   }
 }
