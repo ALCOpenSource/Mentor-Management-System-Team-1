@@ -25,6 +25,7 @@ const isButtonDisabled = computed(() => !email.value.length);
         title="Reset Password"
         type="submit"
         class="mt-5"
+        :full-width="true"
       />
     </form>
     <p class="flex justify-end font-semibold underline">

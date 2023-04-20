@@ -11,6 +11,7 @@
         title="Login"
         type="submit"
         class="mt-5"
+        :full-width="true"
         :disabled="!loginData.email || !loginData.password"
       />
     </v-form>
@@ -42,8 +43,6 @@ const loginData = ref({
 
 const valid = ref(false);
 const isAdmin = ref(true);
-
-
 
 const authStore = useAuthStore();
 

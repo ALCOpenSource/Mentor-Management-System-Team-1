@@ -8,6 +8,7 @@ import { plugin, defaultConfig } from "@formkit/vue";
 
 import "./assets/main.scss";
 import "@formkit/themes/genesis";
+import "emoji-mart-vue-fast/css/emoji-mart.css";
 
 import "vuetify/styles";
 import { createVuetify } from "vuetify";

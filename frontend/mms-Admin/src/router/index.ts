@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../views/Dashboard/Dashboard.vue";
 import dashboardLayout from "@/layouts/dashboardLayout.vue";
 import settingsLayout from "@/layouts/settingsLayout.vue";
+import messageLayout from "@/layouts/messageLayout.vue";
+import discussionLayout from "@/layouts/discussionLayout.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -68,11 +70,39 @@ const router = createRouter({
         {
           path: "messages",
           name: "messages",
-          component: () => import("@/views/Messages/Messages.vue"),
+          component: messageLayout,
+          redirect: () => "/admin/messages/inbox",
+          children: [
+            {
+              path: "inbox",
+              name: "inbox",
+              component: () => import("@/views/Messages/Messages.vue"),
+            },
+            {
+              path: "broadcast",
+              name: "broadcast",
+              component: () => import("@/views/Messages/Broadcast.vue"),
+            },
+          ],
         },
         {
           path: "discussion-forum",
-          component: () => import("@/views/Discussion/DiscussionForum.vue"),
+          name: "discussion-forum",
+          component: discussionLayout,
+          redirect: () => "/admin/discussion-forum/discussions",
+          children: [
+            {
+              path: "discussions",
+              name: "discussions",
+              component: () =>
+                import("@/views/DiscussionForum/Discussions.vue"),
+            },
+            {
+              path: "comments/:id",
+              name: "comments",
+              component: () => import("@/views/DiscussionForum/Comments.vue"),
+            },
+          ],
         },
         {
           path: "settings",
