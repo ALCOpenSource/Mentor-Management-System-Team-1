@@ -2,7 +2,7 @@ import {defineStore} from 'pinia'
 import axios from "axios"
 import { createToaster } from "@meforma/vue-toaster"
 
-export const useAuthStore = defineStore({
+const useAuthStore = defineStore({
     id: 'auth',
 
     state: () => ({
@@ -51,3 +51,5 @@ export const useAuthStore = defineStore({
         }
     }
 })
+
+export default useAuthStore;

@@ -2,7 +2,7 @@
 import Sidebar from "../components/Navigation/Sidebar.vue";
 import TopNavigation from "../components/Navigation/TopNavigation.vue";
 import {onMounted} from 'vue';
-import {useAuthStore} from "../store/auth"
+import useAuthStore from "../store/auth"
 
 const authStore = useAuthStore();
 

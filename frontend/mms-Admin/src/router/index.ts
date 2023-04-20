@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../views/Dashboard/Dashboard.vue";
 import dashboardLayout from "@/layouts/dashboardLayout.vue";
 import settingsLayout from "@/layouts/settingsLayout.vue";
-import {useAuthStore} from '@/store/auth'
+import useAuthStore from '@/store/auth'
 import messageLayout from "@/layouts/messageLayout.vue";
 import discussionLayout from "@/layouts/discussionLayout.vue";
 
@@ -104,10 +104,23 @@ const router = createRouter({
         {
           path: "messages",
           name: "messages",
-          component: () => import("@/views/Messages/Messages.vue"),
+          component: messageLayout,
           meta: {
             requiresAuth:true
           },
+          redirect: () => "/admin/messages/inbox",
+          children: [
+            {
+              path: "inbox",
+              name: "inbox",
+              component: () => import("@/views/Messages/Messages.vue"),
+            },
+            {
+              path: "broadcast",
+              name: "broadcast",
+              component: () => import("@/views/Messages/Broadcast.vue"),
+            },
+          ],
         },
         {
           path: "discussion-forum",
