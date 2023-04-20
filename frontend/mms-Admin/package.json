@@ -14,6 +14,7 @@
   "dependencies": {
     "@formkit/themes": "^0.16.4",
     "@formkit/vue": "^0.16.4",
+    "@meforma/vue-toaster": "^1.3.0",
     "axios": "^1.3.4",
     "emoji-mart-vue-fast": "^12.0.1",
     "pinia": "^2.0.32",
