@@ -75,7 +75,7 @@ class AuthTest extends TestCase
         $this->testLogin();
 
         // Sanctum
-        $sanctum =  new Sanctum();
+        $sanctum = new Sanctum();
         $sanctum->actingAs(callStatic(User::class, 'first'));
         $response = $this->postJson('/api/auth/logout');
 

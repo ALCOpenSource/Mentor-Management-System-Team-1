@@ -1,7 +1,12 @@
 <template>
-  <div class="flex h-[100px] mx-4 gap-4">
+  <div class="flex h-[100px] w-full gap-4">
     <ActiveCard />
-    <div class="grid">
+    <div
+      class="flex bg-green-100 rounded-lg w-full dashboard_section p-2 gap-4 justify-between"
+    >
+      <MentorCard />
+      <MentorCard />
+      <MentorCard />
       <MentorCard />
     </div>
   </div>
@@ -12,14 +17,4 @@ import ActiveCard from "./ActiveCard.vue";
 import MentorCard from "./MentorCard.vue";
 </script>
 
-<style scoped lang="scss">
-.grid {
-  padding: 12px;
-  width: 100%;
-  display: flex;
-  gap: 15px;
-  justify-content: space-between;
-  background-color: var(--light-grid-background);
-  border-radius: 10px;
-}
-</style>
+<style scoped lang="scss"></style>

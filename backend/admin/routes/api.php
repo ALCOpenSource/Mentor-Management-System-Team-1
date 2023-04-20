@@ -26,6 +26,9 @@ Route::prefix('auth')->group(function () {
 
         // POST
         Route::post('logout', [App\Http\Controllers\AuthController::class, 'logout']);
+        Route::post('logout-all', [App\Http\Controllers\AuthController::class, 'logoutAll']);
+        Route::post('logout-other', [App\Http\Controllers\AuthController::class, 'logoutOther']);
+        Route::post('logout-device', [App\Http\Controllers\AuthController::class, 'logoutDevice']);
         Route::post('refresh', [App\Http\Controllers\AuthController::class, 'refresh']);
     });
 

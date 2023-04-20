@@ -1,9 +1,7 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="isModalOpen" width="600">
-      <div
-        class="flex bg-white border-2 py-6 rounded-xl gap-8 flex-col items-center"
-      >
+    <v-dialog v-model="isModalOpen" width="600" persistent>
+      <div class="flex bg-white py-6 rounded-xl gap-8 flex-col items-center">
         <h2 class="font-bold text-2xl">{{ title }}</h2>
         <v-card-text>
           <img v-if="src" :src="src" alt="img" />

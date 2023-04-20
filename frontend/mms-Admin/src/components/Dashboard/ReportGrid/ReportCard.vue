@@ -1,5 +1,5 @@
 <template>
-  <div class="report">
+  <div class="report w-3/5">
     <svg
       width="29"
       height="36"
