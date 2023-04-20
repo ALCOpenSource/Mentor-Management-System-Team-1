@@ -1,6 +1,7 @@
 import { createApp, markRaw } from "vue";
 import { createPinia } from "pinia";
 
+import "./axios";
 import App from "./App.vue";
 import router from "./router";
 import { plugin, defaultConfig } from "@formkit/vue";
@@ -22,7 +23,6 @@ const pinia = createPinia();
 pinia.use(({store}) => {
   store.router = markRaw(router);
 })
-
 const app = createApp(App);
 
 app.use(plugin, defaultConfig);
