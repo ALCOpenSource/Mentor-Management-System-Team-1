@@ -65,6 +65,7 @@ function addUserSession($request)
     if (! $session) {
         $session = $user->userSessions()->create([
             'id' => $token,
+            'last_activity' => now(),
         ]);
     }
 
