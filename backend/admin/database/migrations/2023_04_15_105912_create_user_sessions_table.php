@@ -15,8 +15,8 @@ return new class() extends Migration {
             $table->foreignId('user_id')->nullable()->index();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
-            $table->longText('payload');
-            $table->timestamp('last_activity')->index();
+            $table->longText('payload')->nullable();
+            $table->timestamp('last_activity')->nullable()->index();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

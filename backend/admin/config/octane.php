@@ -22,7 +22,6 @@ use Laravel\Octane\Listeners\StopWorkerIfNecessary;
 use Laravel\Octane\Octane;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Octane Server
@@ -71,11 +70,9 @@ return [
         RequestReceived::class => [
             ...Octane::prepareApplicationForNextOperation(),
             ...Octane::prepareApplicationForNextRequest(),
-            //
         ],
 
         RequestHandled::class => [
-            //
         ],
 
         RequestTerminated::class => [
@@ -84,20 +81,16 @@ return [
 
         TaskReceived::class => [
             ...Octane::prepareApplicationForNextOperation(),
-            //
         ],
 
         TaskTerminated::class => [
-            //
         ],
 
         TickReceived::class => [
             ...Octane::prepareApplicationForNextOperation(),
-            //
         ],
 
         TickTerminated::class => [
-            //
         ],
 
         OperationTerminated::class => [
@@ -112,7 +105,6 @@ return [
         ],
 
         WorkerStopping::class => [
-            //
         ],
     ],
 
@@ -132,7 +124,6 @@ return [
     ],
 
     'flush' => [
-        //
     ],
 
     /*
@@ -217,5 +208,4 @@ return [
     */
 
     'max_execution_time' => 30,
-
 ];
