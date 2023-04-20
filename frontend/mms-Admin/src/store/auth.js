@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia'
 import axios from "axios"
-import { createToaster } from "@meforma/vue-toaster";
+import { createToaster } from "@meforma/vue-toaster"
 
 export const useAuthStore = defineStore({
     id: 'auth',
