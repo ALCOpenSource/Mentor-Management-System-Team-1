@@ -25,8 +25,6 @@ class PopulateCityData extends Command
 
     protected function fetchData($filename, $download_url)
     {
-        static $progress = 0;
-
         if (! file_exists(storage_path('app/'.$filename))) {
             // Download the data from $download_url and save it to storage/app/$filename
             $this->error($filename.' not found in storage/app');
@@ -58,12 +56,87 @@ class PopulateCityData extends Command
     }
 
     /**
-     * Execute the console command.
+     * Populate the database with country, state and city data.
+     *
+     * @return void
      */
-    public function handle()
+    protected function populateCities(array $cities, Country $country, State $state)
     {
-        $countries = $this->fetchAllData();
+        // Create cities
+        foreach ($cities as $city) {
+            $city_name = $city['name'];
 
+            // Check if city exists
+            if (callStatic(City::class, 'where', 'name', $city_name)->exists()) {
+                // If verbose, show that city already exists
+                if ($this->option('verbose')) {
+                    $this->info($city_name.' already exists');
+                }
+
+                continue;
+            }
+
+            // Create city
+            $city = callStatic(City::class, 'create', [
+                'name' => $city_name,
+                'state_id' => $state->id,
+                'country_id' => $country->id,
+            ]);
+
+            if ($this->option('verbose')) {
+                $this->info($city_name.' created');
+            }
+        }
+    }
+
+    /**
+     * Populate the database with country, state and city data.
+     *
+     * @param array $data
+     *
+     * @return void
+     */
+    protected function populateStates(array $states, Country $country)
+    {
+        // Create states
+        foreach ($states as $state) {
+            $state_name = $state['name'];
+            $state_code = $state['state_code'];
+            $cities = $state['cities']; // Array
+
+            // Check if state exists
+            if (callStatic(State::class, 'where', 'name', $state_name)->exists()) {
+                // If verbose, show that state already exists
+                if ($this->option('verbose')) {
+                    $this->info($state_name.' already exists');
+                }
+
+                continue;
+            }
+
+            // Create state
+            $state = callStatic(State::class, 'create', [
+                'name' => $state_name,
+                'code' => $state_code,
+                'country_id' => $country->id,
+            ]);
+
+            if ($this->option('verbose')) {
+                $this->info($state_name.' created');
+            }
+
+            // Create cities
+            $this->populateCities($cities, $country, $state);
+        }
+    }
+
+    /**
+     * Populate the database with country, state and city data.
+     *
+     * @return void
+     */
+    protected function populateCountries(array $countries)
+    {
         // Add progress bar
         $bar = $this->output->createProgressBar(count($countries));
 
@@ -108,62 +181,19 @@ class PopulateCityData extends Command
             }
 
             // Create states
-            foreach ($states as $state) {
-                $state_name = $state['name'];
-                $state_code = $state['state_code'];
-                $cities = $state['cities']; // Array
-
-                // Check if state exists
-                if (callStatic(State::class, 'where', 'name', $state_name)->exists()) {
-                    // If verbose, show that state already exists
-                    if ($this->option('verbose')) {
-                        $this->info($state_name.' already exists');
-                    }
-
-                    continue;
-                }
-
-                // Create state
-                $state = callStatic(State::class, 'create', [
-                    'name' => $state_name,
-                    'code' => $state_code,
-                    'country_id' => $country->id,
-                ]);
-
-                if ($this->option('verbose')) {
-                    $this->info($state_name.' created');
-                }
-
-                // Create cities
-                foreach ($cities as $city) {
-                    $city_name = $city['name'];
-
-                    // Check if city exists
-                    if (callStatic(City::class, 'where', 'name', $city_name)->exists()) {
-                        // If verbose, show that city already exists
-                        if ($this->option('verbose')) {
-                            $this->info($city_name.' already exists');
-                        }
-
-                        continue;
-                    }
-
-                    // Create city
-                    $city = callStatic(City::class, 'create', [
-                        'name' => $city_name,
-                        'state_id' => $state->id,
-                        'country_id' => $country->id,
-                    ]);
-
-                    if ($this->option('verbose')) {
-                        $this->info($city_name.' created');
-                    }
-                }
-            }
-
+            $this->populateStates($states, $country);
             $bar->advance();
         }
 
         $bar->finish();
+    }
+
+    /**
+     * Execute the console command.
+     */
+    public function handle()
+    {
+        $countries = $this->fetchAllData();
+        $this->populateCountries($countries);
     }
 }
