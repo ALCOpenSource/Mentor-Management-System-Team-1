@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia'
 import axios from "axios"
-import { createToaster } from "@meforma/vue-toaster"
+//import { createToaster } from "@meforma/vue-toaster"
 
 const useAuthStore = defineStore({
     id: 'auth',
@@ -43,10 +43,10 @@ const useAuthStore = defineStore({
               if(res.data.success) {
                 this.setToken(res.data.data.access_token)
                 this.router.push("admin/dashboard")
-                toaster.success(res.data.message)
+                //toaster.success(res.data.message)
               }
             }).catch(error => {
-                toaster.error('Invalid username or password.')
+                //toaster.error('Invalid username or password.')
             });
         }
     }
