@@ -136,4 +136,18 @@ return [
      * `ChannelManager` interface provided by this package.
      */
     'channel_manager' => \BeyondCode\LaravelWebSockets\WebSockets\Channels\ChannelManagers\ArrayChannelManager::class,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Laravel Websockets Authentication
+    |--------------------------------------------------------------------------
+    |
+    | Here you may define the settings for the Laravel Websockets package.
+    | This option controls the authentication settings for the package.
+    |
+    */
+    'auth' => [
+        'username' => env('WEBSOCKETS_USERNAME', ''),
+        'password' => env('WEBSOCKETS_PASSWORD', ''),
+    ],
 ];
