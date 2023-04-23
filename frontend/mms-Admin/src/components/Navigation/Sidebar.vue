@@ -1,7 +1,7 @@
 <template>
   <div class="w-72 z-10 pt-12 sidebar">
     <div class="pl-16 mb-14">
-      <h2 class="font-bold text-xl">Hi, Kabiru</h2>
+      <h2 class="font-bold text-xl">Hi, {{ name }}</h2>
       <span class="text-mute">Admin</span>
     </div>
 
@@ -21,6 +21,14 @@
 </template>
 
 <script setup lang="ts">
+
+defineProps({
+  name: {
+    type: String,
+    required: true,
+  },
+});
+
 import {
   IconDashboard,
   IconProfile,

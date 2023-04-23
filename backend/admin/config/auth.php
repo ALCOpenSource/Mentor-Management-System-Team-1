@@ -110,4 +110,30 @@ return [
     */
 
     'password_timeout' => 10800,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Two Factor Authentication
+    |--------------------------------------------------------------------------
+    |
+    | Here you may define the settings for two factor authentication. This
+    | option controls the authentication time limit, as well as the storage
+    | settings for the two factor authentication recovery codes.
+    |
+    */
+    'two_factor' => [
+        'lifetime' => 120,
+
+        'window' => 30,
+
+        'confirm_within' => 5,
+
+        'otp_length' => 6,
+
+        'recovery_codes' => [
+            'length' => 8,
+
+            'count' => 10,
+        ],
+    ],
 ];

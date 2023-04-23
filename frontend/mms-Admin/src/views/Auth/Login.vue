@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import {useAuthStore} from "../../store/auth"
 
 import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 import Email from "../../components/Forms/Email.vue";
@@ -40,16 +40,16 @@ const loginData = ref({
   email: "",
   password: "",
 });
+
 const valid = ref(false);
 const isAdmin = ref(true);
-const router = useRouter();
 
-const handleLogin = () => {
+const authStore = useAuthStore();
+
+const handleLogin = async() => {
   if (valid.value && isAdmin.value) {
-    console.log(loginData.value);
-    router.push("admin/dashboard");
-    // TODO: Handle login
-  }
+    await authStore.handleLogin(loginData)
+  } 
 };
 </script>
 
