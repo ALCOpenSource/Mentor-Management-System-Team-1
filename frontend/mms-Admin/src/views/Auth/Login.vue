@@ -20,7 +20,7 @@
         Forgot Password?
       </p></router-link
     >
-    <button class="gBtn my-10">
+    <button @click="handleSocialLogin" class="gBtn my-10">
       <img src="../../assets/images/google.png" alt="" />
       <span>Signin with Google</span>
     </button>
@@ -51,6 +51,11 @@ const handleLogin = async() => {
     await authStore.handleLogin(loginData)
   } 
 };
+
+const handleSocialLogin = async() => {
+  await authStore.handleSocialLogin()
+   console.log('clicked')
+}
 </script>
 
 <style scoped lang="scss">

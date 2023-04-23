@@ -1,8 +1,7 @@
 import {defineStore} from 'pinia'
 import axios from "axios"
-//import { createToaster } from "@meforma/vue-toaster"
 
-const useAuthStore = defineStore({
+export const useAuthStore = defineStore({
     id: 'auth',
 
     state: () => ({
@@ -32,10 +31,12 @@ const useAuthStore = defineStore({
             this.authUser = data.data
         },
 
+        async handleSocialLogin () {
+            console.log('yes!')
+            await axios.get('auth/social/redirect/google')
+        },
+
         async handleLogin (loginData) {
-            const toaster = createToaster({ 
-                position: "top-right",
-            });
             await axios.post('api/auth/login', {
                 email: loginData.value.email,
                 password: loginData.value.password,
@@ -43,13 +44,11 @@ const useAuthStore = defineStore({
               if(res.data.success) {
                 this.setToken(res.data.data.access_token)
                 this.router.push("admin/dashboard")
-                //toaster.success(res.data.message)
+                this.toaster.success(res.data.message)
               }
             }).catch(error => {
-                //toaster.error('Invalid username or password.')
+                this.toaster.error('Invalid username or password.')
             });
         }
     }
 })
-
-export default useAuthStore;
