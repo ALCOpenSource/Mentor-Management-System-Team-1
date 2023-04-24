@@ -31,9 +31,18 @@ export const useAuthStore = defineStore({
             this.authUser = data.data
         },
 
-        async handleSocialLogin () {
-            console.log('yes!')
-            await axios.get('auth/social/redirect/google')
+        async socialLoginRedirect () {
+            await axios.get('api/auth/social/redirect/google').then(res => {
+                if(res.data.success) {
+                    window.location.href = res.data.data.url
+                }
+            })
+        },
+
+        async handleSocialLogin(token) {
+            await this.setToken(token);
+            location.reload();
+            this.toaster.success("User successfully logged in");
         },
 
         async handleLogin (loginData) {

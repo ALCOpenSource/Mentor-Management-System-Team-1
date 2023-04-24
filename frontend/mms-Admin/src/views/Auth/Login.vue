@@ -20,7 +20,7 @@
         Forgot Password?
       </p></router-link
     >
-    <button @click="handleSocialLogin" class="gBtn my-10">
+    <button @click="socialLoginRedirect" class="gBtn my-10">
       <img src="../../assets/images/google.png" alt="" />
       <span>Signin with Google</span>
     </button>
@@ -29,8 +29,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch, computed, onMounted } from "vue";
 import {useAuthStore} from "../../store/auth"
+import { useRoute, useRouter } from 'vue-router'
 
 import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 import Email from "../../components/Forms/Email.vue";
@@ -52,10 +53,24 @@ const handleLogin = async() => {
   } 
 };
 
-const handleSocialLogin = async() => {
-  await authStore.handleSocialLogin()
-   console.log('clicked')
+const socialLoginRedirect = async() => {
+  await authStore.socialLoginRedirect()
 }
+
+const router = useRoute()
+const route = useRouter()
+
+const handleSocialLogin = async () => {
+  const access_token = router.query.access_token as string;
+  if (access_token) {
+      await authStore.handleSocialLogin(access_token)
+  }
+};
+
+onMounted(() => {
+  handleSocialLogin();
+});
+
 </script>
 
 <style scoped lang="scss">
