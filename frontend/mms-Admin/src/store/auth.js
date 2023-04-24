@@ -43,6 +43,7 @@ export const useAuthStore = defineStore({
               }).then(res=>{
               if(res.data.success) {
                 this.setToken(res.data.data.access_token)
+                this.authUser = res.data
                 this.router.push("admin/dashboard")
                 this.toaster.success(res.data.message)
               }

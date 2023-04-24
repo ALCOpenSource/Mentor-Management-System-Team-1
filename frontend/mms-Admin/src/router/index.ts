@@ -24,6 +24,7 @@ const router = createRouter({
       path: "/admin",
       name: "dashboardLayout",
       component: dashboardLayout,
+      beforeEnter: dashboardLayout.onBeforeRouteEnter,
       redirect: "/admin/dashboard",
       meta: {
         requiresAuth:true
@@ -254,6 +255,7 @@ const router = createRouter({
     },
   ],
 });
+
 router.beforeEach((to, from) => {
   const authStore = useAuthStore();
 
