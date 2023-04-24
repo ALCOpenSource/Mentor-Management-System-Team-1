@@ -1,6 +1,10 @@
-<script scoped lang="ts">
+<script setup lang="ts">
 import Sidebar from "../components/Navigation/Sidebar.vue";
 import TopNavigation from "../components/Navigation/TopNavigation.vue";
+
+</script>
+
+<script lang="ts">
 import { defineComponent } from 'vue'
 import { useAuthStore } from "../store/auth"
 
@@ -21,7 +25,6 @@ export default defineComponent({
   },
 })
 </script>
-
 
 <template>
   <div class="flex flex-col">

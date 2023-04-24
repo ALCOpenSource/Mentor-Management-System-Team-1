@@ -10,7 +10,7 @@
         </v-avatar>
         <div class="ml-6">
           <div class="flex items-center">
-            <h1 class="mr-2 text-xl font-semibold">Perculiar Umeh</h1>
+            <h1 class="mr-2 text-xl font-semibold">{{ authStore.authUser?.data.user.name }}</h1>
             <svg
               width="30"
               height="30"
@@ -80,7 +80,7 @@
               stroke-linejoin="round"
             />
           </svg>
-          <p class="ml-1 text-slate-500">peculiah@andela.com</p>
+          <p class="ml-1 text-slate-500">{{ authStore.authUser?.data.user.email }}</p>
         </div>
         <div class="flex items-center">
           <svg
@@ -105,7 +105,7 @@
               stroke-linejoin="round"
             />
           </svg>
-          <p class="ml-1 text-slate-500">Lagos, Nigeria</p>
+          <p class="ml-1 text-slate-500">{{ authStore.authUser?.data.user.state }}, {{ authStore.authUser?.data.user.country }}</p>
         </div>
       </div>
       <div class="grid w-2/4 grid-cols-2">
@@ -216,6 +216,10 @@
 <script setup lang="ts">
 import { GitHub, Twitter, Instagram, LinkedIn } from "@/assets/icons";
 import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
+
+import {useAuthStore} from "../../store/auth"
+
+const authStore = useAuthStore();
 </script>
 
 <style scoped lang="scss">
