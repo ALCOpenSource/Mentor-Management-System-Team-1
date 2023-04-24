@@ -41,7 +41,8 @@ export const useAuthStore = defineStore({
 
         async handleSocialLogin(token) {
             await this.setToken(token);
-            this.router.push("admin/dashboard");
+            //this.router.push("admin/dashboard");
+            location.reload();
             this.toaster.success("User successfully logged in");
         },
 
