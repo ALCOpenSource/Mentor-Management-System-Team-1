@@ -4,13 +4,13 @@
       <div class="flex items-center">
         <v-avatar size="90px">
           <v-img
-            src="https://cdn.vuetifyjs.com/images/john.jpg"
+            :src="authStore.authUser?.data.user.avatar"
             alt="John"
           ></v-img>
         </v-avatar>
         <div class="ml-6">
           <div class="flex items-center">
-            <h1 class="mr-2 text-xl font-semibold">Perculiar Umeh</h1>
+            <h1 class="mr-2 text-xl font-semibold">{{ authStore.authUser?.data.user.name }}</h1>
             <svg
               width="30"
               height="30"
@@ -48,13 +48,7 @@
     <div class="card p-6">
       <h1 class="text-xl font-semibold mb-6">About</h1>
       <p class="sub-card">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
-        dignissim ut cursus purus efficitur et. Duis ac enim tellus. Phasellus
-        pharetra metus, ut cursus purus efficitur et. Duis ac enim tellus.
-        Phasellus eget tortor dapibus, laoreet mauris sed, dignissim lectus.
-        Duis ac enim tellus. Phasellus pharetra metus, ut cursus purus efficitur
-        et. Duis ac enim tellus. Phasellus eget tortor dapibus, laoreet mauris
-        sed, dignissim lectus.
+        {{ authStore.authUser?.data.user.about_me }}
       </p>
       <div class="grid w-2/4 grid-cols-2 mb-6">
         <div class="flex items-center cursor-pointer">
@@ -80,7 +74,7 @@
               stroke-linejoin="round"
             />
           </svg>
-          <p class="ml-1 text-slate-500">peculiah@andela.com</p>
+          <p class="ml-1 text-slate-500">{{ authStore.authUser?.data.user.email }}</p>
         </div>
         <div class="flex items-center">
           <svg
@@ -105,7 +99,7 @@
               stroke-linejoin="round"
             />
           </svg>
-          <p class="ml-1 text-slate-500">Lagos, Nigeria</p>
+          <p class="ml-1 text-slate-500">{{ authStore.authUser?.data.user.state }}, {{ authStore.authUser?.data.user.country }}</p>
         </div>
       </div>
       <div class="grid w-2/4 grid-cols-2">
@@ -216,6 +210,10 @@
 <script setup lang="ts">
 import { GitHub, Twitter, Instagram, LinkedIn } from "@/assets/icons";
 import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
+
+import {useAuthStore} from "../../store/auth"
+
+const authStore = useAuthStore();
 </script>
 
 <style scoped lang="scss">

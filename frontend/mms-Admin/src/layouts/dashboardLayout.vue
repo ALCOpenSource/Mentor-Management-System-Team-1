@@ -1,13 +1,28 @@
 <script setup lang="ts">
 import Sidebar from "../components/Navigation/Sidebar.vue";
 import TopNavigation from "../components/Navigation/TopNavigation.vue";
-import {onMounted} from 'vue';
-import useAuthStore from "../store/auth"
 
-const authStore = useAuthStore();
+</script>
 
-onMounted(async () => {
-  await authStore.getUser();
+<script lang="ts">
+import { defineComponent } from 'vue'
+import { useAuthStore } from "../store/auth"
+
+export default defineComponent({
+  components: { Sidebar, TopNavigation },
+  
+  beforeRouteEnter(to, from, next) {
+    const authStore = useAuthStore()
+    if (authStore.authUser) {
+      // The authentication state is already loaded, so proceed to the dashboard
+      next()
+    } else {
+      // The authentication state is not loaded yet, so wait for it before proceeding
+      authStore.getUser().then(() => {
+        next()
+      })
+    }
+  },
 })
 </script>
 
@@ -15,7 +30,7 @@ onMounted(async () => {
   <div class="flex flex-col">
     <TopNavigation />
     <div class="dashboard_page flex">
-      <Sidebar v-if="authStore.authUser" :name="authStore.authUser?.data.user.name"/>
+      <Sidebar />
       <div
         class="content sm:mt-16 md:mt-20 xl:mt-24 ml-72 w-full pl-8 py-8 pr-14"
       >
