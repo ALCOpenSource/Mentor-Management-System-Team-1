@@ -4,7 +4,7 @@
       <div class="flex items-center">
         <v-avatar size="90px">
           <v-img
-            src="https://cdn.vuetifyjs.com/images/john.jpg"
+            :src="authStore.authUser?.data.user.avatar"
             alt="John"
           ></v-img>
         </v-avatar>
@@ -48,13 +48,7 @@
     <div class="card p-6">
       <h1 class="text-xl font-semibold mb-6">About</h1>
       <p class="sub-card">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
-        dignissim ut cursus purus efficitur et. Duis ac enim tellus. Phasellus
-        pharetra metus, ut cursus purus efficitur et. Duis ac enim tellus.
-        Phasellus eget tortor dapibus, laoreet mauris sed, dignissim lectus.
-        Duis ac enim tellus. Phasellus pharetra metus, ut cursus purus efficitur
-        et. Duis ac enim tellus. Phasellus eget tortor dapibus, laoreet mauris
-        sed, dignissim lectus.
+        {{ authStore.authUser?.data.user.about_me }}
       </p>
       <div class="grid w-2/4 grid-cols-2 mb-6">
         <div class="flex items-center cursor-pointer">
