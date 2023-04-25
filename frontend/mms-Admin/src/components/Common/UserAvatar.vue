@@ -16,7 +16,7 @@ export default defineComponent({
 <template>
   <img
     class="avatar"
-    :src="authStore.authUser?.data.user.avatar"
+    :src="authStore.authUser?.avatar"
     alt=""
     srcset=""
   />

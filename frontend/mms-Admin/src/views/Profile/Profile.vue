@@ -4,13 +4,13 @@
       <div class="flex items-center">
         <v-avatar size="90px">
           <v-img
-            :src="authStore.authUser?.data.user.avatar"
+            :src="authStore.authUser?.avatar"
             alt="John"
           ></v-img>
         </v-avatar>
         <div class="ml-6">
           <div class="flex items-center">
-            <h1 class="mr-2 text-xl font-semibold">{{ authStore.authUser?.data.user.name }}</h1>
+            <h1 class="mr-2 text-xl font-semibold">{{ authStore.authUser?.name }}</h1>
             <svg
               width="30"
               height="30"
@@ -48,7 +48,7 @@
     <div class="card p-6">
       <h1 class="text-xl font-semibold mb-6">About</h1>
       <p class="sub-card">
-        {{ authStore.authUser?.data.user.about_me }}
+        {{ authStore.authUser?.about_me }}
       </p>
       <div class="grid w-2/4 grid-cols-2 mb-6">
         <div class="flex items-center cursor-pointer">
@@ -74,7 +74,7 @@
               stroke-linejoin="round"
             />
           </svg>
-          <p class="ml-1 text-slate-500">{{ authStore.authUser?.data.user.email }}</p>
+          <p class="ml-1 text-slate-500">{{ authStore.authUser?.email }}</p>
         </div>
         <div class="flex items-center">
           <svg
@@ -99,7 +99,7 @@
               stroke-linejoin="round"
             />
           </svg>
-          <p class="ml-1 text-slate-500">{{ authStore.authUser?.data.user.state }}, {{ authStore.authUser?.data.user.country }}</p>
+          <p class="ml-1 text-slate-500">{{ authStore.authUser?.state }}, {{ authStore.authUser?.country }}</p>
         </div>
       </div>
       <div class="grid w-2/4 grid-cols-2">
