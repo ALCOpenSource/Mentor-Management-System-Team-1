@@ -1,21 +1,6 @@
 import {defineStore} from 'pinia'
 import axios from "axios"
 
-interface AuthUser {
-    id: number;
-    name: string;
-    email: string;
-    avatar: string;
-    city: string;
-    state: string;
-    country: string;
-    zip_code: string;
-    address: string;
-    phone: number;
-    timezone: string;
-    about_me: string;
-}
-
 interface AuthState {
     authUser: AuthUser | null;
     token: string | number;
@@ -49,12 +34,12 @@ export const useAuthStore = defineStore({
         },
 
         async getUser () {
-            const res = await axios.get('api/auth/user')
+            const res = await axios.get('auth/user')
             this.authUser = res.data.data.user
         },
 
         async socialLoginRedirect () {
-            await axios.get('api/auth/social/redirect/google').then(res => {
+            await axios.get('auth/social/redirect/google').then(res => {
                 if(res.data.success) {
                     window.location.href = res.data.data.url
                 }
@@ -63,13 +48,12 @@ export const useAuthStore = defineStore({
 
         async handleSocialLogin(token) {
             await this.setToken(token);
-            // this.router.push("admin/dashboard");
             location.reload();
             this.toaster.success("User successfully logged in");
         },
 
         async handleLogin (loginData) {
-            await axios.post('api/auth/login', {
+            await axios.post('auth/login', {
                 email: loginData.value.email,
                 password: loginData.value.password,
               }).then(res=>{
@@ -85,3 +69,18 @@ export const useAuthStore = defineStore({
         }
     }
 })
+
+interface AuthUser {
+    id: number;
+    name: string;
+    email: string;
+    avatar: string;
+    city: string;
+    state: string;
+    country: string;
+    zip_code: string;
+    address: string;
+    phone: number;
+    timezone: string;
+    about_me: string;
+}
