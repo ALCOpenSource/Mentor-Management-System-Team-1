@@ -1,13 +1,35 @@
 import {defineStore} from 'pinia'
 import axios from "axios"
 
+interface AuthUser {
+    id: number;
+    name: string;
+    email: string;
+    avatar: string;
+    city: string;
+    state: string;
+    country: string;
+    zip_code: string;
+    address: string;
+    phone: number;
+    timezone: string;
+    about_me: string;
+}
+
+interface AuthState {
+    authUser: AuthUser | null;
+    token: string | number;
+}
+
 export const useAuthStore = defineStore({
     id: 'auth',
 
-    state: () => ({
-        authUser: null,
-        token: localStorage.getItem('token') || 0,
-    }),
+    state: (): AuthState => {
+        return {
+            authUser: null,
+            token: localStorage.getItem('token') || 0,
+        }
+    },
 
     getters:{
         user: (state) => state.authUser,
@@ -27,8 +49,8 @@ export const useAuthStore = defineStore({
         },
 
         async getUser () {
-            const data = await axios.get('api/auth/user')
-            this.authUser = data.data
+            const res = await axios.get('api/auth/user')
+            this.authUser = res.data.data.user
         },
 
         async socialLoginRedirect () {
@@ -41,7 +63,7 @@ export const useAuthStore = defineStore({
 
         async handleSocialLogin(token) {
             await this.setToken(token);
-            //this.router.push("admin/dashboard");
+            // this.router.push("admin/dashboard");
             location.reload();
             this.toaster.success("User successfully logged in");
         },
@@ -53,7 +75,7 @@ export const useAuthStore = defineStore({
               }).then(res=>{
               if(res.data.success) {
                 this.setToken(res.data.data.access_token)
-                this.authUser = res.data
+                this.authUser = res.data.data.user
                 this.router.push("admin/dashboard")
                 this.toaster.success(res.data.message)
               }

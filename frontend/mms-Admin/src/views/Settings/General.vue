@@ -2,7 +2,7 @@
   <div>
     <div class="flex items-center mb-8">
       <v-avatar size="90px">
-        <v-img :src="userBio.profilePicture" alt="John"></v-img>
+        <v-img :src="authStore.authUser?.avatar" alt="John"></v-img>
       </v-avatar>
       <div class="ml-6">
         <h1 class="mb-2 text-xl font-semibold">Set Profile Picture</h1>
@@ -210,6 +210,9 @@ import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 import UploadProfilePic from "../../components/Settings/UploadProfilePic.vue";
 import Modal from "../../components/Forms/Modal.vue";
 import { profileSuccess } from "../../assets/images";
+import {useAuthStore} from "../../store/auth"
+
+const authStore = useAuthStore();
 
 const isModalOpen = ref(false);
 const userBio = ref({
@@ -227,7 +230,10 @@ const userBio = ref({
 });
 
 const getSrc = (src: string) => {
-  userBio.value.profilePicture = src;
+  if(authStore.authUser && authStore.authUser.avatar)
+  {
+    authStore.authUser.avatar = src;
+  }
 };
 
 const toggleModal = () => {
