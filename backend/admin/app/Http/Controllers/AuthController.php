@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\AppConstants;
 use App\Http\Resources\ApiResource;
 use App\Models\User;
+use App\Notifications\ResetPasswordNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
@@ -58,6 +59,15 @@ class AuthController extends Controller
         $validatedData['role'] = AppConstants::ROLE_ADMIN;
 
         $user = new User($validatedData);
+
+        // If localhost, or ipaddress is 127.0.0.1 then verify the user automatically
+        if ('127.0.0.1' === request()->ip() || 'localhost' === request()->ip()) {
+            $user->email_verified_at = now();
+        } else {
+            // Send verification email
+            $user->sendEmailVerificationNotification();
+        }
+
         $user->save();
         $accessToken = $this->createAuthToken($user);
 
@@ -168,9 +178,9 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function user(Request $request)
+    public function user()
     {
-        return new ApiResource(['user' => $request->user()]);
+        return (new UserController())->getUser();
     }
 
     /**
@@ -285,6 +295,139 @@ class AuthController extends Controller
             return new ApiResource(['error' => 'Invalid provider, valid providers are: '.implode(',', $providers), 'status' => 422]);
         }
 
-        return callStatic(Socialite::class, 'driver', $provider)->redirect();
+        return new ApiResource([
+            'url' => callStatic(Socialite::class, 'driver', $provider)->stateless()->redirect()->getTargetUrl(),
+        ]);
+    }
+
+    /**
+     * Reset password.
+     */
+    public function resetPassword(Request $request)
+    {
+        // Validate the user, return error using the ApiResource
+        $validator = validator($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        if ($validator->fails()) {
+            return new ApiResource(['errors' => $validator->errors(), 'status' => 422]);
+        }
+
+        $user = User::where('email', $request->email)->first();
+
+        if (! $user) {
+            return new ApiResource(['error' => 'User not found', 'status' => 404]);
+        }
+
+        $token = callStatic(Str::class, 'random', 60);
+
+        callStatic(DB::class, 'table', 'password_resets')->insert([
+            'email' => $user->email,
+            'token' => $token,
+            'created_at' => now(),
+        ]);
+
+        $user->notify(new ResetPasswordNotification($token));
+
+        return new ApiResource(['message' => 'Password reset link sent to your email']);
+    }
+
+    /**
+     * Check token validity.
+     */
+    public function checkToken(Request $request)
+    {
+        // Validate the user, return error using the ApiResource
+        $validator = validator($request->all(), [
+            'token' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return new ApiResource(['errors' => $validator->errors(), 'status' => 422]);
+        }
+
+        $passwordReset = callStatic(DB::class, 'table', 'password_resets')->where('token', $request->token)->first();
+
+        if (! $passwordReset) {
+            return new ApiResource(['error' => 'Invalid token', 'status' => 422]);
+        }
+
+        // If token is older than 1 hour, return error
+        if (now()->diffInMinutes($passwordReset->created_at) > 60) {
+            return new ApiResource(['error' => 'Token expired', 'status' => 422]);
+        }
+
+        return new ApiResource(['message' => 'Token is valid']);
+    }
+
+    /**
+     * Change password.
+     */
+    public function changePassword(Request $request)
+    {
+        // Validate the user, return error using the ApiResource
+        $validator = validator($request->all(), [
+            'token' => 'required|string',
+            'password' => 'required|string|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            return new ApiResource(['errors' => $validator->errors(), 'status' => 422]);
+        }
+
+        $passwordReset = callStatic(DB::class, 'table', 'password_resets')->where('token', $request->token)->first();
+
+        if (! $passwordReset) {
+            return new ApiResource(['error' => 'Invalid token', 'status' => 422]);
+        }
+
+        // If token is older than 1 hour, return error
+        if (now()->diffInMinutes($passwordReset->created_at) > 60) {
+            return new ApiResource(['error' => 'Token expired', 'status' => 422]);
+        }
+
+        $user = User::where('email', $passwordReset->email)->first();
+
+        if (! $user) {
+            return new ApiResource(['error' => 'User not found', 'status' => 404]);
+        }
+
+        $user->password = callStatic(Hash::class, 'make', $request->password);
+        $user->save();
+
+        callStatic(DB::class, 'table', 'password_resets')->where('email', $user->email)->delete();
+
+        return new ApiResource(['message' => 'Password changed successfully']);
+    }
+
+    /**
+     * Update user password, for logged in users.
+     */
+    public function updatePassword(Request $request)
+    {
+        // Validate the user, return error using the ApiResource
+        $validator = validator($request->all(), [
+            'old_password' => 'required|string',
+            'password' => 'required|string|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            return new ApiResource(['errors' => $validator->errors(), 'status' => 422]);
+        }
+
+        $user = $request->user();
+
+        if (! callStatic(Hash::class, 'check', $request->old_password, $user->password)) {
+            return new ApiResource(['error' => 'Invalid old password', 'status' => 422]);
+        }
+
+        $user->password = callStatic(Hash::class, 'make', $request->password);
+        $user->save();
+
+        // Log the user out of all other devices
+        $this->logoutOther($request);
+
+        return new ApiResource(['message' => 'Password changed successfully']);
     }
 }
