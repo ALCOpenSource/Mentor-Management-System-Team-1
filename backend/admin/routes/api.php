@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +24,9 @@ Route::prefix('auth')->group(function () {
 
         // POST
         Route::post('logout', [App\Http\Controllers\AuthController::class, 'logout']);
+        Route::post('logout-all', [App\Http\Controllers\AuthController::class, 'logoutAll']);
+        Route::post('logout-other', [App\Http\Controllers\AuthController::class, 'logoutOther']);
+        Route::post('logout-device', [App\Http\Controllers\AuthController::class, 'logoutDevice']);
         Route::post('refresh', [App\Http\Controllers\AuthController::class, 'refresh']);
     });
 
@@ -41,7 +42,13 @@ Route::prefix('auth')->group(function () {
 
 // Version 1
 Route::prefix('v1')->group(function () {
-    // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    //     return $request->user();
-    // });
+    // Returns country list
+    Route::get('countries', [App\Http\Controllers\CountryController::class, 'index']);
+
+    // Returns country details including states and cities
+    Route::get('countries/{country}/cities', [App\Http\Controllers\CountryController::class, 'getCities']);
+    Route::get('countries/{country}/states', [App\Http\Controllers\CountryController::class, 'getStates']);
+
+    // Returns state details including cities
+    Route::get('states/{state}/cities', [App\Http\Controllers\CountryController::class, 'getStateCities']);
 });

@@ -21,6 +21,16 @@ class Preferences extends Model
     ];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'key' => 'string',
+        'value' => 'string',
+    ];
+
+    /**
      * Get the user that owns the preference.
      */
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo

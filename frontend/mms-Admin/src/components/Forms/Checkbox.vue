@@ -13,10 +13,10 @@
           class="w-[35px] h-[20px] rounded-full shadow-inner bg-[#B3B3B3] peer-checked:dark:bg-[#058B94]"
         ></div>
         <div
-          class="absolute border-2 border-[#B3B3B3] inset-y-0 left-0 w-[20px] h-[20px] rounded-full shadow peer-checked:border-[#058B94] peer-checked:right-0 peer-checked:left-auto dark:bg-white"
+          class="absolute bg-white border-2 border-[#B3B3B3] inset-y-0 left-0 w-[20px] h-[20px] rounded-full shadow peer-checked:border-[#058B94] peer-checked:right-0 peer-checked:left-auto"
         ></div>
         <span
-          class="absolute top-[-3px] left-[5px] text-red-500 peer-checked:hidden"
+          class="absolute text-[#FF5964] top-[-3px] left-[5px] peer-checked:hidden"
           >x</span
         >
         <span

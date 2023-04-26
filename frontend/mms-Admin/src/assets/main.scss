@@ -41,12 +41,19 @@ body {
   scroll-behavior: smooth;
   min-height: 100vh;
   width: 100%;
-}
 
-[data-complete] .formkit-inner::after {
-  content: "✅";
-  display: block;
-  padding: 0.5em;
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: var(--card-light);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--btn-primary);
+    border-radius: 2px;
+  }
 }
 
 .v-field__field {
@@ -114,5 +121,15 @@ body {
     .v-expansion-panel-text {
       border-bottom: 2px solid var(--btn-primary);
     }
+  }
+}
+
+.picker {
+  position: relative;
+
+  .emoji-mart {
+    position: absolute !important;
+    z-index: 9999 !important;
+    bottom: 50px !important;
   }
 }
