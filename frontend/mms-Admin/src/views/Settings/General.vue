@@ -2,7 +2,7 @@
   <div>
     <div class="flex items-center mb-8">
       <v-avatar size="90px">
-        <v-img :src="userBio.profilePicture" alt="John"></v-img>
+        <v-img :src="authStore.authUser?.avatar" alt="John"></v-img>
       </v-avatar>
       <div class="ml-6">
         <h1 class="mb-2 text-xl font-semibold">Set Profile Picture</h1>
@@ -67,12 +67,11 @@
         <v-col>
           <v-row align="center">
             <v-col cols="5" class="my-select">
-              <select v-model="userBio.country" class="input" required>
+              <select
+              v-model="userBio.country" @change.prevent="onSelect" class="input" required>
                 <option value="" hidden disabled>Select Country</option>
-                <option value="US">United States</option>
-                <option value="CA">Canada</option>
-                <option value="FR">France</option>
-                <option value="DE">Germany</option>
+                <option v-for="country in locationStore.country"
+              :key="country"  :value="country.code">{{ country.name }} </option>
               </select>
               <span class="">
                 <svg
@@ -95,13 +94,11 @@
             <v-col cols="2"
               ><h1 class="font-semibold text-center">City</h1></v-col
             >
-            <v-col cols="5" class="my-select">
+            <v-col cols="5" class="my-select-city">
               <select v-model="userBio.city" class="input">
                 <option value="" hidden disabled>Select City</option>
-                <option value="US">United States</option>
-                <option value="CA">Canada</option>
-                <option value="FR">France</option>
-                <option value="DE">Germany</option>
+                <option v-for="city in city"
+              :key="city"  :value="city.code">{{ city.name }}</option>
               </select>
               <span class="">
                 <svg
@@ -200,8 +197,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-
+import { ref, watch, computed } from "vue";
+import { storeToRefs } from 'pinia'
 import LinkedIn from "../../assets/icons/LinkedIn.vue";
 import Twitter from "../../assets/icons/Twitter.vue";
 import Instagram from "../../assets/icons/Instagram.vue";
@@ -210,13 +207,19 @@ import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 import UploadProfilePic from "../../components/Settings/UploadProfilePic.vue";
 import Modal from "../../components/Forms/Modal.vue";
 import { profileSuccess } from "../../assets/images";
+import {useAuthStore} from "../../store/auth"
+import {useLocationStore} from "../../store/location"
+
+const authStore = useAuthStore();
+const locationStore = useLocationStore();
+const { city, country } = storeToRefs(locationStore)
 
 const isModalOpen = ref(false);
 const userBio = ref({
   firstName: "",
   lastName: "",
   city: "",
-  country: "",
+  country: "AF",
   website: "",
   twitter: "",
   instagram: "",
@@ -227,7 +230,10 @@ const userBio = ref({
 });
 
 const getSrc = (src: string) => {
-  userBio.value.profilePicture = src;
+  if(authStore.authUser && authStore.authUser.avatar)
+  {
+    authStore.authUser.avatar = src;
+  }
 };
 
 const toggleModal = () => {
@@ -238,7 +244,68 @@ const handleSubmit = () => {
   // Handle the Form submission
   toggleModal();
 };
+
+const onSelect = async() => {
+  // update select options if a new countr is selected
+  await locationStore.setCity(userBio.value.country);
+}
+
+const filteredCities = computed(() => {
+  return locationStore.city.filter((city: { code: string; }) => city.code === userBio.value.country);
+});
+
+watch(country, () => {
+  // Reset selected city when the country changes
+  userBio.value.city = "";
+});
+
+watch(filteredCities, () => {
+  // Update select options when the cities for the current country change
+  const select = document.querySelector(".my-select-city select");
+  const options = select?.options;
+  if (options) {
+    for (let i = 0; i < options.length; i++) {
+      const option = options[i];
+      option.selected = option.value === userBio.value.city;
+    }
+  }
+});
+
+
 </script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+function getCountryCode(countryName: any, countries: any) {
+  for (let key in countries) {
+    if (countries[key].name === countryName) {
+      return countries[key].code;
+    }
+  }
+  return null; // country not found
+}
+
+export default defineComponent({
+  beforeRouteEnter(to, from, next) {     
+    const locationStore = useLocationStore(); 
+    const authStore = useAuthStore(); 
+    if (locationStore.country && locationStore.city) {
+      // The authentication state is already loaded, so proceed to General Settings
+      next()
+    } else {
+      // The authentication state is not loaded yet, so wait for it before proceeding
+      const country = authStore.authUser.country || 'Afghanistan'
+      locationStore.setCountry().then(() => {
+        const countryCode = getCountryCode(country, locationStore.country);
+        return locationStore.setCity(countryCode);
+      }).then(() => {
+        next();
+      });
+    }
+  },
+})
+</script>
+
 
 <style scoped lang="scss">
 .input {

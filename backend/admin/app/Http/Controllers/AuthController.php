@@ -7,7 +7,6 @@ use App\Http\Resources\ApiResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Sanctum\PersonalAccessToken;
 use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
@@ -17,15 +16,23 @@ class AuthController extends Controller
      *
      * @param User $user
      */
-    protected function createAuthToken($user, array $scopes = ['*']): PersonalAccessToken
+    protected function createAuthToken($user, array $scopes = ['*']): array
     {
+        // Update the last login time and IP
+        $user->last_login_at = now();
+        $user->last_login_ip = request()->ip();
+        $user->save();
+
         // Get expiry time from config
         $expiryTime = config('sanctum.expiration');
         $expiryTime = $expiryTime ? now()->addMinutes($expiryTime) : null;
+        $token = $user->createToken('authToken', $scopes, $expiryTime);
 
-        $token = $user->createToken('authToken', $scopes, $expiryTime)->accessToken;
-
-        return $token;
+        return [
+            'access_token' => $token->plainTextToken,
+            'expires_at' => $token->accessToken->expires_at->timestamp,
+            'expires_in' => $token->accessToken->expires_at->diffInSeconds(now()),
+        ];
     }
 
     /**
@@ -56,12 +63,9 @@ class AuthController extends Controller
 
         return new ApiResource([
             'user' => $user,
-            'access_token' => $accessToken->token,
             'status' => 201,
             'message' => 'User successfully registered',
-            'expires_at' => $accessToken->expires_at->timestamp,
-            'expires_in' => $accessToken->expires_at->diffInSeconds(now()),
-        ]);
+        ] + $accessToken);
     }
 
     /**
@@ -84,7 +88,7 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
 
         if (! auth()->attempt($credentials)) {
-            return new ApiResource(['error' => 'Unauthorized', 'status' => 401]);
+            return new ApiResource(['error' => 'Invalid username or password.', 'status' => 401]);
         }
 
         $user = auth()->user();
@@ -92,11 +96,8 @@ class AuthController extends Controller
 
         return new ApiResource([
             'user' => $user,
-            'access_token' => $accessToken->token,
             'message' => 'User successfully logged in',
-            'expires_at' => $accessToken->expires_at->timestamp,
-            'expires_in' => $accessToken->expires_at->diffInSeconds(now()),
-        ]);
+        ] + $accessToken);
     }
 
     /**
@@ -113,6 +114,42 @@ class AuthController extends Controller
     }
 
     /**
+     * Logout a user from all devices.
+     * This will revoke all the tokens for the user.
+     */
+    public function logoutAll(Request $request)
+    {
+        // Check if the user is logged in
+        $request->user()->tokens()->delete();
+
+        return new ApiResource(['message' => 'Successfully logged out from all devices']);
+    }
+
+    /**
+     * Logout a user from a specific device.
+     *
+     * @param mixed $tokenId
+     */
+    public function logoutDevice(Request $request, $tokenId)
+    {
+        // Check if the user is logged in
+        $request->user()->tokens()->where('id', $tokenId)->delete();
+
+        return new ApiResource(['message' => 'Successfully logged out from the device']);
+    }
+
+    /**
+     * Logout a user from all devices except the current one.
+     */
+    public function logoutOther(Request $request)
+    {
+        // Check if the user is logged in
+        $request->user()->tokens()->where('id', '!=', $request->user()->currentAccessToken()->id)->delete();
+
+        return new ApiResource(['message' => 'Successfully logged out from all devices except the current one']);
+    }
+
+    /**
      * Refresh a token.
      *
      * @return void
@@ -122,10 +159,8 @@ class AuthController extends Controller
         $accessToken = $this->createAuthToken(auth()->user());
 
         return new ApiResource([
-            'access_token' => $accessToken->token,
-            'expires_at' => $accessToken->expires_at->timestamp,
-            'expires_in' => $accessToken->expires_at->diffInSeconds(now()),
-        ]);
+            'message' => 'Token successfully refreshed',
+        ] + $accessToken);
     }
 
     /**
@@ -181,10 +216,7 @@ class AuthController extends Controller
 
         return new ApiResource([
             'user' => $user,
-            'access_token' => $accessToken->token,
-            'expires_at' => $accessToken->expires_at->timestamp,
-            'expires_in' => $accessToken->expires_at->diffInSeconds(now()),
-        ]);
+        ] + $accessToken);
     }
 
     /**
@@ -203,14 +235,20 @@ class AuthController extends Controller
 
         // Get access token, given state and code from google callback
         $socialite = new Socialite();
-        $accessToken = $socialite->__callStatic('driver', [$provider])->getAccessTokenResponse($request->code);
-        $socialUser = $socialite->__callStatic('driver', [$provider])->userFromToken($accessToken['access_token']);
+
+        try {
+            $accessToken = $socialite->__callStatic('driver', [$provider])->getAccessTokenResponse($request->code);
+            $socialUser = $socialite->__callStatic('driver', [$provider])->userFromToken($accessToken['access_token']);
+        } catch (\Exception|\Throwable $e) {
+            callStatic(Log::class, 'error', $e);
+
+            return redirect()->to(env('FRONTEND_URL').'/login?error=Invalid+credentials');
+        }
 
         $user = new User();
         $user = $user->__callStatic('where', ['email', $socialUser->getEmail()])->first();
 
         // Here the logic should be to redirect to the frontend with the access token
-
         if (! $user) {
             $user = new User([
                 'name' => $socialUser->getName(),
@@ -227,10 +265,10 @@ class AuthController extends Controller
         }
 
         $accessToken = $this->createAuthToken($user);
+        $query = http_build_query($accessToken);
+        $url = config('services.frontend.url').'/login?'.$query;
 
-        return redirect()->to(
-            config('services.frontend.url').'/login#access_token='.$accessToken->token & 'expires_at='.$accessToken->expires_at->timestamp & 'expires_in='.$accessToken->expires_at->diffInSeconds(now())
-        );
+        return redirect()->away($url);
     }
 
     /**
