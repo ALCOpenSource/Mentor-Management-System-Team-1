@@ -1,7 +1,7 @@
 <template>
   <div class="w-72 z-10 pt-12 sidebar">
     <div class="pl-16 mb-14">
-      <h2 class="font-bold text-xl">Hi, {{ authStore.authUser?.data.user.name }}</h2>
+      <h2 class="font-bold text-xl">Hi, {{ authStore.authUser?.name }}</h2>
       <span class="text-mute">Admin</span>
     </div>
 
@@ -24,13 +24,6 @@
 import {useAuthStore} from "../../store/auth"
 
 const authStore = useAuthStore();
-
-// defineProps({
-//   name: {
-//     type: String,
-//     required: true,
-//   },
-// });
 
 import {
   IconDashboard,
@@ -128,11 +121,11 @@ const sidebarLinks = [
   }
 
   &::-webkit-scrollbar-track {
-    background: #e4e4e4;
+    background: transparent;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgb(201, 201, 201);
+    background: rgb(240, 240, 240);
     height: 40px;
     border-radius: 50px;
   }
