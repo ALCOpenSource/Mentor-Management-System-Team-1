@@ -13,3 +13,4 @@ export { default as IconReport } from "./IconReport.vue";
 export { default as IconAdd } from "./IconAdd.vue";
 export { default as IconTask } from "./IconTask.vue";
 export { default as IconSearch } from "./IconSearch.vue";
+export { default as IconDelete } from "./IconDelete.vue";

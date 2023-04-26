@@ -121,11 +121,11 @@ const sidebarLinks = [
   }
 
   &::-webkit-scrollbar-track {
-    background: #e4e4e4;
+    background: transparent;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgb(201, 201, 201);
+    background: rgb(240, 240, 240);
     height: 40px;
     border-radius: 50px;
   }
