@@ -4,7 +4,7 @@
       <div class="flex items-center">
         <v-avatar size="90px">
           <v-img
-            :src="authStore.authUser?.avatar"
+            :src="authStore.authUser?.avatar || 'https://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder.png'"
             alt="John"
           ></v-img>
         </v-avatar>

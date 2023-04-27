@@ -49,7 +49,7 @@ const authStore = useAuthStore();
 
 const handleLogin = async() => {
   if (valid.value && isAdmin.value) {
-    await authStore.handleLogin(loginData)
+    await authStore.handleLogin(loginData.value)
   } 
 };
 
