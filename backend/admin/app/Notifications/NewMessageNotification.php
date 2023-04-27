@@ -27,7 +27,7 @@ class NewMessageNotification extends Notification implements ShouldQueue
      *
      * @return array<int, string>
      */
-    public function via(object $notifiable): array
+    public function via(): array
     {
         return ['broadcast'];
     }

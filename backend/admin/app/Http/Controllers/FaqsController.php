@@ -46,7 +46,7 @@ class FaqsController extends Controller
             'category' => 'required|string|in:'.implode(',', AppConstants::FAQ_CATEGORIES),
         ]);
 
-        $faq = Faq::find($faq_id);
+        $faq = callStatic(Faq::class, 'find', $faq_id);
 
         if (! $faq) {
             return new ApiResource([
@@ -86,7 +86,7 @@ class FaqsController extends Controller
      */
     public function deleteFaq($faq_id)
     {
-        $faq = Faq::find($faq_id);
+        $faq = callStatic(Faq::class, 'find', $faq_id);
 
         if (! $faq) {
             return new ApiResource([

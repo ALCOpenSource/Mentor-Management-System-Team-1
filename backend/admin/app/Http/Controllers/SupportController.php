@@ -279,12 +279,12 @@ class SupportController extends Controller
     {
         $path = storage_path('app/public/support/'.$fileName);
 
-        if (! File::exists($path)) {
+        if (! callStatic(File::class, 'exists', $path)) {
             abort(404);
         }
 
-        $file = File::get($path);
-        $type = File::mimeType($path);
+        $file = callStatic(File::class, 'get', $path);
+        $type = callStatic(File::class, 'mimeType', $path);
 
         return response()->make($file, 200, [
             'Content-Type' => $type,
