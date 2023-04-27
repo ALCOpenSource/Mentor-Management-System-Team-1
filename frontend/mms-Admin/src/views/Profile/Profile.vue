@@ -4,13 +4,13 @@
       <div class="flex items-center">
         <v-avatar size="90px">
           <v-img
-            :src="authStore.authUser?.avatar"
+            :src="userStore.avatar?.avatar_url"
             alt="John"
           ></v-img>
         </v-avatar>
         <div class="ml-6">
           <div class="flex items-center">
-            <h1 class="mr-2 text-xl font-semibold">{{ authStore.authUser?.name }}</h1>
+            <h1 class="mr-2 text-xl font-semibold">{{ userStore.user?.name }}</h1>
             <svg
               width="30"
               height="30"
@@ -48,7 +48,7 @@
     <div class="card p-6">
       <h1 class="text-xl font-semibold mb-6">About</h1>
       <p class="sub-card">
-        {{ authStore.authUser?.about_me }}
+        {{ userStore.user?.about_me }}
       </p>
       <div class="grid w-2/4 grid-cols-2 mb-6">
         <div class="flex items-center cursor-pointer">
@@ -74,7 +74,7 @@
               stroke-linejoin="round"
             />
           </svg>
-          <p class="ml-1 text-slate-500">{{ authStore.authUser?.email }}</p>
+          <p class="ml-1 text-slate-500">{{ userStore.user?.email }}</p>
         </div>
         <div class="flex items-center">
           <svg
@@ -99,7 +99,7 @@
               stroke-linejoin="round"
             />
           </svg>
-          <p class="ml-1 text-slate-500">{{ authStore.authUser?.state }}, {{ authStore.authUser?.country }}</p>
+          <p class="ml-1 text-slate-500">{{ userStore.user?.state }}, {{ userStore.user?.country }}</p>
         </div>
       </div>
       <div class="grid w-2/4 grid-cols-2">
@@ -140,7 +140,7 @@
               stroke-linejoin="round"
             />
           </svg>
-          <p class="ml-1 text-slate-500">www.peculiah.com</p>
+          <p class="ml-1 text-slate-500">{{ userStore.user?.website }}</p>
         </div>
         <div class="flex items-center">
           <svg
@@ -179,28 +179,28 @@
               stroke-linejoin="round"
             />
           </svg>
-          <p class="ml-1 text-slate-500">Member since June 22, 2021</p>
+          <p class="ml-1 text-slate-500">Member since {{ userStore.user?.member_since }}</p>
         </div>
       </div>
       <h1 class="text-xl font-semibold mb-6 mt-10">Social</h1>
       <div class="grid w-2/4 gap-16 grid-cols-2 mb-6">
         <div class="flex items-center social-card">
           <GitHub />
-          <p class="ml-3">@peculiar.umeh</p>
+          <p class="ml-3">{{ userStore.user?.social_links?.github_username.name }}</p>
         </div>
         <div class="flex items-center social-card">
           <Instagram />
-          <p class="ml-3">@peculiar.umeh</p>
+          <p class="ml-3">{{ userStore.user?.social_links?.instagram_username.name }}</p>
         </div>
       </div>
       <div class="grid w-2/4 gap-16 grid-cols-2">
         <div class="flex items-center social-card">
           <LinkedIn />
-          <p class="ml-3">@peculiar.umeh</p>
+          <p class="ml-3">{{ userStore.user?.social_links?.linkedin_username.name }}</p>
         </div>
         <div class="flex items-center social-card">
           <Twitter />
-          <p class="ml-3">@peculiar.umeh</p>
+          <p class="ml-3">{{ userStore.user?.social_links.twitter_username.name }}</p>
         </div>
       </div>
     </div>
@@ -211,9 +211,9 @@
 import { GitHub, Twitter, Instagram, LinkedIn } from "@/assets/icons";
 import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 
-import {useAuthStore} from "../../store/auth"
+import {useUserStore} from "../../store/user"
 
-const authStore = useAuthStore();
+const userStore = useUserStore();
 </script>
 
 <style scoped lang="scss">

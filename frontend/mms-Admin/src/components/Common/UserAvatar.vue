@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {useAuthStore} from "../../store/auth"
+import {useUserStore} from "../../store/user"
 
-const authStore = useAuthStore();
+const userStore = useUserStore();
 </script>
 
 <script lang="ts">
@@ -16,7 +16,7 @@ export default defineComponent({
 <template>
   <img
     class="avatar"
-    :src="authStore.authUser?.avatar"
+    :src="userStore.avatar?.avatar_url"
     alt=""
     srcset=""
   />
