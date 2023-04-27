@@ -121,6 +121,11 @@ const router = createRouter({
               name: "broadcast",
               component: () => import("@/views/Messages/Broadcast.vue"),
             },
+            {
+              path: "select-someone",
+              name: "select-someone",
+              component: () => import("@/views/Messages/SelectSomeone.vue"),
+            }
           ],
         },
         {

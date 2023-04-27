@@ -16,7 +16,7 @@ export default defineComponent({
 <template>
   <img
     class="avatar"
-    :src="authStore.authUser?.avatar || 'https://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder.png'"
+    :src="imageLink || 'https://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder.png'"
     alt=""
     srcset=""
   />
