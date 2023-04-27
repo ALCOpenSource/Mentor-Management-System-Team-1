@@ -36,11 +36,11 @@ class NotificationController extends Controller
     /**
      * Delete notification.
      *
-     * @param mixed $id
+     * @param mixed $notification_id
      */
-    public function deleteNotification(Request $request, $id)
+    public function deleteNotification(Request $request, $notification_id)
     {
-        $notification = $request->user()->notifications()->where('id', $id)->first();
+        $notification = $request->user()->notifications()->where('id', $notification_id)->first();
 
         if (! $notification) {
             return new ApiResource([

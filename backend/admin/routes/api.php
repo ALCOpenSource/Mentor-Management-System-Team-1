@@ -92,29 +92,29 @@ Route::prefix('v1')->group(function () {
             Route::get('/', [App\Http\Controllers\SupportController::class, 'getSupport']);
 
             // Get specific support data
-            Route::get('{id}', [App\Http\Controllers\SupportController::class, 'getSpecificSupport']);
+            Route::get('{support_id}', [App\Http\Controllers\SupportController::class, 'getSpecificSupport']);
 
             // Get support image
             Route::get('image/{filename}', [App\Http\Controllers\SupportController::class, 'getSupportImage'])->name('support.image');
 
             // Update support data
             Route::post('/', [App\Http\Controllers\SupportController::class, 'createSupport']);
-            Route::patch('{id}', [App\Http\Controllers\SupportController::class, 'updateSupport']);
+            Route::patch('{support_id}', [App\Http\Controllers\SupportController::class, 'updateSupport']);
 
             // Accept support ticket
-            Route::post('accept/{id}', [App\Http\Controllers\SupportController::class, 'acceptSupport']);
+            Route::post('accept/{support_id}', [App\Http\Controllers\SupportController::class, 'acceptSupport']);
 
             // Close support ticket
-            Route::post('close/{id}', [App\Http\Controllers\SupportController::class, 'closeSupport']);
+            Route::post('close/{support_id}', [App\Http\Controllers\SupportController::class, 'closeSupport']);
 
             // Open support ticket
-            Route::post('open/{id}', [App\Http\Controllers\SupportController::class, 'openSupport']);
+            Route::post('open/{support_id}', [App\Http\Controllers\SupportController::class, 'openSupport']);
 
             // Assign ticket to user
-            Route::post('assign/{id}', [App\Http\Controllers\SupportController::class, 'assignSupport']);
+            Route::post('assign/{support_id}', [App\Http\Controllers\SupportController::class, 'assignSupport']);
 
             // Delete support data
-            Route::delete('{id}', [App\Http\Controllers\SupportController::class, 'deleteSupport']);
+            Route::delete('{support_id}', [App\Http\Controllers\SupportController::class, 'deleteSupport']);
 
             // Delete all support data
             Route::delete('/', [App\Http\Controllers\SupportController::class, 'deleteAllSupport']);
@@ -127,10 +127,10 @@ Route::prefix('v1')->group(function () {
 
             // Update faq data
             Route::post('/', [App\Http\Controllers\FaqsController::class, 'createFaq']);
-            Route::patch('{id}', [App\Http\Controllers\FaqsController::class, 'updateFaq']);
+            Route::patch('{faq_id}', [App\Http\Controllers\FaqsController::class, 'updateFaq']);
 
             // Delete faq data
-            Route::delete('{id}', [App\Http\Controllers\FaqsController::class, 'deleteFaq']);
+            Route::delete('{faq_id}', [App\Http\Controllers\FaqsController::class, 'deleteFaq']);
         });
 
         // Notification endpoints
@@ -142,7 +142,7 @@ Route::prefix('v1')->group(function () {
             Route::post('read', [App\Http\Controllers\NotificationController::class, 'markAsRead']);
 
             // Delete notification data
-            Route::delete('{id}', [App\Http\Controllers\NotificationController::class, 'deleteNotification']);
+            Route::delete('{notification_id}', [App\Http\Controllers\NotificationController::class, 'deleteNotification']);
         });
 
         // Message endpoints

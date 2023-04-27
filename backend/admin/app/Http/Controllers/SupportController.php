@@ -23,6 +23,7 @@ class SupportController extends Controller
     protected function getSupportMessage($previous_messages, $message, $role, $user_id)
     {
         $temp = [];
+
         if ($previous_messages) {
             $temp = $previous_messages;
         }
@@ -75,12 +76,6 @@ class SupportController extends Controller
         $support->name = $request->name;
         $support->email = $request->email;
         $support->subject = $request->subject;
-
-        $temp = [];
-        if ($support->message) {
-            $temp = $support->message;
-        }
-
         $support->message = $this->getSupportMessage($support->message, $request->message, 'user', $request->user()->id);
 
         $support->status = 'pending';
@@ -105,9 +100,9 @@ class SupportController extends Controller
     /**
      * Update support.
      *
-     * @param mixed $id
+     * @param mixed $support_id
      */
-    public function updateSupport(Request $request, $id)
+    public function updateSupport(Request $request, $support_id)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -121,7 +116,7 @@ class SupportController extends Controller
         $support = callStatic(SupportTickets::class, 'where', function ($query) {
             $query->where('user_id', auth()->user()->id)
                 ->orWhere('assigned_user_id', auth()->user()->id);
-        })->where('id', $id)->first();
+        })->where('id', $support_id)->first();
 
         if (! $support) {
             return new ApiResource(['data' => null, 'message' => 'Support ticket not found.', 'status' => 404]);
@@ -131,7 +126,6 @@ class SupportController extends Controller
         $support->email = $request->email;
         $support->subject = $request->subject;
         $support->message = $this->getSupportMessage($support->message, $request->message, 'user', $request->user()->id);
-
         $support->status = 'pending';
         $support->user_id = $request->user()->id;
         $support->save();
@@ -155,14 +149,14 @@ class SupportController extends Controller
     /**
      * Get specific support.
      *
-     * @param mixed $id
+     * @param mixed $support_id
      */
-    public function getSpecificSupport(Request $request, $id)
+    public function getSpecificSupport(Request $request, $support_id)
     {
         $support = callStatic(SupportTickets::class, 'where', function ($query) {
             $query->where('user_id', auth()->user()->id)
                 ->orWhere('assigned_user_id', auth()->user()->id);
-        })->where('id', $id)->first();
+        })->where('id', $support_id)->first();
 
         // Only an assistant or admin, or the user that created the ticket can close a support ticket.
         if ($support->user_id != auth()->user()->id || ! $request->user()->hasRole([AppConstants::ROLE_ADMIN, AppConstants::ROLE_ASSISTANT])) {
@@ -175,11 +169,11 @@ class SupportController extends Controller
     /**
      * Delete support.
      *
-     * @param mixed $id
+     * @param mixed $support_id
      */
-    public function deleteSupport(Request $request, $id)
+    public function deleteSupport(Request $request, $support_id)
     {
-        $support = callStatic(SupportTickets::class, 'where', 'user_id', $request->user()->id)->where('id', $id)->first();
+        $support = callStatic(SupportTickets::class, 'where', 'user_id', $request->user()->id)->where('id', $support_id)->first();
 
         if (! $support) {
             return new ApiResource(['data' => null, 'message' => 'Support ticket not found.', 'status' => 404]);
@@ -193,11 +187,11 @@ class SupportController extends Controller
     /**
      * Close support.
      *
-     * @param mixed $id
+     * @param mixed $support_id
      */
-    public function closeSupport(Request $request, $id)
+    public function closeSupport(Request $request, $support_id)
     {
-        $support = callStatic(SupportTickets::class, 'find', $id);
+        $support = callStatic(SupportTickets::class, 'find', $support_id);
 
         if (! $support) {
             return new ApiResource(['data' => null, 'message' => 'Support ticket not found.', 'status' => 404]);
@@ -217,11 +211,11 @@ class SupportController extends Controller
     /**
      * Open support.
      *
-     * @param mixed $id
+     * @param mixed $support_id
      */
-    public function openSupport(Request $request, $id)
+    public function openSupport(Request $request, $support_id)
     {
-        $support = callStatic(SupportTickets::class, 'find', $id);
+        $support = callStatic(SupportTickets::class, 'find', $support_id);
 
         if (! $support) {
             return new ApiResource(['data' => null, 'message' => 'Support ticket not found.', 'status' => 404]);
@@ -255,11 +249,11 @@ class SupportController extends Controller
     /**
      * Accept support and assign yourself the ticket.
      *
-     * @param mixed $id
+     * @param mixed $support_id
      */
-    public function acceptSupport(Request $request, $id)
+    public function acceptSupport(Request $request, $support_id)
     {
-        $support = callStatic(SupportTickets::class, 'find', $id);
+        $support = callStatic(SupportTickets::class, 'find', $support_id);
 
         if (! $support) {
             return new ApiResource(['data' => null, 'message' => 'Support ticket not found.', 'status' => 404]);
@@ -301,11 +295,11 @@ class SupportController extends Controller
     /**
      * Assign support to another user.
      *
-     * @param mixed $id
+     * @param mixed $support_id
      */
-    public function assignSupport(Request $request, $id)
+    public function assignSupport(Request $request, $support_id)
     {
-        $support = callStatic(SupportTickets::class, 'find', $id);
+        $support = callStatic(SupportTickets::class, 'find', $support_id);
 
         if (! $support) {
             return new ApiResource(['data' => null, 'message' => 'Support ticket not found.', 'status' => 404]);

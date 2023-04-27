@@ -7,28 +7,35 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 class CheckPreferences implements ValidationRule
 {
+    protected function checkArray(mixed $preferences, mixed $value, \Closure $fail)
+    {
+        foreach ($value as $k => $v) {
+            if (! isset($preferences[$k])) {
+                $fail('Invalid preference key');
+
+                return;
+            }
+
+            if (is_array($preferences[$k]) && is_array($v) && ! array_intersect_assoc($preferences[$k], $v)) {
+                $fail("Invalid preference value: [$k], accepted values: [".implode(', ', $preferences[$k]).']');
+
+                return;
+            }
+
+            if (gettype($preferences[$k]) !== gettype($v)) {
+                $fail("Invalid preference value: [$k], accepted values: [".implode(', ', $preferences[$k]).']');
+
+                return;
+            }
+        }
+    }
+
     protected function checkPreferences(mixed $preferences, mixed $value, \Closure $fail): void
     {
         if (is_array($value)) {
-            foreach ($value as $k => $v) {
-                if (! isset($preferences[$k])) {
-                    $fail('Invalid preference key');
+            $this->checkArray($preferences, $value, $fail);
 
-                    return;
-                }
-
-                if (is_array($preferences[$k]) && is_array($v) && ! array_intersect_assoc($preferences[$k], $v)) {
-                    $fail("Invalid preference value: [$k], accepted values: [".implode(', ', $preferences[$k]).']');
-
-                    return;
-                }
-
-                if (gettype($preferences[$k]) !== gettype($v)) {
-                    $fail("Invalid preference value: [$k], accepted values: [".implode(', ', $preferences[$k]).']');
-
-                    return;
-                }
-            }
+            return;
         }
 
         // If the preferences is a boolean, then we don't need to check the value

@@ -63,12 +63,13 @@ class AuthController extends Controller
         // If localhost, or ipaddress is 127.0.0.1 then verify the user automatically
         if ('127.0.0.1' === request()->ip() || 'localhost' === request()->ip()) {
             $user->email_verified_at = now();
-        } else {
-            // Send verification email
-            $user->sendEmailVerificationNotification();
         }
 
+        // Send verification email
+        $user->sendEmailVerificationNotification();
         $user->save();
+
+        // Create a token for the user
         $accessToken = $this->createAuthToken($user);
 
         return new ApiResource([

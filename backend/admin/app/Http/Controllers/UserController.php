@@ -12,6 +12,62 @@ use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
+    protected function updateWebsiteMetadata($request, $user)
+    {
+        // Social links, this will be stored as user metadata i.e. UserMetadata model
+        if ($request->website) {
+            $user->setMetadata('my_website', 'my_website', 'url', 'website', [
+                'url' => $request->website,
+            ]);
+        }
+    }
+
+    protected function updateUserAvatar($request, $user)
+    {
+        // Avatar
+        if ($request->hasFile('avatar')) {
+            $avatarName = $user->id.'_avatar'.time().'.'.request()->avatar->getClientOriginalExtension();
+            $request->avatar->storeAs('avatars', $avatarName);
+            $user->avatar = route('user.avatar', ['filename' => $avatarName]);
+        }
+    }
+
+    protected function updateUserSocialLinks($request, $user)
+    {
+        if ($request->github_username) {
+            $user->setMetadata('github_username', $request->github_username, 'string', 'social', [
+                'url' => 'https://github.com/'.$request->github_username,
+            ]);
+        }
+
+        if ($request->linkedin_username) {
+            $user->setMetadata('linkedin_username', $request->linkedin_username, 'string', 'social', [
+                'url' => 'https://linkedin.com/in/'.$request->linkedin_username,
+            ]);
+        }
+
+        if ($request->twitter_username) {
+            $user->setMetadata('twitter_username', $request->twitter_username, 'string', 'social', [
+                'url' => 'https://twitter.com/'.$request->twitter_username,
+            ]);
+        }
+
+        if ($request->instagram_username) {
+            $user->setMetadata('instagram_username', $request->instagram_username, 'string', 'social', [
+                'url' => 'https://instagram.com/'.$request->instagram_username,
+            ]);
+        }
+    }
+
+    protected function updateUserTags($request, $user)
+    {
+        if ($request->tags) {
+            $user->setMetadata('tags', $request->tags, 'array', 'tags', [
+                'tags' => $request->tags,
+            ]);
+        }
+    }
+
     /**
      * Update user profile.
      *
@@ -54,49 +110,17 @@ class UserController extends Controller
             }
         }
 
-        // Avatar
-        if ($request->hasFile('avatar')) {
-            $avatarName = $user->id.'_avatar'.time().'.'.request()->avatar->getClientOriginalExtension();
-            $request->avatar->storeAs('avatars', $avatarName);
-            $user->avatar = route('user.avatar', ['filename' => $avatarName]);
-        }
+        // Update user social links
+        $this->updateUserSocialLinks($request, $user);
 
-        // Social links, this will be stored as user metadata i.e. UserMetadata model
-        if ($request->website) {
-            $user->setMetadata('my_website', 'my_website', 'url', 'website', [
-                'url' => $request->website,
-            ]);
-        }
+        // Update user website metadata
+        $this->updateWebsiteMetadata($request, $user);
 
-        if ($request->github_username) {
-            $user->setMetadata('github_username', $request->github_username, 'string', 'social', [
-                'url' => 'https://github.com/'.$request->github_username,
-            ]);
-        }
-
-        if ($request->linkedin_username) {
-            $user->setMetadata('linkedin_username', $request->linkedin_username, 'string', 'social', [
-                'url' => 'https://linkedin.com/in/'.$request->linkedin_username,
-            ]);
-        }
-
-        if ($request->twitter_username) {
-            $user->setMetadata('twitter_username', $request->twitter_username, 'string', 'social', [
-                'url' => 'https://twitter.com/'.$request->twitter_username,
-            ]);
-        }
-
-        if ($request->instagram_username) {
-            $user->setMetadata('instagram_username', $request->instagram_username, 'string', 'social', [
-                'url' => 'https://instagram.com/'.$request->instagram_username,
-            ]);
-        }
+        // Update user avatar
+        $this->updateUserAvatar($request, $user);
 
         // Tags metadata
-        if ($request->tags) {
-            $user->setMetadata('tags', $request->tags, 'array', 'tags');
-        }
-
+        $this->updateUserTags($request, $user);
         $user->save();
 
         return new ApiResource(['data' => $user]);

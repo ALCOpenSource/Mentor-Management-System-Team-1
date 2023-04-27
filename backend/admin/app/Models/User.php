@@ -355,15 +355,17 @@ class User extends Authenticatable implements MustVerifyEmail
             $metadata->group = $group;
             $metadata->options = $options;
             $metadata->save();
-        } else {
-            $this->userMetadata()->create([
-                'key' => $key,
-                'value' => $value,
-                'type' => $type,
-                'group' => $group,
-                'options' => $options,
-            ]);
+
+            return;
         }
+
+        $this->userMetadata()->create([
+            'key' => $key,
+            'value' => $value,
+            'type' => $type,
+            'group' => $group,
+            'options' => $options,
+        ]);
     }
 
     /**
@@ -376,12 +378,14 @@ class User extends Authenticatable implements MustVerifyEmail
         if ($preference) {
             $preference->value = $value;
             $preference->save();
-        } else {
-            $this->preferences()->create([
-                'key' => $key,
-                'value' => $value,
-            ]);
+
+            return;
         }
+
+        $this->preferences()->create([
+            'key' => $key,
+            'value' => $value,
+        ]);
     }
 
     /**

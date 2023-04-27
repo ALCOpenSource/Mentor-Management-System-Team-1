@@ -36,9 +36,9 @@ class FaqsController extends Controller
     /**
      * Update FAQ.
      *
-     * @param mixed $id
+     * @param mixed $faq_id
      */
-    public function updateFaq(Request $request, $id)
+    public function updateFaq(Request $request, $faq_id)
     {
         $request->validate([
             'question' => 'required|string',
@@ -46,7 +46,7 @@ class FaqsController extends Controller
             'category' => 'required|string|in:'.implode(',', AppConstants::FAQ_CATEGORIES),
         ]);
 
-        $faq = Faq::find($id);
+        $faq = Faq::find($faq_id);
 
         if (! $faq) {
             return new ApiResource([
@@ -82,11 +82,11 @@ class FaqsController extends Controller
     /**
      * Delete FAQ.
      *
-     * @param mixed $id
+     * @param mixed $faq_id
      */
-    public function deleteFaq($id)
+    public function deleteFaq($faq_id)
     {
-        $faq = Faq::find($id);
+        $faq = Faq::find($faq_id);
 
         if (! $faq) {
             return new ApiResource([
