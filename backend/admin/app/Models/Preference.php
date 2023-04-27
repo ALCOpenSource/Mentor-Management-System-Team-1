@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Preferences extends Model
+class Preference extends Model
 {
     use HasFactory;
 
@@ -27,7 +27,7 @@ class Preferences extends Model
      */
     protected $casts = [
         'key' => 'string',
-        'value' => 'string',
+        'value' => 'json',
     ];
 
     /**
