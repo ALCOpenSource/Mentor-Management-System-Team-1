@@ -70,7 +70,7 @@ class FaqsController extends Controller
      */
     public function getFaqs()
     {
-        $faqs = Faq::all();
+        $faqs = callStatic(Faq::class, 'all');
 
         $groupedFaqs = $faqs->groupBy('category');
 
