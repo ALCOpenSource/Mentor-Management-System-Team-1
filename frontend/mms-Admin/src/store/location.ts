@@ -2,9 +2,9 @@ import {defineStore} from 'pinia'
 import axios from "axios"
 
 interface LocationState {
-    country: Country | null;
-    state: State | null;
-    city: City | null;
+    country: Country[] | null;
+    state: State[] | null;
+    city: City[] | null;
 }
 
 interface Country {
@@ -57,12 +57,12 @@ export const useLocationStore = defineStore({
             this.country = res.data.data
         },
 
-        async setState(code) {
+        async setState(code: string) {
             const res = await axios.get('v1/countries/'+code+'/state')
             this.state = res.data.data
         },
 
-        async setCity(code) {
+        async setCity(code: string) {
             const res = await axios.get('v1/countries/'+code+'/cities')
             this.city = res.data.data
         },

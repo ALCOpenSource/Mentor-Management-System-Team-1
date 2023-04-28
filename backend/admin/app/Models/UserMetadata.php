@@ -30,6 +30,7 @@ class UserMetadata extends Model
      */
     protected $casts = [
         'options' => 'array',
+        'value' => 'json',
     ];
 
     /**
