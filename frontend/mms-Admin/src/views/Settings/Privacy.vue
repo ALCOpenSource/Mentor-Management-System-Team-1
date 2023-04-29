@@ -19,13 +19,39 @@
         />
       </v-col>
     </v-row>
+    <v-row class="mt-10" align-content="center" justify="center">
+      <v-col cols="8">
+        <PrimaryBtn title="Save Changes" @click="handleSubmit"/>
+      </v-col>
+    </v-row>
+    <Modal
+      title="Settings Saved Successfully"
+      :src="profileSuccess"
+      :is-modal-open="isModalOpen"
+      primary-text="Done"
+      @toggle-modal="toggleModal"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-
 import Checkbox from "../../components/Forms/Checkbox.vue";
+import Modal from "../../components/Forms/Modal.vue";
+import { profileSuccess } from "../../assets/images";
+import PrimaryBtn from "@/components/Buttons/PrimaryBtn.vue";
+
+const isModalOpen = ref(false);
+
+const toggleModal = () => {
+  isModalOpen.value = !isModalOpen.value;
+};
+
+const handleSubmit = () => {
+  toggleModal();
+
+  // Handle Submit
+};
 
 // Should come from the backend
 const privacy = ref([

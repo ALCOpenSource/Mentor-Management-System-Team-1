@@ -13,7 +13,7 @@
         </div>
       </div>
 
-      <v-menu>
+      <v-menu persistent>
         <template v-slot:activator="{ props }">
           <MoreIcon id="menu-activator" class="cursor-pointer" v-bind="props" />
         </template>

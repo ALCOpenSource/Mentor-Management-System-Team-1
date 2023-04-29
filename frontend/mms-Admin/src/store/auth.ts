@@ -92,6 +92,8 @@ interface AuthUser {
   phone: number;
   timezone: string;
   about_me: string;
+  website: string;
+  member_since: string;
 }
 
 interface LoginData {
