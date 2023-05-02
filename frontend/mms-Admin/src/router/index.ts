@@ -121,27 +121,11 @@ const router = createRouter({
               name: "broadcast",
               component: () => import("@/views/Messages/Broadcast.vue"),
             },
-          ],
-        },
-        {
-          path: "discussion-forum",
-          component: () => import("@/views/Discussion/DiscussionForum.vue"),
-          meta: {
-            requiresAuth:true
-          },
-          component: messageLayout,
-          redirect: () => "/admin/messages/inbox",
-          children: [
             {
-              path: "inbox",
-              name: "inbox",
-              component: () => import("@/views/Messages/Messages.vue"),
-            },
-            {
-              path: "broadcast",
-              name: "broadcast",
-              component: () => import("@/views/Messages/Broadcast.vue"),
-            },
+              path: "select-someone",
+              name: "select-someone",
+              component: () => import("@/views/Messages/SelectSomeone.vue"),
+            }
           ],
         },
         {

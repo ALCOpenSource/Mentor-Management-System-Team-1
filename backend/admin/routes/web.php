@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Add login with social media
-Route::prefix('auth/social')->group(function () {
-    Route::get('redirect/{provider}', [App\Http\Controllers\AuthController::class, 'socialLoginRedirect']);
-    Route::get('callback/{provider}', [App\Http\Controllers\AuthController::class, 'socialLoginCallback']);
-});
+Route::prefix('auth/social')
+    ->withoutMiddleware([VerifyCsrfToken::class])
+    ->group(function () {
+        Route::get('callback/{provider}', [App\Http\Controllers\AuthController::class, 'socialLoginCallback']);
+    });
