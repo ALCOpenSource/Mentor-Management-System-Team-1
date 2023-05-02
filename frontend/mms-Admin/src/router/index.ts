@@ -5,6 +5,7 @@ import settingsLayout from "@/layouts/settingsLayout.vue";
 import {useAuthStore} from '@/store/auth'
 import messageLayout from "@/layouts/messageLayout.vue";
 import discussionLayout from "@/layouts/discussionLayout.vue";
+import blankLayout from "@/layouts/blankLayout.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -57,10 +58,27 @@ const router = createRouter({
         {
           path: "tasks",
           name: "tasks",
-          component: () => import("@/views/Tasks/Tasks.vue"),
+          component: blankLayout,
           meta: {
             requiresAuth:true
           },
+          children: [
+            {
+              path: "all",
+              name: "allTasks",
+              component: () => import("@/views/Tasks/Tasks.vue")
+            },
+            {
+              path: "create",
+              name: "create",
+              component: () => import("@/views/Tasks/Create.vue")
+            },
+            {
+              path: "edit",
+              name: "edit",
+              component: () => import("@/views/Tasks/Edit.vue")
+            },
+          ]
         },
         {
           path: "reports",

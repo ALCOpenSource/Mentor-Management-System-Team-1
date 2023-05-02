@@ -60,7 +60,7 @@ const sidebarLinks = [
   },
   {
     pathname: "Tasks",
-    path: parentPath + "/tasks",
+    path: parentPath + "/tasks/all",
     icon: IconTask,
   },
   {
