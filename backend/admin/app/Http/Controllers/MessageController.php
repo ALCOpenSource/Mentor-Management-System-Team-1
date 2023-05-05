@@ -179,8 +179,8 @@ class MessageController extends Controller
         }
 
         // Sort messages by created_at
-        usort($messages, function ($a, $b) {
-            return $a->created_at <= $b->created_at;
+        usort($messages, function ($message_a, $message_b) {
+            return $message_a->created_at <= $message_b->created_at;
         });
 
         // Create new pagination
@@ -233,7 +233,7 @@ class MessageController extends Controller
         $message->status = 'read';
         $message->save();
 
-        MessageRead::dispatch($message);
+        callStatic(MessageRead::class, 'dispatch', $message);
 
         return new ApiResource(['data' => $message]);
     }
