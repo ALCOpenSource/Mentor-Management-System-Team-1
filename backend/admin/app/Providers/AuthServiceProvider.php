@@ -23,6 +23,11 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         callStatic(Gate::class, 'define', 'viewWebSocketsDashboard', function ($user = null) {
+            // If session has been set that the user has passed authentication, return true
+            if (session('websockets.authenticated')) {
+                return true;
+            }
+
             // If a user is provided, use the Laravel authentication system.
             // The code below is unnecessary but it serves two purposes:
             // 1. Bypass codacy issues
@@ -37,8 +42,15 @@ class AuthServiceProvider extends ServiceProvider
             }
 
             // If no user is provided, use the default Laravel authentication
-            return strtolower(request('username', '')) === strtolower(config('websockets.auth.username'))
+            $authenticated = strtolower(request('username', '')) === strtolower(config('websockets.auth.username'))
                 && request('password', '') === config('websockets.auth.password');
+
+            // Put in session that the user has passed authentication
+            if ($authenticated) {
+                session(['websockets.authenticated' => true]);
+            }
+
+            return $authenticated;
         });
     }
 }
