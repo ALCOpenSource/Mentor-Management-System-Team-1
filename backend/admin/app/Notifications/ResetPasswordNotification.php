@@ -45,15 +45,4 @@ class ResetPasswordNotification extends Notification
             ->action('Reset Password', $url)
             ->line('If you did not request a password reset, no further action is required.');
     }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(): array
-    {
-        return [
-        ];
-    }
 }

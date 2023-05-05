@@ -2,14 +2,21 @@
 
 namespace App\Models;
 
+use App\Traits\HasUuidAttachments;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
     use HasFactory;
+    use HasUuidAttachments;
+    use HasUuids;
+
+    protected $primaryKey = 'uuid';
 
     protected $fillable = [
+        'uuid',
         'user_id',
         'title',
         'body',
@@ -17,7 +24,7 @@ class Post extends Model
         'image',
         'is_published',
         'published_at',
-        'attachments',
+        'attachment',
         'meta_title',
         'meta_description',
         'meta_keywords',
@@ -30,13 +37,9 @@ class Post extends Model
     ];
 
     protected $appends = [
-        'image_url',
-        'attachments_url',
-        'is_published_at_diff_for_humans',
-    ];
-
-    protected $hidden = [
-        'image_path',
+        'is_published_human',
+        'attachments',
+        'preview',
     ];
 
     /**
@@ -53,5 +56,13 @@ class Post extends Model
     public function discussions(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(PostDiscussions::class);
+    }
+
+    /**
+     * Get post preview.
+     */
+    public function getPreviewAttribute(): ?string
+    {
+        return $this->body ? mb_substr(strip_tags($this->body), 0, 100) : null;
     }
 }

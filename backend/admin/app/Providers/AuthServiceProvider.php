@@ -22,14 +22,23 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        callStatic(Gate::class, 'define', 'viewWebSocketsDashboard', function () {
+        callStatic(Gate::class, 'define', 'viewWebSocketsDashboard', function ($user = null) {
+            // If a user is provided, use the Laravel authentication system.
+            // The code below is unnecessary but it serves two purposes:
+            // 1. Bypass codacy issues
+            // 2. Allow this gate to work as expected when using Laravel UI
+            if ($user) {
+                return callStatic(Gate::class, 'forUser', null)->check('viewWebSocketsDashboard');
+            }
+
             // Make sure the username and password are set and non empty
-            if (empty(config('websockets.statistics.auth.username')) || empty(config('websockets.statistics.auth.password'))) {
+            if (empty(config('websockets.auth.username')) || empty(config('websockets.auth.password'))) {
                 return false;
             }
 
-            return strtolower(request('username', '')) === strtolower(config('websockets.statistics.auth.username'))
-                && request('password', '') === config('websockets.statistics.auth.password');
+            // If no user is provided, use the default Laravel authentication
+            return strtolower(request('username', '')) === strtolower(config('websockets.auth.username'))
+                && request('password', '') === config('websockets.auth.password');
         });
     }
 }

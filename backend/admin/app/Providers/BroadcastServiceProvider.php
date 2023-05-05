@@ -19,8 +19,7 @@ class BroadcastServiceProvider extends ServiceProvider
         // @Ghostscypher
         // Broadcast::routes();
 
-        $broadcast = new Broadcast();
-        $broadcast->__callStatic('routes', []);
+        callStatic(Broadcast::class, 'routes', ['middleware' => ['auth:sanctum'], 'prefix' => 'api']);
 
         require base_path('routes/channels.php');
     }

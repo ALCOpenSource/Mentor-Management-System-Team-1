@@ -23,7 +23,7 @@ class NotificationController extends Controller
     public function markAsRead(Request $request)
     {
         // Get list of notification ids
-        $notificationIds = $request->input('notification_ids');
+        $notificationIds = $request->notification_ids;
 
         // Mark as read
         $request->user()->notifications()->whereIn('id', $notificationIds)->update(['read_at' => now()]);
@@ -53,6 +53,42 @@ class NotificationController extends Controller
 
         return new ApiResource([
             'message' => 'Notification deleted',
+        ]);
+    }
+
+    /**
+     * Delete all notifications.
+     */
+    public function deleteAllNotifications(Request $request)
+    {
+        $request->user()->notifications()->delete();
+
+        return new ApiResource([
+            'message' => 'All notifications deleted',
+        ]);
+    }
+
+    /**
+     * Mark all notifications as read.
+     */
+    public function markAllAsRead(Request $request)
+    {
+        $request->user()->unreadNotifications->markAsRead();
+
+        return new ApiResource([
+            'message' => 'All notifications marked as read',
+        ]);
+    }
+
+    /**
+     * Get unread notifications count.
+     */
+    public function getUnreadNotificationsCount(Request $request)
+    {
+        $unreadNotificationsCount = $request->user()->unreadNotifications()->count();
+
+        return new ApiResource([
+            'unread_notifications_count' => $unreadNotificationsCount,
         ]);
     }
 }
