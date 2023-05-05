@@ -241,13 +241,13 @@ function runMySqlQueryInNonStrictMode(callable $callable)
     $strictMode = config('database.connections.mysql.strict');
 
     config(['database.connections.mysql.strict' => false]);
-    DB::reconnect();
+    callStatic(DB::class, 'reconnect');
 
     // Run the query
     $result = $callable();
 
     config(['database.connections.mysql.strict' => $strictMode]);
-    DB::reconnect();
+    callStatic(DB::class, 'reconnect');
 
     return $result;
 }

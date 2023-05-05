@@ -90,14 +90,14 @@ class MessageController extends Controller
         // If sender is not the receiver, then send notification
         if ($message->sender_id != $message->receiver_id) {
             // Send notification to the receiver
-            NewMessage::dispatch($message);
+            callStatic(NewMessage::class, 'dispatch', $message);
 
             // If receiver is online, then send the message to the receiver
             if ($message->receiver['is_online']) {
                 $message->delivered_at = now();
                 $message->save();
 
-                MessageDelivered::dispatch($message);
+                callStatic(MessageDelivered::class, 'dispatch', $message);
             }
         }
 
@@ -134,7 +134,7 @@ class MessageController extends Controller
                 $message->save();
 
                 // Send notification to the sender that the message has been read
-                MessageRead::dispatch($message);
+                callStatic(MessageRead::class, 'dispatch', $message);
             }
         }
 
@@ -258,7 +258,7 @@ class MessageController extends Controller
             $message->status = 'read';
             $message->save();
 
-            MessageRead::dispatch($message);
+            callStatic(MessageRead::class, 'dispatch', $message);
         }
 
         return new ApiResource(['message' => 'Messages marked as read']);
@@ -323,7 +323,7 @@ class MessageController extends Controller
         $message->delete();
 
         // Dispatch event
-        MessageDeleted::dispatch($message);
+        callStatic(MessageDeleted::class, 'dispatch', $message);
 
         return new ApiResource(['data' => $message]);
     }
@@ -355,7 +355,7 @@ class MessageController extends Controller
             $message->delete();
 
             // Dispatch event
-            MessageDeleted::dispatch($message);
+            callStatic(MessageDeleted::class, 'dispatch', $message);
         }
 
         return new ApiResource(['message' => 'All messages deleted']);
@@ -403,13 +403,13 @@ class MessageController extends Controller
         ]);
 
         // Copy attachments
-        $this->copyAttachments($message->attachments, $message);
+        $this->copyAttachments($message->attachment()->get(), $message);
 
         // Save message
         $forwardedMessage->save();
 
         // Send notification
-        NewMessage::dispatch($forwardedMessage);
+        callStatic(NewMessage::class, 'dispatch', $forwardedMessage);
 
         return new ApiResource(['data' => $forwardedMessage]);
     }
@@ -466,7 +466,7 @@ class MessageController extends Controller
             $message->save();
 
             // Send notification
-            NewMessage::dispatch($message);
+            callStatic(NewMessage::class, 'dispatch', $message);
         }
 
         // Remove receiver_id from the message

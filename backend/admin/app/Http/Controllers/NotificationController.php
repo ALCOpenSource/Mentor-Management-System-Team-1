@@ -85,10 +85,8 @@ class NotificationController extends Controller
      */
     public function getUnreadNotificationsCount(Request $request)
     {
-        $unreadNotificationsCount = $request->user()->unreadNotifications()->count();
-
         return new ApiResource([
-            'unread_notifications_count' => $unreadNotificationsCount,
+            'unread_notifications_count' => $request->user()->unreadNotifications()->count(),
         ]);
     }
 }
