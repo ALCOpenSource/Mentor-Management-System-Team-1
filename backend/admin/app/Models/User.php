@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
@@ -55,6 +54,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'provider',
         'provider_id',
         'role',
+        'avatar',
     ];
 
     /**
@@ -86,6 +86,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'general_metadata',
         'is_online',
         'last_seen',
+        'message_room_id',
     ];
 
     /**
@@ -133,15 +134,15 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function messages(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Message::class, 'receiver_id');
+        return $this->hasMany(Message::class, 'sender_id');
     }
 
     /**
      * Get the user messages sent by the user.
      */
-    public function sentMessages(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function recievedMessages(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Message::class, 'sender_id');
+        return $this->hasMany(Message::class, 'receiver_id');
     }
 
     /**
@@ -150,6 +151,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function role(): string
     {
         return $this->role;
+    }
+
+    /**
+     * Set the user's name.
+     */
+    public function setNameAttribute(string $name): void
+    {
+        $this->attributes['name'] = ucwords($name);
     }
 
     /**
@@ -173,7 +182,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getAvatarUrlAttribute(): string
     {
-        return $this->avatar ?? 'https://ui-avatars.com/api/?'.http_build_query(['name' => $this->initials, ...getUIAvatarBackgroundAndColor($this->name)]);
+        return $this->avatar ?? 'https://ui-avatars.com/api/?'.http_build_query(['name' => $this->initials, ...getUIAvatarBackgroundAndColor($this->email)]);
     }
 
     /**
@@ -181,7 +190,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getUnreadMessagesCountAttribute(): int
     {
-        return $this->messages()->where('status', 'unread')->count();
+        return callStatic(Message::class, 'where', 'receiver_id', $this->id)->where('status', 'unread')->count();
     }
 
     /**
@@ -424,5 +433,13 @@ class User extends Authenticatable implements MustVerifyEmail
     public function hasRole(array $role): bool
     {
         return in_array($this->role, $role);
+    }
+
+    /**
+     * Get message room id attribute.
+     */
+    public function getMessageRoomIdAttribute(): string
+    {
+        return getRoomIdFromUserIds($this->id, auth()->id());
     }
 }

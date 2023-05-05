@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\AppConstants;
 use App\Http\Resources\ApiResource;
+use App\Models\User;
 use App\Rules\CheckPreferences;
 use App\Rules\ValidateCity;
 use App\Rules\ValidateState;
@@ -104,7 +105,7 @@ class UserController extends Controller
         }
 
         // User model
-        foreach ($request->only(['name', 'email', 'phone', 'about_me', 'country', 'state', 'city', 'address', 'postal_code']) as $key => $value) {
+        foreach ($request->only(['name', 'email', 'phone', 'about_me', 'country', 'state', 'city', 'address', 'zip_code', 'timezone']) as $key => $value) {
             if ($value) {
                 $user->$key = $value;
             }
@@ -226,5 +227,55 @@ class UserController extends Controller
         $user = $request->user();
 
         return new ApiResource(['avatar_url' => $user->avatar_url]);
+    }
+
+    /**
+     * Get specific user.
+     *
+     * @param mixed $user_id
+     */
+    public function getUserById($user_id)
+    {
+        $user = callStatic(User::class, 'find', $user_id);
+
+        if (! $user) {
+            abort(404);
+        }
+
+        // Remove sensitive data
+        $user->makeHidden(['phone', 'email_verified_at', 'created_at', 'updated_at', 'unread_messages_count', 'unread_notifications_count']);
+
+        return new ApiResource(['data' => $user]);
+    }
+
+    /**
+     * Get all users.
+     */
+    public function getUsers()
+    {
+        $users = callStatic(User::class, 'where', 'id', '!=', auth()->id())->paginate(10);
+
+        // Remove sensitive data
+        $users->makeHidden(['phone', 'email_verified_at', 'created_at', 'updated_at', 'unread_messages_count', 'unread_notifications_count']);
+
+        return new ApiResource($users);
+    }
+
+    /**
+     * Search users.
+     *
+     * @param mixed $keyword
+     */
+    public function searchUsers($keyword)
+    {
+        $users = callStatic(User::class, 'where', 'name', 'LIKE', '%'.$keyword.'%')
+            ->orWhere('email', 'LIKE', '%'.$keyword.'%')
+            ->orWhere('phone', 'LIKE', '%'.$keyword.'%')
+            ->paginate(10);
+
+        // Remove sensitive data
+        $users->makeHidden(['phone', 'email_verified_at', 'created_at', 'updated_at', 'unread_messages_count', 'unread_notifications_count']);
+
+        return new ApiResource($users);
     }
 }
