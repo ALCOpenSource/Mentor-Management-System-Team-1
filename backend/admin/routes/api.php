@@ -18,7 +18,7 @@ Route::prefix('auth')->group(function () {
     Route::post('register', [App\Http\Controllers\AuthController::class, 'register']);
     Route::post('login', [App\Http\Controllers\AuthController::class, 'login']);
 
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware(['auth:sanctum', 'timezone'])->group(function () {
         // GET
         Route::get('user', [App\Http\Controllers\AuthController::class, 'user']);
 
@@ -63,7 +63,7 @@ Route::prefix('v1')->group(function () {
         Route::get('states/{state}/cities', [App\Http\Controllers\CountryController::class, 'getStateCities']);
     });
 
-    Route::middleware(['auth:sanctum', 'email.verified'])->group(function () {
+    Route::middleware(['auth:sanctum', 'email.verified', 'timezone'])->group(function () {
         // User endpoints
         Route::prefix('user')->group(function () {
             // Get user data
