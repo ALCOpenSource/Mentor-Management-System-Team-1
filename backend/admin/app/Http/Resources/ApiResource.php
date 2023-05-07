@@ -44,10 +44,10 @@ class ApiResource extends ResourceCollection
      * @param mixed $default
      * @param mixed $resource
      */
-    protected function addPaginator($resource, $default): void
+    protected function addPaginator($resource, &$default): void
     {
         if ($resource instanceof AbstractPaginator) {
-            $default['meta']['pagination'] = [
+            $default['pagination'] = [
                 'total' => $resource->total(),
                 'count' => $resource->count(),
                 'per_page' => $resource->perPage(),
@@ -85,6 +85,11 @@ class ApiResource extends ResourceCollection
         if (true === $response_data['success'] && ! isset($response_data['data'])) {
             $response_data['data'] = [];
         }
+
+        // If success is false and data == null then remove data
+        if (false === $response_data['success'] && isset($response_data['data'])) {
+            unset($response_data['data']);
+        }
     }
 
     /**
@@ -107,6 +112,7 @@ class ApiResource extends ResourceCollection
             'error' => '',
             'message' => '',
             'code' => '',
+            'data' => null,
         ];
 
         // Removes the default meta data from the response
@@ -125,12 +131,13 @@ class ApiResource extends ResourceCollection
         $this->addPaginator($this->resource, $default);
 
         // Merge the default meta data with the response data
-        $response_data = array_merge(
-            $default,
-            [
-                'data' => $this->collection->toArray(),
-            ]
-        );
+        if (! isset($this->collection['data']) && ! isset($default['data'])) {
+            $default['data'] = $this->collection->toArray();
+        } elseif (isset($this->collection['data'])) {
+            $default['data'] = $this->collection['data'];
+        }
+
+        $response_data = $default;
 
         // Sets the response status code
         /*

@@ -23,3 +23,7 @@ export { default as Share } from "./Share.vue";
 export { default as Comment } from "./Comment.vue";
 export { default as Bookmark } from "./Bookmark.vue";
 export { default as Close } from "./Close.vue";
+export { default as Filter } from "./Filter.vue";
+export { default as NoMessage } from "./NoMessage.vue";
+export { default as Photo } from "./Photo.vue";
+export { default as SendChat } from "./SendChat.vue";

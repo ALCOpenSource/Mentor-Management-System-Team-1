@@ -18,8 +18,13 @@
     </div>
     <div class="flex gap-8">
       <SideBar />
-      <div class="card">
-        <router-view></router-view>
+      <div class="w-full flex flex-col">
+        <div class="card">
+          <router-view></router-view>
+        </div>
+        <div class="self-end" v-if="route.path == supportRoute">
+          <ChatBot />
+        </div>
       </div>
     </div>
   </div>
@@ -30,9 +35,11 @@ import { useRoute } from "vue-router";
 import SideBar from "../components/Settings/SideBar.vue";
 import Pagination from "@/components/Common/Pagination.vue";
 import { IconSearch } from "@/assets/icons";
+import ChatBot from "@/components/Settings/ChatBot.vue";
 
 const route = useRoute();
 const archiveRoute = "/admin/settings/archive";
+const supportRoute = "/admin/settings/support";
 </script>
 
 <style scoped>
