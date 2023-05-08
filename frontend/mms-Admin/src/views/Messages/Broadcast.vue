@@ -13,7 +13,7 @@
         <v-expansion-panel>
           <v-expansion-panel-title>
             <h1>
-              Select recepient<span v-if="isSelected.length > 0">:</span>
+              Select recepient<span v-if="isSelected.length > 0">: </span>
               <span
                 v-for="item in isSelected"
                 :key="item"

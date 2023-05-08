@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use App\Traits\HasUuidAttachments;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class SupportTickets extends Model
 {
     use HasFactory;
+    use HasUuidAttachments;
+    use HasUuids;
+
+    protected $primaryKey = 'uuid';
 
     /**
      * The attributes that are mass assignable.
@@ -16,11 +22,27 @@ class SupportTickets extends Model
      */
     protected $fillable = [
         'user_id',
+        'assigned_user_id',
         'name',
         'email',
         'subject',
         'message',
         'status',
+    ];
+
+    protected $hidden = [
+        'user_id',
+        'assigned_user_id',
+        'created_at',
+        'updated_at',
+    ];
+
+    protected $casts = [
+        'message' => 'json',
+    ];
+
+    protected $appends = [
+        'attachments',
     ];
 
     /**
@@ -29,5 +51,13 @@ class SupportTickets extends Model
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the assigned user to the support ticket.
+     */
+    public function assignedUser(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class, 'assigned_user_id');
     }
 }

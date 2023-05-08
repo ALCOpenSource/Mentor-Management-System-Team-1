@@ -12,11 +12,11 @@ export default defineComponent({
   },
 });
 </script>
-// src="authStore.authUser?.avatar || 'https://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder.png'"
+// src="userStore.avatar?.avatar_url || 'https://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder.png'"
 <template>
   <img
-    class="avatar"
-    :src="userStore.avatar?.avatar_url" 
+    class="avatar" 
+    :src="imageLink || 'https://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder.png'"
     alt=""
     srcset=""
   />

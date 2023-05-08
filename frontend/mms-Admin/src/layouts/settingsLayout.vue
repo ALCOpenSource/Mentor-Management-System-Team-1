@@ -3,23 +3,19 @@
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-semibold">Settings</h1>
       <div class="flex" v-if="route.path == archiveRoute">
-        <div class="w-[346px] relative mr-5">
-          <span class="search_icon absolute top-[10px] left-4">
-            <IconSearch />
-          </span>
-          <input
-            class="p-4 py-2 pl-12 border bg-white rounded-md w-full focus:outline-[#058b94] placeholder:text-[16px]"
-            type="text"
-            placeholder="Search for anything"
-          />
-        </div>
+        <SearchBox />
         <Pagination />
       </div>
     </div>
     <div class="flex gap-8">
       <SideBar />
-      <div class="card">
-        <router-view></router-view>
+      <div class="w-full flex flex-col">
+        <div class="card">
+          <router-view></router-view>
+        </div>
+        <div class="self-end" v-if="route.path == supportRoute">
+          <ChatBot />
+        </div>
       </div>
     </div>
   </div>
@@ -30,9 +26,12 @@ import { useRoute } from "vue-router";
 import SideBar from "../components/Settings/SideBar.vue";
 import Pagination from "@/components/Common/Pagination.vue";
 import { IconSearch } from "@/assets/icons";
+import ChatBot from "@/components/Settings/ChatBot.vue";
+import SearchBox from "@/components/Common/SearchBox.vue";
 
 const route = useRoute();
 const archiveRoute = "/admin/settings/archive";
+const supportRoute = "/admin/settings/support";
 </script>
 
 <style scoped>
