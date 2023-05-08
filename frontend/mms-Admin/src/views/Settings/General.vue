@@ -219,12 +219,13 @@ const userBio = ref({
   firstName: userStore.user?.first_name,
   lastName: userStore.user?.last_name,
   city: userStore.user?.city,
-  country: userStore.user?.country,
-  website: userStore.user?.website,
-  twitter: userStore.user?.social_links?.twitter_username?.name,
-  instagram: userStore.user?.social_links?.instagram_username?.name,
-  linkedin: userStore.user?.social_links?.linkedin_username?.name,
-  github: userStore.user?.social_links?.github_username?.name,
+  //country: userStore.user?.country,
+  country: 'Afghanistan',
+  website: userStore.user?.website?.my_website?.url,
+  twitter: userStore.user?.social_links?.twitter_username?.url,
+  instagram: userStore.user?.social_links?.instagram_username?.url,
+  linkedin: userStore.user?.social_links?.linkedin_username?.url,
+  github: userStore.user?.social_links?.github_username?.url,
   about: userStore.user?.about_me,
   profilePicture: userStore.avatar?.avatar_url,
 });
@@ -296,7 +297,8 @@ export default defineComponent({
       next()
     } else {
       // The location state is not loaded yet, so wait for it before proceeding
-      const country = userStore.user?.country || 'Afghanistan'
+      //const country = userStore.user?.country || 'Afghanistan'
+      const country = 'Afghanistan'
       locationStore.setCountry().then(() => {
         const countryCode = getCountryCode(country, locationStore.country);
         return locationStore.setCity(countryCode);
