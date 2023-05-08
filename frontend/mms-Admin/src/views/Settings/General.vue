@@ -2,7 +2,7 @@
   <div>
     <div class="flex items-center mb-8">
       <v-avatar size="90px">
-        <v-img :src="authStore.authUser?.avatar || 'https://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder.png'" alt="John"></v-img>
+        <v-img :src="userStore.avatar?.avatar_url || 'https://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder.png'" :alt="userStore.user.name"></v-img>
       </v-avatar>
       <div class="ml-6">
         <h1 class="mb-2 text-xl font-semibold">Set Profile Picture</h1>
@@ -207,32 +207,32 @@ import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 import UploadProfilePic from "../../components/Settings/UploadProfilePic.vue";
 import Modal from "../../components/Forms/Modal.vue";
 import { profileSuccess } from "../../assets/images";
-import {useAuthStore} from "../../store/auth"
+import {useUserStore} from "../../store/user"
 import {useLocationStore} from "../../store/location"
 
-const authStore = useAuthStore();
+const userStore = useUserStore();
 const locationStore = useLocationStore();
 const { city, country } = storeToRefs(locationStore)
 
 const isModalOpen = ref(false);
 const userBio = ref({
-  firstName: "",
-  lastName: "",
-  city: "",
-  country: "AF",
-  website: "",
-  twitter: "",
-  instagram: "",
-  linkedin: "",
-  github: "",
-  about: "",
-  profilePicture: "https://cdn.vuetifyjs.com/images/john.jpg",
+  firstName: userStore.user?.first_name,
+  lastName: userStore.user?.last_name,
+  city: userStore.user?.city,
+  country: userStore.user?.country,
+  website: userStore.user?.website,
+  twitter: userStore.user?.social_links?.twitter_username?.name,
+  instagram: userStore.user?.social_links?.instagram_username?.name,
+  linkedin: userStore.user?.social_links?.linkedin_username?.name,
+  github: userStore.user?.social_links?.github_username?.name,
+  about: userStore.user?.about_me,
+  profilePicture: userStore.avatar?.avatar_url,
 });
 
 const getSrc = (src: string) => {
-  if(authStore.authUser && authStore.authUser.avatar)
+  if(userStore.avatar && userStore.avatar.avatar_url)
   {
-    authStore.authUser.avatar = src;
+    userStore.avatar.avatar_url = src;
   }
 };
 
@@ -240,9 +240,11 @@ const toggleModal = () => {
   isModalOpen.value = !isModalOpen.value;
 };
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
   // Handle the Form submission
-  toggleModal();
+  await userStore.updateUser(userBio).then(() => {
+    toggleModal();
+  })
 };
 
 const onSelect = async() => {
@@ -288,13 +290,13 @@ function getCountryCode(countryName: any, countries: any) {
 export default defineComponent({
   beforeRouteEnter(to, from, next) {     
     const locationStore = useLocationStore(); 
-    const authStore = useAuthStore(); 
+    const userStore = useUserStore(); 
     if (locationStore.country && locationStore.city) {
-      // The authentication state is already loaded, so proceed to General Settings
+      // The location state is already loaded, so proceed to General Settings
       next()
     } else {
-      // The authentication state is not loaded yet, so wait for it before proceeding
-      const country = authStore.authUser?.country || 'Afghanistan'
+      // The location state is not loaded yet, so wait for it before proceeding
+      const country = userStore.user?.country || 'Afghanistan'
       locationStore.setCountry().then(() => {
         const countryCode = getCountryCode(country, locationStore.country);
         return locationStore.setCity(countryCode);

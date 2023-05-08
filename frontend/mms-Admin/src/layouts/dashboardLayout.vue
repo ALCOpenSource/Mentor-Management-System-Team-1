@@ -6,21 +6,23 @@ import TopNavigation from "../components/Navigation/TopNavigation.vue";
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { useAuthStore } from "../store/auth"
+import { useUserStore } from "../store/user"
 
 export default defineComponent({
   components: { Sidebar, TopNavigation },
   
   beforeRouteEnter(to, from, next) {
-    const authStore = useAuthStore()
-    if (authStore.authUser) {
+    const userStore = useUserStore()
+    if (userStore.avatar && userStore.user) {
       // The authentication state is already loaded, so proceed to the dashboard
       next()
     } else {
       // The authentication state is not loaded yet, so wait for it before proceeding
-      authStore.getUser().then(() => {
-        next()
-      })
+      userStore.fetchUser().then(() => {
+        return userStore.fetchAvatar();
+      }).then(() => {
+        next();
+      });
     }
   },
 })

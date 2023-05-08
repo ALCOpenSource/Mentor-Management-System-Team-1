@@ -4,7 +4,7 @@
     <NotificationIcon />
     <v-menu>
         <template v-slot:activator="{ props }">
-          <UserAvatar id="menu-activator" v-bind="props" :image-link="authStore.authUser?.avatar" />
+          <UserAvatar id="menu-activator" v-bind="props" :image-link="userStore.avatar?.avatar_url" />
         </template>
         <div class="bg-[#f7feff] border-2 border-green-200 rounded py-3 px-5">
           <router-link to="/admin/profile"><p class="cursor-pointer mb-2">View Profile</p></router-link>
@@ -19,12 +19,14 @@
 import UserAvatar from "../Common/UserAvatar.vue";
 import MessageIcon from "../Icons/IconMessage.vue";
 import NotificationIcon from "../Icons/IconNotification.vue";
+import {useUserStore} from "../../store/user"
 import {useAuthStore} from "../../store/auth"
 
+const userStore = useUserStore();
 const authStore = useAuthStore();
 
-const handleLogout = () => {
-  // Handle Log out
+const handleLogout = async() => {
+   await authStore.handleLogout()
 }
 </script>
 
