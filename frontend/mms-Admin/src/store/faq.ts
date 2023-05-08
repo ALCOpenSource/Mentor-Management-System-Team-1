@@ -25,7 +25,7 @@ interface General {
 
 }
 export const useFaqStore = defineStore({
-    id: 'faq',
+    id: 'faqId',
 
     state: (): FaqState => {
         return {

@@ -99,9 +99,9 @@ export const useUserStore = defineStore({
             this.avatar = res.data.data
         },
 
-        async uploadAvatar(avatarData) {
+        async uploadAvatar(avatarData: avatarData) {
             await axios.post('v1/user/avatar', {
-                avatar: avatarData,
+                avatar: avatarData.avatar,
               }).then(res=>{
               if(res.data.success) {
                   console.log(res.data.data)
@@ -118,7 +118,7 @@ export const useUserStore = defineStore({
             this.user = res.data.data
         },
 
-        async updateUser(userData) {
+        async updateUser(userData: userData) {
             await axios.post('v1/user/avatar', {
                 name: userData.value.first_name +' '+ userData.value.last_name,
                 email: userData.value.email,
@@ -149,3 +149,32 @@ export const useUserStore = defineStore({
         }
     }
 })
+
+interface userData {
+    id: number;
+    name: string;
+    email: string;
+    avatar: string;
+    city: string;
+    state: string;
+    country: string;
+    zip_code: string;
+    address: string;
+    phone: number;
+    timezone: string;
+    about_me: string;
+    first_name: string;
+    last_name: string;
+    avatar_url: string;
+    unread_messages_count: number;
+    unread_notifications_count: number;
+    member_since: string;
+    social_links: Links | null;
+    website: Site | null;
+    flag: string;
+    tags: array | null;
+}
+
+interface avatarData {
+    avatar: string
+}

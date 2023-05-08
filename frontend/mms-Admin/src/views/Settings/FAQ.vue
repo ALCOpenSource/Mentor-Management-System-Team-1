@@ -2,7 +2,7 @@
   <div>
     <h1 class="text-xl font-semibold mb-5">General FAQ</h1>
     <v-expansion-panels multiple v-model="expanded1">
-      <v-expansion-panel v-for="item in faqStore.faq.general" :key="item">
+      <v-expansion-panel v-for="item in faqStore.faq?.general" :key="item">
         <v-expansion-panel-title>
           <IconCircleAdd v-if="!expanded1.includes(item - 1)" />
           <IconCircleMinus v-else />
@@ -13,13 +13,13 @@
     </v-expansion-panels>
     <h1 class="text-xl font-semibold my-5">Technical FAQ</h1>
     <v-expansion-panels multiple v-model="expanded2">
-      <v-expansion-panel v-for="item in 5" :key="item">
+      <v-expansion-panel v-for="item in faqStore.faq?.technical" :key="item">
         <v-expansion-panel-title>
           <IconCircleAdd v-if="!expanded2.includes(item - 1)" />
           <IconCircleMinus v-else />
-          <p class="font-semibold ml-6">Technical Frequently Asked Question?</p>
+          <p class="font-semibold ml-6">{{ item.question }}</p>
         </v-expansion-panel-title>
-        <v-expansion-panel-text> Some content </v-expansion-panel-text>
+        <v-expansion-panel-text> {{ item.answer }} </v-expansion-panel-text>
       </v-expansion-panel>
     </v-expansion-panels>
 
@@ -43,14 +43,15 @@
 
 <script setup lang="ts">
 import { ref, defineComponent } from "vue";
+import {useFaqStore} from "../../store/faq"
 import { IconCircleAdd, IconCircleMinus } from "@/assets/icons";
 
 const expanded1 = ref<Number[]>([]);
 const expanded2 = ref<Number[]>([]);
+const faqStore = useFaqStore();
 </script>
 
 <script lang="ts">
-import {useFaqStore} from "../../store/faq"
 
 export default defineComponent({
   

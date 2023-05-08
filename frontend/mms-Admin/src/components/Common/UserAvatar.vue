@@ -12,11 +12,11 @@ export default defineComponent({
   },
 });
 </script>
-
+// src="authStore.authUser?.avatar || 'https://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder.png'"
 <template>
   <img
     class="avatar"
-    :src="userStore.avatar?.avatar_url"
+    :src="userStore.avatar?.avatar_url" 
     alt=""
     srcset=""
   />
@@ -27,5 +27,6 @@ export default defineComponent({
   width: 55px;
   border-radius: 50%;
   height: auto;
+  cursor: pointer;
 }
 </style>

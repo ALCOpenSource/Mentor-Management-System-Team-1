@@ -4,7 +4,7 @@
       <div class="flex items-center">
         <v-avatar size="90px">
           <v-img
-            :src="userStore.avatar?.avatar_url"
+            :src="userStore.avatar?.avatar_url || 'https://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder.png'"
             alt="John"
           ></v-img>
         </v-avatar>
@@ -186,21 +186,21 @@
       <div class="grid w-2/4 gap-16 grid-cols-2 mb-6">
         <div class="flex items-center social-card">
           <GitHub />
-          <p class="ml-3">{{ userStore.user?.social_links?.github_username.name }}</p>
+          <p class="ml-3">{{ userStore.user?.social_links?.github_username }}</p>
         </div>
         <div class="flex items-center social-card">
           <Instagram />
-          <p class="ml-3">{{ userStore.user?.social_links?.instagram_username.name }}</p>
+          <p class="ml-3">{{ userStore.user?.social_links?.instagram_username }}</p>
         </div>
       </div>
       <div class="grid w-2/4 gap-16 grid-cols-2">
         <div class="flex items-center social-card">
           <LinkedIn />
-          <p class="ml-3">{{ userStore.user?.social_links?.linkedin_username.name }}</p>
+          <p class="ml-3">{{ userStore.user?.social_links?.linkedin_username }}</p>
         </div>
         <div class="flex items-center social-card">
           <Twitter />
-          <p class="ml-3">{{ userStore.user?.social_links.twitter_username.name }}</p>
+          <p class="ml-3">{{ userStore.user?.social_links.twitter_username }}</p>
         </div>
       </div>
     </div>

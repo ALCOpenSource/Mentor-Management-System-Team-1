@@ -125,27 +125,6 @@ const router = createRouter({
         },
         {
           path: "discussion-forum",
-          component: () => import("@/views/Discussion/DiscussionForum.vue"),
-          meta: {
-            requiresAuth:true
-          },
-          component: messageLayout,
-          redirect: () => "/admin/messages/inbox",
-          children: [
-            {
-              path: "inbox",
-              name: "inbox",
-              component: () => import("@/views/Messages/Messages.vue"),
-            },
-            {
-              path: "broadcast",
-              name: "broadcast",
-              component: () => import("@/views/Messages/Broadcast.vue"),
-            },
-          ],
-        },
-        {
-          path: "discussion-forum",
           name: "discussion-forum",
           component: discussionLayout,
           redirect: () => "/admin/discussion-forum/discussions",

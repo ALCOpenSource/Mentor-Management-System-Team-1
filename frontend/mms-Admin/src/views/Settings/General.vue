@@ -2,7 +2,7 @@
   <div>
     <div class="flex items-center mb-8">
       <v-avatar size="90px">
-        <v-img :src="userStore.avatar?.avatar_url" :alt="userStore.user.name"></v-img>
+        <v-img :src="userStore.avatar?.avatar_url || 'https://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder.png'" :alt="userStore.user.name"></v-img>
       </v-avatar>
       <div class="ml-6">
         <h1 class="mb-2 text-xl font-semibold">Set Profile Picture</h1>
@@ -71,7 +71,7 @@
               v-model="userBio.country" @change.prevent="onSelect" class="input" required>
                 <option value="" hidden disabled>Select Country</option>
                 <option v-for="country in locationStore.country"
-              :key="country"  :value="country.code">{{ country.name }} </option>
+              :key="country.code"  :value="country.code">{{ country.name }} </option>
               </select>
               <span class="">
                 <svg
@@ -94,11 +94,11 @@
             <v-col cols="2"
               ><h1 class="font-semibold text-center">City</h1></v-col
             >
-            <v-col cols="5" class="my-select-city">
+            <v-col cols="5" class="my-select">
               <select v-model="userBio.city" class="input">
                 <option value="" hidden disabled>Select City</option>
-                <option v-for="city in city"
-              :key="city"  :value="city.code">{{ city.name }}</option>
+                <option v-for="city in locationStore.city"
+              :key="city.code"  :value="city.code">{{ city.name }}</option>
               </select>
               <span class="">
                 <svg
@@ -253,7 +253,7 @@ const onSelect = async() => {
 }
 
 const filteredCities = computed(() => {
-  return locationStore.city.filter((city: { code: string; }) => city.code === userBio.value.country);
+  return locationStore.city?.filter((city: { code: string; }) => city.code === userBio.value.country);
 });
 
 watch(country, () => {
@@ -264,7 +264,7 @@ watch(country, () => {
 watch(filteredCities, () => {
   // Update select options when the cities for the current country change
   const select = document.querySelector(".my-select-city select");
-  const options = select?.options;
+  const options = select?.querySelectorAll("option");
   if (options) {
     for (let i = 0; i < options.length; i++) {
       const option = options[i];
