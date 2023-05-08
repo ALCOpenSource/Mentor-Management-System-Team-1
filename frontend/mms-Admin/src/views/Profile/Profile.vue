@@ -15,7 +15,7 @@
             </h1>
             <NigerianFlag />
           </div>
-          <p class="text-slate-500">Admin</p>
+          <p class="text-slate-500">{{ userStore.user?.tags[0] }}</p>
         </div>
       </div>
       <div>
