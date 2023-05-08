@@ -45,7 +45,7 @@ export const useAuthStore = defineStore({
     },
 
     async socialLoginRedirect() {
-      await axios.get("auth/social/redirect/google").then((res) => {
+      await axios.get("auth/social/redirect/google").then((res: any) => {
         if (res.data.success) {
           window.location.href = res.data.data.url;
         }

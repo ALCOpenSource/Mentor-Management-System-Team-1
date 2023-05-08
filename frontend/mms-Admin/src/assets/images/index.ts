@@ -6,3 +6,6 @@ export { default as gads } from "./GadsLogo.png";
 export { default as appLogo } from "./app_logo.svg";
 export { default as placeholderImg } from "./placeholder_image.svg";
 export { default as profileSuccess } from "./profile_success.png";
+export { default as deleteSuccess } from "./delete_sucessful.png";
+export { default as smallCertificate } from "./smallCert.png";
+export { default as largeCertificate } from "./cert.png";

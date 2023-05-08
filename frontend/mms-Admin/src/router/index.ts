@@ -5,6 +5,7 @@ import settingsLayout from "@/layouts/settingsLayout.vue";
 import {useAuthStore} from '@/store/auth'
 import messageLayout from "@/layouts/messageLayout.vue";
 import discussionLayout from "@/layouts/discussionLayout.vue";
+import mentorLayout from "@/layouts/mentorLayout.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -73,10 +74,23 @@ const router = createRouter({
         {
           path: "mentors",
           name: "mentors",
-          component: () => import("@/views/Mentors/Mentors.vue"),
+          component: mentorLayout,
           meta: {
             requiresAuth:true
           },
+          redirect: () => "/admin/mentors/mentor-list",
+          children: [
+            {
+              path: "mentor-list",
+              name: "mentor-list",
+              component: () => import("@/views/Mentors/MentorList.vue"),
+            },
+            {
+              path: "mentor/:id",
+              name: "mentor",
+              component: () => import("@/views/Mentors/Mentor.vue"),
+            }
+          ],
         },
         {
           path: "mentor-managers",
