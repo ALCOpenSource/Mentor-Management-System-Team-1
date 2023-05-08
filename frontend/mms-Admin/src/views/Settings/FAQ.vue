@@ -34,7 +34,6 @@
 
 <script setup lang="ts">
 import { ref, defineComponent } from "vue";
-import {useFaqStore} from "../../store/faq"
 import { IconCircleAdd, IconCircleMinus } from "@/assets/icons";
 import { useFaqStore } from "@/store/settings/faq";
 import { storeToRefs } from "pinia";
@@ -56,7 +55,7 @@ const expanded2 = ref<Number[]>([]);
 const faqStore = useFaqStore();
 </script>
 
-<script lang="ts">
+<!-- <script lang="ts">
 
 export default defineComponent({
   
@@ -73,6 +72,6 @@ export default defineComponent({
     }
   },
 })
-</script>
+</script> -->
 
 <style scoped></style>
