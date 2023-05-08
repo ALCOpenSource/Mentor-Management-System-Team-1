@@ -33,7 +33,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, defineComponent } from "vue";
+import {useFaqStore} from "../../store/faq"
 import { IconCircleAdd, IconCircleMinus } from "@/assets/icons";
 import { useFaqStore } from "@/store/settings/faq";
 import { storeToRefs } from "pinia";
@@ -52,6 +53,26 @@ const { generalFaqs, technicalFaqs } = storeToRefs(useFaqStore());
 
 const expanded1 = ref<Number[]>([]);
 const expanded2 = ref<Number[]>([]);
+const faqStore = useFaqStore();
+</script>
+
+<script lang="ts">
+
+export default defineComponent({
+  
+  beforeRouteEnter(to, from, next) {
+    const faqStore = useFaqStore();
+    if (faqStore.faq) {
+      // The authentication state is already loaded, so proceed to the dashboard
+      next()
+    } else {
+      // The authentication state is not loaded yet, so wait for it before proceeding
+      faqStore.setFaq().then(() => {
+        next()
+      })
+    }
+  },
+})
 </script>
 
 <style scoped></style>
