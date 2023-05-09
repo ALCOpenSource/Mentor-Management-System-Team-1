@@ -18,7 +18,7 @@ Route::prefix('auth')->group(function () {
     Route::post('register', [App\Http\Controllers\AuthController::class, 'register']);
     Route::post('login', [App\Http\Controllers\AuthController::class, 'login']);
 
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware(['auth:sanctum', 'timezone'])->group(function () {
         // GET
         Route::get('user', [App\Http\Controllers\AuthController::class, 'user']);
 
@@ -63,11 +63,20 @@ Route::prefix('v1')->group(function () {
         Route::get('states/{state}/cities', [App\Http\Controllers\CountryController::class, 'getStateCities']);
     });
 
-    Route::middleware(['auth:sanctum', 'email.verified'])->group(function () {
+    Route::middleware(['auth:sanctum', 'email.verified', 'timezone'])->group(function () {
         // User endpoints
         Route::prefix('user')->group(function () {
             // Get user data
             Route::get('/', [App\Http\Controllers\UserController::class, 'getUser']);
+
+            // Get all users
+            Route::get('all', [App\Http\Controllers\UserController::class, 'getUsers']);
+
+            // Get specific user data
+            Route::get('{user_id}', [App\Http\Controllers\UserController::class, 'getUserById']);
+
+            // Search users
+            Route::get('search/{keyword}', [App\Http\Controllers\UserController::class, 'searchUsers']);
 
             // Update user profile
             Route::patch('/', [App\Http\Controllers\UserController::class, 'update']);
@@ -138,18 +147,24 @@ Route::prefix('v1')->group(function () {
             // Get notification data
             Route::get('/', [App\Http\Controllers\NotificationController::class, 'getNotifications']);
 
+            // Mark all notification as read
+            Route::post('read/all', [App\Http\Controllers\NotificationController::class, 'markAllAsRead']);
+
             // / Mark notification as read
             Route::post('read', [App\Http\Controllers\NotificationController::class, 'markAsRead']);
 
             // Delete notification data
             Route::delete('{notification_id}', [App\Http\Controllers\NotificationController::class, 'deleteNotification']);
+
+            // Delete all notification data
+            Route::delete('/', [App\Http\Controllers\NotificationController::class, 'deleteAllNotifications']);
+
+            // Get notification count
+            Route::get('count', [App\Http\Controllers\NotificationController::class, 'getNotificationCount']);
         });
 
         // Message endpoints
         Route::prefix('message')->group(function () {
-            // Get message data
-            Route::get('/', [App\Http\Controllers\MessageController::class, 'getMessage']);
-
             // Send message
             Route::post('/', [App\Http\Controllers\MessageController::class, 'sendMessage']);
 
@@ -157,26 +172,88 @@ Route::prefix('v1')->group(function () {
             Route::get('threads', [App\Http\Controllers\MessageController::class, 'getMessageThreads']);
 
             // Get message thread
-            Route::get('thread/{reciever_id}', [App\Http\Controllers\MessageController::class, 'getMessageThread']);
-
-            // Delete all message data
-            Route::delete('thread/{reciever_id}', [App\Http\Controllers\MessageController::class, 'deleteAllMessagesInThread']);
-
-            // Get message data
-            Route::get('unread', [App\Http\Controllers\MessageController::class, 'getUnreadMessage']);
+            Route::get('thread/{room_id}', [App\Http\Controllers\MessageController::class, 'getMessageThread']);
 
             // Mark message as read
             Route::post('read/{uuid}', [App\Http\Controllers\MessageController::class, 'markMessageAsRead']);
 
+            // Mark the whole thread as read
+            Route::post('read/thread/{room_id}', [App\Http\Controllers\MessageController::class, 'markThreadAsRead']);
+
+            // Forward message
+            Route::post('forward', [App\Http\Controllers\MessageController::class, 'forwardMessage']);
+
+            // Broadcast message
+            Route::post('broadcast', [App\Http\Controllers\MessageController::class, 'broadcastMessage']);
+
             // Mark message as unread
-            Route::post('unread/{uuid}', [App\Http\Controllers\MessageController::class, 'markMessageAsUnread']);
+            // Commented out because I'm not sure if this is needed, just good to have incase it is needed. - @ghostscypher
+            // Route::post('unread/{uuid}', [App\Http\Controllers\MessageController::class, 'markMessageAsUnread']);
 
             // Delete message data
             Route::delete('{uuid}', [App\Http\Controllers\MessageController::class, 'deleteMessage']);
+
+            // Delete all message data
+            Route::delete('thread/{room_id}', [App\Http\Controllers\MessageController::class, 'deleteAllMessagesInThread']);
+
+            // Get broadcast messages sent by user
+            Route::get('broadcast', [App\Http\Controllers\MessageController::class, 'getBroadcastMessages']);
         });
 
-        // Post endpoints
+        // Attachment endpoints
+        Route::prefix('attachment')
+            ->withoutMiddleware(['auth:sanctum', 'email.verified'])
+            ->middleware(['throttle:30,1', 'signed'])
+            ->group(function () {
+                // Display attachment
+                Route::get('{uuid}', [App\Http\Controllers\AttachmentController::class, 'getAttachment'])->name('attachment.show');
 
-        // Post discussions endpoints
+                // Download attachment
+                Route::get('download/{uuid}', [App\Http\Controllers\AttachmentController::class, 'downloadAttachment'])->name('attachment.download');
+
+                // Display attachment thumbnail
+                Route::get('thumbnail/{uuid}', [App\Http\Controllers\AttachmentController::class, 'getAttachmentThumbnail'])->name('attachment.thumbnail');
+            });
+
+        // Post endpoints
+        Route::prefix('post')->group(function () {
+            // Get post data
+            Route::get('/', [App\Http\Controllers\PostController::class, 'getPosts']);
+
+            // Get specific post data
+            Route::get('{post_id}', [App\Http\Controllers\PostController::class, 'getSpecificPost']);
+
+            // Get post image
+            Route::get('image/{filename}', [App\Http\Controllers\PostController::class, 'getPostImage'])->name('post.image');
+
+            // Update post data
+            Route::post('/', [App\Http\Controllers\PostController::class, 'createPost']);
+            Route::patch('{post_id}', [App\Http\Controllers\PostController::class, 'updatePost']);
+
+            // Delete post data
+            Route::delete('{post_id}', [App\Http\Controllers\PostController::class, 'deletePost']);
+
+            // Delete all post data
+            Route::delete('/', [App\Http\Controllers\PostController::class, 'deleteAllPosts']);
+
+            // Post comments endpoints
+            Route::prefix('comment')->group(function () {
+                // Get post comments
+                Route::get('{post_id}', [App\Http\Controllers\PostController::class, 'getPostComments']);
+
+                // Get specific post comment
+                Route::get('{post_id}/{comment_id}', [App\Http\Controllers\PostController::class, 'getSpecificPostComment']);
+
+                // Update post comment
+                Route::post('{post_id}', [App\Http\Controllers\PostController::class, 'createPostComment']);
+                Route::patch('{post_id}/{comment_id}', [App\Http\Controllers\PostController::class, 'updatePostComment']);
+
+                // Delete post comment
+                Route::delete('{post_id}/{comment_id}', [App\Http\Controllers\PostController::class, 'deletePostComment']);
+
+                // Delete all post comments
+                Route::delete('{post_id}', [App\Http\Controllers\PostController::class, 'deleteAllPostComments']);
+            });
+        });
     });
 });

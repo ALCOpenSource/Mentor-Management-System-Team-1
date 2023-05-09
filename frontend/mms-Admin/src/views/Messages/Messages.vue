@@ -169,17 +169,14 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .chats-col {
-  min-width: 320px;
+  min-width: 329px;
   height: 70vh;
   overflow-y: scroll;
-
-  &:hover::-webkit-scrollbar {
-    display: block;
-  }
+  padding-right: 5px;
 
   &::-webkit-scrollbar {
-    display: none;
     width: 5px;
+    transition: all 0.5s ease-in-out;
   }
 
   &::-webkit-scrollbar-track {
@@ -187,9 +184,12 @@ onMounted(() => {
   }
 
   &::-webkit-scrollbar-thumb {
-    background: var(--btn-primary);
-    height: 40px;
+    background: transparent;
     border-radius: 50px;
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background: var(--btn-primary);
   }
 }
 

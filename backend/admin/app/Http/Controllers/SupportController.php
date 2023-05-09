@@ -6,7 +6,7 @@ use App\Helpers\AppConstants;
 use App\Http\Resources\ApiResource;
 use App\Models\SupportTickets;
 use App\Models\User;
-use App\Notifications\NewSupportTicketCreated;
+use App\Notifications\NewSupportTicketCreatedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -19,32 +19,21 @@ class SupportController extends Controller
      * @param mixed $message
      * @param mixed $role
      * @param mixed $user_id
+     * @param mixed $support
+     * @param mixed $attachment
      */
-    protected function getSupportMessage($previous_messages, $message, $role, $user_id)
+    protected function getSupportMessage($support, $message, $role, $user_id, $attachment)
     {
         $temp = [];
 
-        if ($previous_messages) {
-            $temp = $previous_messages;
+        if ($support->message) {
+            $temp = $support->message;
         }
 
         $message_type = 'text';
 
-        // If message is base 64 encoded image then save it to storage
-        if (preg_match('/(data:image\/[^;]+;base64[^"]+)/', $message)) {
-            $data = substr($message, strpos($message, ',') + 1);
-            $data = base64_decode($data);
-            $fileName = time().'_'.uniqid().'.png';
-            $filePath = storage_path('app/public/support/'.$fileName);
-            $message = route('support.image', ['filename' => $fileName]);
-            $message_type = 'image';
-
-            // Create directory if not exists
-            if (! callStatic(File::class, 'exists', storage_path('app/public/support'))) {
-                callStatic(File::class, 'makeDirectory', storage_path('app/public/support'), 0o777, true);
-            }
-
-            callStatic(File::class, 'put', $filePath, $data);
+        if ($attachment) {
+            $support->storeAttachment($attachment, 'attachment', $support->uuid);
         }
 
         $temp[] = [
@@ -69,14 +58,20 @@ class SupportController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'subject' => 'required|string|max:255',
-            'message' => 'required|string|max:16384',
+            'message' => 'nullable|string|max:600',
+            'attachment' => 'nullable|file|max:10240|mime:jpg,jpeg,png,webm,txt,mpeg,ogg,mp4,webm,3gp,mov,flv,avi,wmv,ts',
         ]);
+
+        // If message is empty and attachment is empty return error
+        if (! $request->message && ! $request->attachment) {
+            return new ApiResource(['data' => null, 'message' => 'Message or attachment is required.', 'status' => 422]);
+        }
 
         $support = new SupportTickets();
         $support->name = $request->name;
         $support->email = $request->email;
         $support->subject = $request->subject;
-        $support->message = $this->getSupportMessage($support->message, $request->message, 'user', $request->user()->id);
+        $support->message = $this->getSupportMessage($support, $request->message, 'user', $request->user()->id, $request->attachment);
 
         $support->status = 'pending';
         $support->user_id = $request->user()->id;
@@ -91,7 +86,7 @@ class SupportController extends Controller
 
         // Send notification to all admins and support team
         foreach ($admins as $admin) {
-            $admin->notify(new NewSupportTicketCreated($support));
+            $admin->notify(new NewSupportTicketCreatedNotification($support));
         }
 
         return new ApiResource(['data' => $support, 'message' => 'Support ticket created successfully.', 'status' => 201]);
@@ -108,10 +103,14 @@ class SupportController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'subject' => 'required|string|max:255',
-
-            // Message can be base 64 encoded image
-            'message' => 'required|string|max:2048',
+            'message' => 'nullable|string|max:600',
+            'attachment' => 'nullable|file|max:10240|mime:jpg,jpeg,png,webm,txt,mpeg,ogg,mp4,webm,3gp,mov,flv,avi,wmv,ts',
         ]);
+
+        // If message is empty and attachment is empty return error
+        if (! $request->message && ! $request->attachment) {
+            return new ApiResource(['data' => null, 'message' => 'Message or attachment is required.', 'status' => 422]);
+        }
 
         $support = callStatic(SupportTickets::class, 'where', function ($query) {
             $query->where('user_id', auth()->user()->id)
@@ -125,7 +124,7 @@ class SupportController extends Controller
         $support->name = $request->name;
         $support->email = $request->email;
         $support->subject = $request->subject;
-        $support->message = $this->getSupportMessage($support->message, $request->message, 'user', $request->user()->id);
+        $support->message = $this->getSupportMessage($support, $request->message, 'user', $request->user()->id, $request->attachment);
         $support->status = 'pending';
         $support->user_id = $request->user()->id;
         $support->save();

@@ -61,13 +61,19 @@ class AuthController extends Controller
         $user = new User($validatedData);
 
         // If localhost, or ipaddress is 127.0.0.1 then verify the user automatically
-        if ('127.0.0.1' === request()->ip() || 'localhost' === request()->ip()) {
+        if ('127.0.0.1' === request()->ip() ||
+            'localhost' === request()->ip() ||
+            app()->environment('local', 'testing') ||
+            config('app.debug')
+        ) {
             $user->email_verified_at = now();
         }
 
-        // Send verification email
-        $user->sendEmailVerificationNotification();
         $user->save();
+
+        if (! $user->email_verified_at) {
+            $user->sendEmailVerificationNotification();
+        }
 
         // Create a token for the user
         $accessToken = $this->createAuthToken($user);
@@ -430,5 +436,32 @@ class AuthController extends Controller
         $this->logoutOther($request);
 
         return new ApiResource(['message' => 'Password changed successfully']);
+    }
+
+    /**
+     * Verify email.
+     */
+    public function verifyEmail(Request $request)
+    {
+        // Validate the user, return error using the ApiResource
+        $validator = validator($request->all(), [
+            'token' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return new ApiResource(['errors' => $validator->errors(), 'status' => 422]);
+        }
+
+        $user = User::where('email_verification_token', $request->token)->first();
+
+        if (! $user) {
+            return new ApiResource(['error' => 'Invalid token', 'status' => 422]);
+        }
+
+        $user->email_verified_at = now();
+        $user->email_verification_token = null;
+        $user->save();
+
+        return new ApiResource(['message' => 'Email verified successfully']);
     }
 }

@@ -13,7 +13,7 @@
         </div>
       </div>
     </div>
-    <div class="w-full" v-for="num in getNumberToDisplay()" :key="num">
+    <div class="w-full mb-3" v-for="num in getNumberToDisplay()" :key="num">
       <UserCard @click="handleAddToChat" class="cursor-pointer"/>
     </div>
   </div>

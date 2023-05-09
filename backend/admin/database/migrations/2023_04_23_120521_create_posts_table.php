@@ -11,16 +11,13 @@ return new class() extends Migration {
     public function up(): void
     {
         Schema::create('posts', function (Blueprint $table) {
-            $table->id();
+            $table->uuid();
             $table->string('title');
-            $table->text('body');
+            $table->longtext('body');
             $table->string('slug')->unique();
             $table->boolean('is_published')->default(false);
             $table->timestamp('published_at')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-
-            // Attachments
-            $table->morphs('attachment');
 
             // SEO
             $table->string('meta_title')->nullable();

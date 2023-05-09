@@ -2,17 +2,26 @@
 
 namespace App\Models;
 
+use App\Traits\HasUuidAttachments;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PostDiscussions extends Model
 {
     use HasFactory;
+    use HasUuidAttachments;
+    use HasUuids;
+
+    protected $primaryKey = 'uuid';
 
     protected $fillable = [
+        'uuid',
         'post_id',
         'user_id',
         'is_owner',
+        'comment',
+        'attachment',
     ];
 
     protected $casts = [
@@ -22,34 +31,20 @@ class PostDiscussions extends Model
     ];
 
     protected $appends = [
-        'comment_attachment_url',
-        'comment_attachment_thumbnail_url',
         'comment_preview',
         'is_owner',
         'date',
         'time',
         'human_time',
+        'attachments',
     ];
-
-    protected $hidden = [
-        'comment_attachment_path',
-        'comment_attachment_thumbnail_path',
-    ];
-
-    /**
-     * Morph to attachment.
-     */
-    public function comment_attachment(): \Illuminate\Database\Eloquent\Relations\MorphToMany
-    {
-        return $this->morphToMany(Attachments::class, 'attachment');
-    }
 
     /**
      * Get post.
      */
     public function post(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Post::class, 'post_id');
+        return $this->belongsTo(Post::class);
     }
 
     /**
@@ -57,23 +52,7 @@ class PostDiscussions extends Model
      */
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-
-    /**
-     * Get comment attachment url.
-     */
-    public function getCommentAttachmentUrlAttribute(): ?string
-    {
-        if ($this->comment_attachment) {
-            return route('post_comment_attachment', [
-                'post' => $this->post_id,
-                'post_discussion' => $this->id,
-                'attachment' => $this->comment_attachment->id,
-            ]);
-        }
-
-        return null;
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -97,15 +76,7 @@ class PostDiscussions extends Model
      */
     public function getCommentPreviewAttribute(): ?string
     {
-        if ('text' === $this->comment_type) {
-            return $this->comment;
-        }
-
-        if ('image' === $this->comment_type) {
-            return $this->comment_attachment_url;
-        }
-
-        return null;
+        return substr($this->comment, 0, 100);
     }
 
     /**

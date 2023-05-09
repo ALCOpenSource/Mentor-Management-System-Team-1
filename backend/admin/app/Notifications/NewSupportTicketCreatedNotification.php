@@ -6,7 +6,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewSupportTicketCreated extends Notification
+// TODO: Implement this class.
+class NewSupportTicketCreatedNotification extends Notification
 {
     use Queueable;
 

@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use App\Traits\HasUuidAttachments;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class SupportTickets extends Model
 {
     use HasFactory;
+    use HasUuidAttachments;
+    use HasUuids;
+
+    protected $primaryKey = 'uuid';
 
     /**
      * The attributes that are mass assignable.
@@ -33,6 +39,10 @@ class SupportTickets extends Model
 
     protected $casts = [
         'message' => 'json',
+    ];
+
+    protected $appends = [
+        'attachments',
     ];
 
     /**
