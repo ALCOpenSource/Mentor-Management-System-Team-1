@@ -109,7 +109,7 @@ export const useUserStore = defineStore({
                 }
             }).then(res=>{
               if(res.data.success) {
-                this.avatar.avatar_url = res.data.data.avatar_url
+                this.avatar = res.data.data
                 this.toaster.success('Profile photo updated successfully')
               }
             }).catch(error => {
