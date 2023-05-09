@@ -230,10 +230,10 @@ const userBio = ref({
   profilePicture: userStore.avatar?.avatar_url,
 });
 
-const getSrc = (src: string) => {
+const getSrc = async (src: File) => {
   if(userStore.avatar && userStore.avatar.avatar_url)
   {
-    userStore.avatar.avatar_url = src;
+    await userStore.uploadAvatar(src);
   }
 };
 

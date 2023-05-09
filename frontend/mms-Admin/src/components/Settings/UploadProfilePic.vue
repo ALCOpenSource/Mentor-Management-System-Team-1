@@ -1,6 +1,6 @@
 <template>
-  <button class="upload" @click="handleClick">Upload Picture</button>
-  <input ref="file" type="file" name="" class="hidden" @change="handleChange" />
+    <button class="upload" @click="handleClick">Upload Picture</button>
+    <input ref="file" type="file" name="" class="hidden" @change="handleChange" />
 </template>
 
 <script setup lang="ts">
@@ -10,17 +10,18 @@ const file = ref();
 
 const emit = defineEmits(["upload"]);
 
-const handleClick = () => {
+const handleClick = (evt: any) => {
   file.value.click();
 };
 
 const handleChange = (evt: any) => {
   const reader = new FileReader();
-  reader.readAsDataURL(evt.target.files[0]);
+  reader.readAsDataURL(evt.target.files[0]); 
   reader.onload = () => {
-    emit("upload", reader.result);
+    emit("upload", evt.target.files[0]);
   };
   // Sending the file to the backend
+
 };
 </script>
 

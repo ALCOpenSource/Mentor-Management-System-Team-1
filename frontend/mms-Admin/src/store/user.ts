@@ -99,17 +99,21 @@ export const useUserStore = defineStore({
             this.avatar = res.data.data
         },
 
-        async uploadAvatar(avatarData: avatarData) {
-            await axios.post('v1/user/avatar', {
-                avatar: avatarData.avatar,
-              }).then(res=>{
+        async uploadAvatar(avatarFile: File) {
+            const formData = new FormData();
+            formData.append('avatar', avatarFile);
+
+            await axios.post('v1/user/avatar', formData, {
+                headers: {
+                'Content-Type': 'multipart/form-data'
+                }
+            }).then(res=>{
               if(res.data.success) {
-                  console.log(res.data.data)
-                // this.authUser = res.data.data.user
-                // this.toaster.success(res.data.message)
+                this.avatar.avatar_url = res.data.data.avatar_url
+                this.toaster.success('Profile photo updated successfully')
               }
             }).catch(error => {
-                // this.toaster.error('Invalid username or password.')
+                this.toaster.error('Unable to update profile photo')
             });
         },
 
@@ -173,8 +177,4 @@ interface userData {
     website: Site | null;
     flag: string;
     tags: array | null;
-}
-
-interface avatarData {
-    avatar: string
 }
