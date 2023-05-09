@@ -6,7 +6,7 @@
         <div class="flex flex-col mr-8">
           <router-link
             :to="{
-              name: 'mentor',
+              name: isMentorManager ? 'mentor-manager' : 'mentor',
               params: { id: 1 },
             }"
           >
@@ -54,6 +54,14 @@ defineProps({
     default: false,
   },
   showDelete: {
+    type: Boolean,
+    default: false,
+  },
+  isMentor: {
+    type: Boolean,
+    default: false,
+  },
+  isMentorManager: {
     type: Boolean,
     default: false,
   },
