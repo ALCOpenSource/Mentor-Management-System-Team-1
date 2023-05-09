@@ -18,7 +18,7 @@ const handleChange = (evt: any) => {
   const reader = new FileReader();
   reader.readAsDataURL(evt.target.files[0]); 
   reader.onload = () => {
-    emit("upload", evt.target.files[0]);
+    emit("upload", evt.target.files[0], reader.result);
   };
   // Sending the file to the backend
 

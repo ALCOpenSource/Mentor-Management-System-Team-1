@@ -17,6 +17,7 @@ interface User {
     avatar: string;
     city: string;
     state: string;
+    country_name: string;
     country: string;
     zip_code: string;
     address: string;
@@ -123,34 +124,31 @@ export const useUserStore = defineStore({
         },
 
         async updateUser(userData: userData) {
-            await axios.post('v1/user/avatar', {
-                name: userData.value.first_name +' '+ userData.value.last_name,
-                email: userData.value.email,
-                phone: userData.value.phone,
+          
+            try {
+              const response = await axios.patch('v1/user', {
+                name: userData.value.firstName + ' ' + userData.value.lastName,
                 country: userData.value.country,
-                state: userData.value.state,
                 city: userData.value.city,
-                address: userData.value.address,
-                zip_code: userData.value.zip_code,
-                about_me: userData.value.about_me,
-                webiste: userData.value.webiste,
-                github_username: userData.value.github_username,
-                linkedin_username: userData.value.linkedin_username,
-                twitter_username: userData.value.twitter_username,
-                instagram_username: userData.value.instagram_username,
-                timezone: userData.value.instagram_username,
-                tags: userData.value.tags
-              }).then(res=>{
-              if(res.data.success) {
-                  //this.fetchUser();
-                  console.log(res.data.data)
-                // this.authUser = res.data.data.user
-                // this.toaster.success(res.data.message)
+                about_me: userData.value.about,
+                website: userData.value.website,
+                github_username: userData.value.github,
+                linkedin_username: userData.value.linkedin,
+                twitter_username: userData.value.twitter,
+                instagram_username: userData.value.instagram,
+              });
+              if (response.data.success) {
+                this.user = response.data.data;
+                //this.toaster.success(response.data.message);
               }
-            }).catch(error => {
-                // this.toaster.error('Invalid username or password.')
-            });
-        }
+              
+              return response;
+            } catch (error) {
+              this.toaster.error(error.response.data.message);
+              return error.response;
+            }
+          }
+          
     }
 })
 
