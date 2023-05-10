@@ -2,7 +2,7 @@
   <div>
     <div class="flex justify-between item">
       <div class="flex items-center gap-3">
-        <h1 class="font-semibold text-2xl mr-3">Mentors</h1>
+        <h1 class="font-semibold text-2xl mr-3">Mentor Managers</h1>
         <GridOne :color="activeGrid === 'gridOne' ? '#058B94' : '#CEFAFD'" class="cursor-pointer" @click="changeGrid('gridOne')"/>
         <GridTwo :color="activeGrid === 'gridTwo' ? '#058B94' : '#CEFAFD'" class="cursor-pointer" @click="changeGrid('gridTwo')"/>
       </div>
@@ -11,7 +11,7 @@
           <router-link to="/admin/messages/broadcast">
             <SecondaryBtn title="Send Broadcast Message" />
           </router-link>
-          <PrimaryBtn title="Add New Mentor" @click="handleModalDecider('add')"/>
+          <PrimaryBtn title="Add New Mentor Manager" @click="handleModalDecider('add')"/>
         </div>
         <Pagination />
         <IconSearch color="#058B94" class="cursor-pointer"/>
@@ -20,7 +20,7 @@
     </div>
     <v-row no-gutters class="gap-3 mt-5 transition-all">
       <v-col v-for="n in numberToDisplay" :cols="cols" class="transition-all">
-        <UserCard show-comment show-delete @delete="handleModalDecider('delete')" :is-mentor="true"/>
+        <UserCard show-comment show-delete @delete="handleModalDecider('delete')" :is-mentor-manager="true"/>
       </v-col>
     </v-row>
   </div>
