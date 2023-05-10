@@ -260,6 +260,11 @@ function runMySqlQueryInNonStrictMode(callable $callable)
  */
 function getRoomIdFromUserIds($user_id1, $user_id2): string
 {
+    // If two ids are same, return empty string
+    if ($user_id1 == $user_id2) {
+        return '';
+    }
+
     return md5(
         sprintf(
             '%s-%s',

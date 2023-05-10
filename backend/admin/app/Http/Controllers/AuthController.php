@@ -259,7 +259,7 @@ class AuthController extends Controller
         } catch (\Exception|\Throwable $e) {
             callStatic(Log::class, 'error', $e);
 
-            return redirect()->to(env('FRONTEND_URL').'/login?error=Invalid+credentials');
+            return redirect()->away(config('services.frontend.url').'/login?error=Invalid+credentials');
         }
 
         $user = new User();

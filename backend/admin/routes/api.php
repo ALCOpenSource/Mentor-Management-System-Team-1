@@ -72,8 +72,14 @@ Route::prefix('v1')->group(function () {
             // Get all users
             Route::get('all', [App\Http\Controllers\UserController::class, 'getUsers']);
 
-            // Get specific user data
-            Route::get('{user_id}', [App\Http\Controllers\UserController::class, 'getUserById']);
+            // Alive check
+            Route::get('alive', [App\Http\Controllers\UserController::class, 'alive']);
+
+            // Search users based on roles and keywords
+            Route::get('search/role/{role}', [App\Http\Controllers\UserController::class, 'searchUsersByRole']);
+
+            // Search users based on tags and keywords
+            Route::get('search/tag/{tag}', [App\Http\Controllers\UserController::class, 'searchUsersByTag']);
 
             // Search users
             Route::get('search/{keyword}', [App\Http\Controllers\UserController::class, 'searchUsers']);
@@ -87,12 +93,19 @@ Route::prefix('v1')->group(function () {
             // Update user preferences
             Route::patch('preferences', [App\Http\Controllers\UserController::class, 'updatePreferences']);
 
-            // Update avatar
-            Route::get('avatar/{filename}', [App\Http\Controllers\UserController::class, 'getAvatar'])->name('user.avatar');
-            Route::post('avatar', [App\Http\Controllers\UserController::class, 'updateAvatar']);
-
             // Get avatar url only
             Route::get('avatar', [App\Http\Controllers\UserController::class, 'getAvatarUrl']);
+
+            // Get user avatar image
+            Route::get('avatar/{filename}', [App\Http\Controllers\UserController::class, 'getAvatar'])
+                ->withoutMiddleware(['auth:sanctum', 'email.verified', 'timezone'])
+                ->name('user.avatar');
+
+            // Update avatar
+            Route::post('avatar', [App\Http\Controllers\UserController::class, 'updateAvatar']);
+
+            // Get specific user data
+            Route::get('{user_id}', [App\Http\Controllers\UserController::class, 'getUserById']);
         });
 
         // Support endpoints
@@ -253,6 +266,44 @@ Route::prefix('v1')->group(function () {
 
                 // Delete all post comments
                 Route::delete('{post_id}', [App\Http\Controllers\PostController::class, 'deleteAllPostComments']);
+            });
+        });
+
+        // Tasks endpoints
+        Route::prefix('task')->group(function () {
+            // Get task data
+            Route::get('/', [App\Http\Controllers\TaskController::class, 'getTasks']);
+
+            // Update task data
+            Route::post('/', [App\Http\Controllers\TaskController::class, 'createTask']);
+            Route::patch('{task_id}', [App\Http\Controllers\TaskController::class, 'updateTask']);
+
+            // Delete task data
+            Route::delete('{task_id}', [App\Http\Controllers\TaskController::class, 'deleteTask']);
+
+            // Delete all task data
+            Route::delete('/', [App\Http\Controllers\TaskController::class, 'deleteAllTasks']);
+
+            // Get cached task assignments i.e. users assigned to a task
+            Route::get('assignment/cached/{task_id}', [App\Http\Controllers\TaskController::class, 'getCachedTaskAssignments']);
+
+            // Invalidate cached task assignments
+            Route::get('assignment/cached/invalidate/{task_id}', [App\Http\Controllers\TaskController::class, 'invalidateCachedTaskAssignments']);
+
+            // Reports endpoints
+            Route::prefix('report')->group(function () {
+                // Get report data
+                Route::get('/', [App\Http\Controllers\TaskReportController::class, 'getReports']);
+
+                // Update report data
+                Route::post('/', [App\Http\Controllers\TaskReportController::class, 'createReport']);
+                Route::patch('{report_id}', [App\Http\Controllers\TaskReportController::class, 'updateReport']);
+
+                // Delete report data
+                Route::delete('{report_id}', [App\Http\Controllers\TaskReportController::class, 'deleteReport']);
+
+                // Delete all report data
+                Route::delete('/', [App\Http\Controllers\TaskReportController::class, 'deleteAllReports']);
             });
         });
     });

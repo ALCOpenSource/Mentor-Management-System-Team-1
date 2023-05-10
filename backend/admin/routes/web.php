@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\Route;
 Route::withoutMiddleware([VerifyCsrfToken::class])->group(function () {
     Route::get('auth/social/redirect/{provider}', [App\Http\Controllers\AuthController::class, 'socialLoginRedirect']);
 
+    // Callback url
+    Route::get('auth/social/callback/{provider}', [App\Http\Controllers\AuthController::class, 'socialLoginCallback']);
+
     // Verify email
     Route::get('auth/verify/{token}', [App\Http\Controllers\AuthController::class, 'verifyEmail'])->name('verification.verify');
 });

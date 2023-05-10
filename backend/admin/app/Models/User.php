@@ -87,6 +87,7 @@ class User extends Authenticatable
         'is_online',
         'last_seen',
         'message_room_id',
+        'country_name',
     ];
 
     /**
@@ -143,6 +144,30 @@ class User extends Authenticatable
     public function recievedMessages(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Message::class, 'receiver_id');
+    }
+
+    /**
+     * Task reports for the user.
+     */
+    public function taskReports(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(TaskReport::class, 'created_by');
+    }
+
+    /**
+     * Get task assigned to the user.
+     */
+    public function assignedTasks(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(TaskAssignment::class);
+    }
+
+    /**
+     * Get task created by the user.
+     */
+    public function tasks(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Task::class, 'created_by');
     }
 
     /**
@@ -251,6 +276,28 @@ class User extends Authenticatable
     public function getFlagAttribute(): string
     {
         return $this->country ? asset(sprintf('vendor/blade-flags/country-%s.svg', strtolower($this->country))) : '';
+    }
+
+    /**
+     * Get country name.
+     */
+    public function getCountryNameAttribute(): string
+    {
+        if (! $this->country) {
+            return '';
+        }
+
+        $cacheKey = sprintf('country-%s-%s', $this->id, $this->country);
+
+        if (cache()->has($cacheKey)) {
+            return cache()->get($cacheKey);
+        }
+
+        $country_name = callStatic(Country::class, 'where', 'code', $this->country)->first()?->name;
+
+        cache()->put($cacheKey, $country_name);
+
+        return $country_name;
     }
 
     /**
@@ -429,9 +476,15 @@ class User extends Authenticatable
 
     /**
      * Has role.
+     *
+     * @param mixed $role
      */
-    public function hasRole(array $role): bool
+    public function hasRole($role): bool
     {
+        if (is_string($role)) {
+            $role = explode('|', $role);
+        }
+
         return in_array($this->role, $role);
     }
 
