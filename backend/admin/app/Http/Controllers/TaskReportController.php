@@ -17,9 +17,11 @@ class TaskReportController extends Controller
     {
         if ($task_id) {
             $reports = callStatic(Task::class, 'findOrFail', $task_id)->reports()->paginate(20);
-        } else {
-            $reports = callStatic(TaskReport::class, 'paginate', 20);
+
+            return new ApiResource($reports);
         }
+
+        $reports = callStatic(TaskReport::class, 'paginate', 20);
 
         return new ApiResource($reports);
     }
