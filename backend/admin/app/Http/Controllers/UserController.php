@@ -167,6 +167,9 @@ class UserController extends Controller
      */
     public function getPreferences()
     {
+        /**
+         * @var \App\Models\User
+         */
         $user = auth()->user();
         $preferences = $user->getPreferences();
 
@@ -323,14 +326,14 @@ class UserController extends Controller
     /**
      * Search users by tag.
      */
-    public function searchUsersByTag(Request $request, string $tag)
+    public function searchUsersByMetadata(Request $request, string $metadata_group, string $value)
     {
         $request->validate([
             'keyword' => 'nullable|string|max:255',
         ]);
 
-        $users = callStatic(UserMetadata::class, 'where', 'key', 'tags')
-            ->where('value', 'LIKE', '%'.$tag.'%')
+        $users = callStatic(UserMetadata::class, 'where', 'group', $metadata_group)
+            ->where('value', 'LIKE', '%'.$value.'%')
             ->join('users', 'users.id', '=', 'user_metadata.user_id')
             ->select('users.id')
             ->where(function ($query) use ($request) {

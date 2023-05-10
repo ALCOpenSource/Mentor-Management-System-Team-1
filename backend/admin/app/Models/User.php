@@ -88,6 +88,7 @@ class User extends Authenticatable
         'last_seen',
         'message_room_id',
         'country_name',
+        'added_on',
     ];
 
     /**
@@ -141,7 +142,7 @@ class User extends Authenticatable
     /**
      * Get the user messages sent by the user.
      */
-    public function recievedMessages(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function receivedMessages(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Message::class, 'receiver_id');
     }
@@ -168,6 +169,14 @@ class User extends Authenticatable
     public function tasks(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Task::class, 'created_by');
+    }
+
+    /**
+     * User attachments.
+     */
+    public function attachments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(UserAttachments::class);
     }
 
     /**
@@ -494,5 +503,13 @@ class User extends Authenticatable
     public function getMessageRoomIdAttribute(): string
     {
         return getRoomIdFromUserIds($this->id, auth()->id());
+    }
+
+    /**
+     * Get added on attribute.
+     */
+    public function getAddedOnAttribute(): string
+    {
+        return $this->created_at->format('M, d Y');
     }
 }

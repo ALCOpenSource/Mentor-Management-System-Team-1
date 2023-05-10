@@ -78,8 +78,8 @@ Route::prefix('v1')->group(function () {
             // Search users based on roles and keywords
             Route::get('search/role/{role}', [App\Http\Controllers\UserController::class, 'searchUsersByRole']);
 
-            // Search users based on tags and keywords
-            Route::get('search/tag/{tag}', [App\Http\Controllers\UserController::class, 'searchUsersByTag']);
+            // Search users based on metadata and keywords
+            Route::get('search/metadata/{metadata_group}/{value}', [App\Http\Controllers\UserController::class, 'searchUsersByMetadata']);
 
             // Search users
             Route::get('search/{keyword}', [App\Http\Controllers\UserController::class, 'searchUsers']);
