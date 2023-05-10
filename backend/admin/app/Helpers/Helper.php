@@ -3,6 +3,7 @@
 // Helper functions will be written here
 // Path: app\Helpers\Helper.php
 
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -272,4 +273,19 @@ function getRoomIdFromUserIds($user_id1, $user_id2): string
             max([$user_id1, $user_id2])
         )
     );
+}
+
+/**
+ * Check if a string contains @ mentions.
+ */
+function containsMentions(string $str, User $user): bool
+{
+    $str = strtolower($str);
+    $user_email = strtolower($user->email);
+    $user_name = strtolower($user->name);
+
+    // Can be @here, @everyone, or @name, or @email
+    $pattern = '/(^|\s)(@here|@everyone|@'.$user_name.'|@'.$user_email.')(\s|$)/';
+
+    return preg_match($pattern, $str);
 }
