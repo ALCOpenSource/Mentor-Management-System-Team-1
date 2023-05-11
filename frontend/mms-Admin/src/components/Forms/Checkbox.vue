@@ -55,7 +55,7 @@ const checked = ref(props.checked);
 const emit = defineEmits(["update:checked"]);
 
 const updateChecked = () => {
-  emit("update:checked", props.id);
+  emit("update:checked", { id: props.id, checked: checked.value });
 };
 
 watch(
