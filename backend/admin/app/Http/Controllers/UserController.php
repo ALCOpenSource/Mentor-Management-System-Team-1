@@ -302,9 +302,15 @@ class UserController extends Controller
 
     /**
      * Search users by role.
+     *
+     * @param mixed|null $keyword
      */
-    public function searchUsersByRole(Request $request, string $role)
+    public function searchUsersByRole(Request $request, string $role, $keyword = null)
     {
+        if (! $request->keyword) {
+            $request->merge(['keyword' => $keyword]);
+        }
+
         $request->validate([
             'keyword' => 'nullable|string|max:255',
         ]);

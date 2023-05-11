@@ -23,9 +23,9 @@ class MentorController extends Controller
     /**
      * Get all mentors.
      */
-    public function getMentors()
+    public function getMentors(Request $request)
     {
-        $mentors = (new UserController())->getUsersByRole($this->role);
+        $mentors = (new UserController())->searchUsersByRole($request, $this->role);
 
         return new ApiResource($mentors);
     }
@@ -37,7 +37,7 @@ class MentorController extends Controller
      */
     public function searchMentors(Request $request, $keyword)
     {
-        $mentors = (new UserController())->searchUsersByRole($this->role, $keyword);
+        $mentors = (new UserController())->searchUsersByRole($request, $this->role, $keyword);
 
         return new ApiResource($mentors);
     }
@@ -66,7 +66,7 @@ class MentorController extends Controller
         ]);
 
         $user = callStatic(User::class, 'create', [
-            'name' => sprintf('User ', strHelper('random', 5)),
+            'name' => sprintf('User %s', strHelper('random', 5)),
             'email' => $request->email,
             'role' => $this->role,
             'password' => bcrypt(strHelper('random', 12)),

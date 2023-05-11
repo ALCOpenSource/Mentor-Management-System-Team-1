@@ -17,9 +17,9 @@ class MentorManagerController extends Controller
     /**
      * Get all mentors.
      */
-    public function getMentorManagers()
+    public function getMentorManagers(Request $request)
     {
-        return $this->mentor_controller->getMentors();
+        return $this->mentor_controller->getMentors($request);
     }
 
     /**
