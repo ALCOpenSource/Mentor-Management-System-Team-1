@@ -512,4 +512,20 @@ class User extends Authenticatable
     {
         return $this->created_at->format('M, d Y');
     }
+
+    /**
+     * Public function addTag(string $tag): void.
+     */
+    public function addTag(string $tag): void
+    {
+        $tags = $this->tags;
+
+        if (! in_array($tag, $tags)) {
+            $tags[] = $tag;
+        }
+
+        $this->setMetadata('tags', $tags, 'array', 'tags', [
+            'tags' => $tags,
+        ]);
+    }
 }

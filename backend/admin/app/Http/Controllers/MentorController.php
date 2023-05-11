@@ -74,11 +74,13 @@ class MentorController extends Controller
 
         switch ($this->role) {
             case AppConstants::ROLE_MENTOR:
+                $user->addTag(AppConstants::MENTOR_TAG);
                 $user->notify(new InviteMentor());
 
                 break;
 
             case AppConstants::ROLE_MENTOR_MANAGER:
+                $user->addTag(AppConstants::MENTOR_MANAGER_TAG);
                 $user->notify(new InviteMentorManager());
 
                 break;

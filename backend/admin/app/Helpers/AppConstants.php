@@ -234,4 +234,10 @@ class AppConstants
         'in_progress',
         'done',
     ];
+
+    // User Role Tags
+    public const PROGRAM_ASSISTANT_TAG = 'program assistant';
+    public const PROGRAM_MANAGER_TAG = 'program manager';
+    public const MENTOR_TAG = 'mentor';
+    public const MENTOR_MANAGER_TAG = 'mentor manager';
 }
