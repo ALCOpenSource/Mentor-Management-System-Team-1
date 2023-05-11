@@ -139,7 +139,6 @@ export const useUserStore = defineStore({
               });
               if (response.data.success) {
                 this.user = response.data.data;
-                //this.toaster.success(response.data.message);
               }
               
               return response;
