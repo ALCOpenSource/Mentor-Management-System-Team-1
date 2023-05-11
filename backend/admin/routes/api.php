@@ -197,7 +197,7 @@ Route::prefix('v1')->group(function () {
             Route::post('forward', [App\Http\Controllers\MessageController::class, 'forwardMessage']);
 
             // Broadcast message
-            Route::post('broadcast', [App\Http\Controllers\MessageController::class, 'broadcastMessage']);
+            Route::post('broadcast/{?user_role}', [App\Http\Controllers\MessageController::class, 'broadcastMessage']);
 
             // Mark message as unread
             // Commented out because I'm not sure if this is needed, just good to have incase it is needed. - @ghostscypher
@@ -274,6 +274,12 @@ Route::prefix('v1')->group(function () {
             // Get task data
             Route::get('/', [App\Http\Controllers\TaskController::class, 'getTasks']);
 
+            // Search task
+            Route::get('search/{keyword}', [App\Http\Controllers\TaskController::class, 'searchTasks']);
+
+            // Get Specific task
+            Route::get('{task_id}', [App\Http\Controllers\TaskController::class, 'getTask']);
+
             // Update task data
             Route::post('/', [App\Http\Controllers\TaskController::class, 'createTask']);
             Route::patch('{task_id}', [App\Http\Controllers\TaskController::class, 'updateTask']);
@@ -289,22 +295,64 @@ Route::prefix('v1')->group(function () {
 
             // Invalidate cached task assignments
             Route::get('assignment/cached/invalidate/{task_id}', [App\Http\Controllers\TaskController::class, 'invalidateCachedTaskAssignments']);
+        });
 
-            // Reports endpoints
-            Route::prefix('report')->group(function () {
-                // Get report data
-                Route::get('/', [App\Http\Controllers\TaskReportController::class, 'getReports']);
+        // Reports endpoints
+        Route::prefix('report/{report_type}')->group(function () {
+            // Get report data
+            Route::get('/', [App\Http\Controllers\ReportController::class, 'getReports']);
 
-                // Update report data
-                Route::post('/', [App\Http\Controllers\TaskReportController::class, 'createReport']);
-                Route::patch('{report_id}', [App\Http\Controllers\TaskReportController::class, 'updateReport']);
+            // Update report data
+            Route::post('/', [App\Http\Controllers\ReportController::class, 'createReport']);
+            Route::patch('{report_id}', [App\Http\Controllers\ReportController::class, 'updateReport']);
 
-                // Delete report data
-                Route::delete('{report_id}', [App\Http\Controllers\TaskReportController::class, 'deleteReport']);
+            // Delete report data
+            Route::delete('{report_id}', [App\Http\Controllers\ReportController::class, 'deleteReport']);
 
-                // Delete all report data
-                Route::delete('/', [App\Http\Controllers\TaskReportController::class, 'deleteAllReports']);
-            });
+            // Delete all report data
+            Route::delete('/', [App\Http\Controllers\ReportController::class, 'deleteAllReports']);
+        });
+
+        // Mentor endpoints
+        Route::prefix('mentor')->group(function () {
+            // Get mentor data
+            Route::get('/', [App\Http\Controllers\MentorController::class, 'getMentors']);
+
+            // Search mentor
+            Route::get('search/{keyword}', [App\Http\Controllers\MentorController::class, 'searchMentors']);
+
+            // Get specific mentor data
+            Route::get('{mentor_id}', [App\Http\Controllers\MentorController::class, 'getMentor']);
+
+            // Invite mentor
+            Route::post('invite', [App\Http\Controllers\MentorController::class, 'inviteMentor']);
+
+            // Update mentor data
+            Route::patch('{mentor_id}', [App\Http\Controllers\MentorController::class, 'updateMentor']);
+
+            // Delete mentor data
+            Route::delete('{mentor_id}', [App\Http\Controllers\MentorController::class, 'deleteMentor']);
+        });
+
+        // Mentor Manager endpoints
+        Route::prefix('mentor-manager')->group(function () {
+            // Get mentor manager data
+            Route::get('/', [App\Http\Controllers\MentorManagerController::class, 'getMentorManagers']);
+
+            // Search mentor manager
+            Route::get('search/{keyword}', [App\Http\Controllers\MentorManagerController::class, 'searchMentorManagers']);
+
+            // Get specific mentor manager data
+            Route::get('{mentor_manager_id}', [App\Http\Controllers\MentorManagerController::class, 'getMentorManager']);
+
+            // Invite mentor manager
+            Route::post('invite', [App\Http\Controllers\MentorManagerController::class, 'inviteMentorManager']);
+
+            // Update mentor manager data
+            Route::patch('{mentor_manager_id}', [App\Http\Controllers\MentorManagerController::class, 'updateMentorManager']);
+
+            // Delete mentor manager data
+            Route::delete('{mentor_manager_id}', [App\Http\Controllers\MentorManagerController::class, 'deleteMentorManager']);
         });
     });
 });

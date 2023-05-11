@@ -5,15 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TaskReport extends Model
+class Report extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'task_id',
+        'id',
         'created_by',
         'details',
         'type',
+        'report_id',
     ];
 
     protected $casts = [
@@ -23,9 +24,14 @@ class TaskReport extends Model
         'updated_at' => 'datetime',
     ];
 
+    // Hidden
+    protected $hidden = [
+        'report_type',
+    ];
+
     protected $appends = [
         // 'created_by_user',
-        // 'task'
+        // 'report'
     ];
 
     /**
@@ -38,6 +44,14 @@ class TaskReport extends Model
         static::creating(function ($report) {
             $report->created_by = auth()->user()->id;
         });
+    }
+
+    /**
+     * Morphs.
+     */
+    public function report()
+    {
+        return $this->morphTo();
     }
 
     /**
@@ -67,8 +81,8 @@ class TaskReport extends Model
     /**
      * Get the task that owns the report.
      */
-    public function getTaskAttribute()
+    public function getReportAttribute()
     {
-        return $this->task()->first();
+        return $this->report()->first();
     }
 }

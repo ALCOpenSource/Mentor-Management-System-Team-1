@@ -20,13 +20,33 @@ class TaskController extends Controller
     }
 
     /**
+     * Search task.
+     */
+    public function searchTasks(string $keyword)
+    {
+        $tasks = callStatic(Task::class, 'where', 'title', 'LIKE', '%'.$keyword.'%')
+            ->when(is_numeric($keyword), function ($query) use ($keyword) {
+                $query->orWhere('id', $keyword);
+            })->paginate(20);
+
+        return new ApiResource($tasks);
+    }
+
+    /**
      * Get a task.
      *
      * @param mixed $task_id
      */
     public function getTask($task_id)
     {
-        $task = callStatic(Task::class, 'findOrFail', $task_id);
+        $task = callStatic(Task::class, 'find', $task_id);
+
+        if (! $task) {
+            return new ApiResource([
+                'error' => 'Task not found',
+                'status' => 404,
+            ]);
+        }
 
         return new ApiResource(['data' => $task]);
     }

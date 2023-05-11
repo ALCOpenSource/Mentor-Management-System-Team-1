@@ -5,6 +5,8 @@
 
 namespace App\Helpers;
 
+use App\Models\Task;
+
 class AppConstants
 {
     public const API_VERSION = 'v1';
@@ -22,6 +24,12 @@ class AppConstants
     public const PROVIDER_FACEBOOK = 'facebook';
     public const PROVIDER_TWITTER = 'twitter';
     public const PROVIDER_GITHUB = 'github';
+
+    // Reportables
+    public const REPORTABLES = [
+        'task' => Task::class,
+        'program' => Program::class,
+    ];
 
     // Preferences
     public const PREFERENCES = [

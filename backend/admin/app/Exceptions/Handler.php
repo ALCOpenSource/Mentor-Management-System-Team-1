@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use App\Http\Resources\ApiResource;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -39,15 +40,6 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (\Throwable $e) {
-            if (request()->is('api/*')) {
-                return new ApiResource([
-                    'status' => 500,
-                    'error' => $e->getMessage(),
-                ]);
-            }
-        });
-
         /*
          * Render an exception into an HTTP response.
          *
@@ -61,5 +53,17 @@ class Handler extends ExceptionHandler
                 ]);
             }
         });
+
+        // $this->renderable(function(HttpException $e, $request){
+        //     if ($request->is('api/*')) {
+        //         return new ApiResource([
+        //             'status' => $e->getStatusCode(),
+        //             'error' => $e->getMessage(),
+        //             'errors' =>[
+        //                 'trace' => config('app.debug') ? $e->getTrace() : "",
+        //             ]
+        //         ]);
+        //     }
+        // });
     }
 }

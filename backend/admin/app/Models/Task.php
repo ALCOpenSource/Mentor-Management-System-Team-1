@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HasReports;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
     use HasFactory;
+    use HasReports;
 
     protected $fillable = [
         'title',
@@ -38,11 +40,13 @@ class Task extends Model
     ];
 
     /**
-     * Get the reports for the task.
+     * Set created_by attribute.
      */
-    public function reports()
+    protected static function booted()
     {
-        return $this->hasMany(TaskReport::class);
+        static::creating(function ($task) {
+            $task->created_by = auth()->id();
+        });
     }
 
     /**
@@ -54,13 +58,11 @@ class Task extends Model
     }
 
     /**
-     * Set created_by attribute.
+     * Assignees.
      */
-    protected static function booted()
+    public function assignees()
     {
-        static::creating(function ($task) {
-            $task->created_by = auth()->id();
-        });
+        return $this->hasManyThrough(User::class, TaskAssignment::class, 'task_id', 'id', 'id', 'user_id');
     }
 
     /**

@@ -416,8 +416,10 @@ class MessageController extends Controller
 
     /**
      * Broadcast message.
+     *
+     * @param mixed|null $user_role
      */
-    public function broadcastMessage(Request $request)
+    public function broadcastMessage(Request $request, $user_role = null)
     {
         $user = $request->user();
 
@@ -438,14 +440,25 @@ class MessageController extends Controller
         }
 
         // If receiver ids are not provided broadcast to all users
-        $receiverIds = $request->receiver_ids ?? User::where('id', '!=', $user->id)->pluck('id')->toArray();
+        $receiverIds = $request->receiver_ids;
+
+        if (! $receiverIds) {
+            $receiverIds = User::where('id', '!=', $user->id)
+                ->when($user_role, function ($query) use ($user_role) {
+                    $query->where('role', $user_role);
+                })
+                ->pluck('id')
+                ->toArray();
+        }
+
         $receiverIds = array_unique($receiverIds);
         $request->merge(['receiver_ids' => $receiverIds]);
         $message = null;
         $broadcast_id = strHelper('uuid');
+        $attachments = null;
 
         foreach ($receiverIds as $receiver_id) {
-            // If receiver is the sender
+            // If receiver is the sender, skip
             if ($user->id == $request->receiver_id) {
                 continue;
             }
@@ -459,8 +472,16 @@ class MessageController extends Controller
             ]);
 
             // Attachments
-            if ($request->hasFile('attachments')) {
+            if ($request->hasFile('attachments') && ! $attachments) {
                 $this->saveAttachments($request->attachments, $message);
+
+                // Save attachments for reuse
+                $attachments = $message->attachment;
+            }
+
+            // If attachment is not null assign attachment
+            if ($attachments && ! $message->attachment) {
+                $message->attachment = $attachments;
             }
 
             $message->save();

@@ -24,10 +24,10 @@ class UserController extends Controller
         }
     }
 
-    protected function updateUserAvatar($request, $user)
+    public function updateUserAvatar($request, $user)
     {
         // Avatar
-        if ($request->hasFile('avatar')) {
+        if ($request->files->has('avatar')) {
             // Delete old avatar
             if ($user->avatar) {
                 $oldAvatar = storage_path('app/public/'.str_replace(route('user.avatar', ['filename' => '']), '', $user->avatar));

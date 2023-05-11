@@ -150,9 +150,9 @@ class User extends Authenticatable
     /**
      * Task reports for the user.
      */
-    public function taskReports(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function Reports(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(TaskReport::class, 'created_by');
+        return $this->hasMany(Report::class, 'created_by');
     }
 
     /**

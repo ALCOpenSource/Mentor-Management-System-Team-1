@@ -35,6 +35,6 @@ class TaskAssignment extends Model
      */
     public function reports()
     {
-        return $this->hasManyThrough(TaskReport::class, Task::class, 'id', 'task_id', 'task_id', 'id');
+        return $this->morphToMany(Report::class, 'report', 'reportables', 'report_id', 'reportable_id');
     }
 }

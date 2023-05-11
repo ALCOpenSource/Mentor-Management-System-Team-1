@@ -10,14 +10,19 @@ return new class() extends Migration {
      */
     public function up(): void
     {
-        Schema::create('task_reports', function (Blueprint $table) {
+        Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('task_id')->nullable()->constrained('tasks')->onDelete('cascade');
+            $table->morphs('report');
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->longText('details')->nullable();
             $table->string('type')->default('text');
 
             $table->timestamps();
+        });
+
+        Schema::table('reports', function (Blueprint $table) {
+            // Alter the report_id to enable it to be nullable
+            $table->unsignedBigInteger('report_id')->nullable()->default(null)->change();
         });
     }
 
@@ -26,6 +31,6 @@ return new class() extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('task_reports');
+        Schema::dropIfExists('reports');
     }
 };
