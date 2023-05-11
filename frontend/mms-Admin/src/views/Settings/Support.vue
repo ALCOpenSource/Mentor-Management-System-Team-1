@@ -50,6 +50,9 @@ import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 import Modal from "../../components/Forms/Modal.vue";
 import { profileSuccess } from "../../assets/images";
 import { Docs } from "@/assets/icons"
+import {useSupportStore} from "../../store/support"
+
+const supportStore = useSupportStore();
 
 const supportDetails = ref({
   name: "",
@@ -68,10 +71,16 @@ const toggleModal = () => {
   isModalOpen.value = !isModalOpen.value;
 };
 
-const handleSubmit = () => {
+const handleSubmit = async() => {
   if (valid.value) {
+    // Handle the Form submission
+  const response = await supportStore.createTicket(supportDetails);
+  
+  if (response && response.data && response.data.success) {
     toggleModal();
-    // Do something
+    // Handle the success here, toggle modal
+    return;
+  }
   }
 };
 </script>
