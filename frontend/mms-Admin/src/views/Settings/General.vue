@@ -209,6 +209,7 @@ import Modal from "../../components/Forms/Modal.vue";
 import { profileSuccess } from "../../assets/images";
 import {useUserStore} from "../../store/user"
 import {useLocationStore} from "../../store/location"
+import router from "../../router/index"
 
 const userStore = useUserStore();
 const locationStore = useLocationStore();
@@ -250,6 +251,9 @@ const handleSubmit = async () => {
   
   if (response && response.data && response.data.success) {
     toggleModal();
+    // setTimeout(() => {
+    //   router.push({ name: "profile" });
+    // }, 3000);
     // Handle the success here, toggle modal
     return;
   }

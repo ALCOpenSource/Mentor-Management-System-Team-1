@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import router from "../router";
 import { createToaster } from "@meforma/vue-toaster";
 
 const toaster = createToaster({
@@ -85,7 +84,7 @@ export const useAuthStore = defineStore({
             if (res.data.success) {
               this.removeToken();
               this.authUser = null;
-              router.push({name: "login"});
+              this.router.push({name: "login"});
             //   location.reload();
               toaster.success(res.data.message);
             }
