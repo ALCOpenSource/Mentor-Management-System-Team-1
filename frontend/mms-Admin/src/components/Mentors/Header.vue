@@ -4,6 +4,7 @@
           <v-avatar size="90px">
             <v-img
               src="https://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder.png"
+              lazy-src="https://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder.png"
               alt="John"
             ></v-img>
           </v-avatar>
@@ -25,8 +26,10 @@
           <router-link to="/admin/messages">
             <PrimaryBtn title="Send Message" />
           </router-link>
-          <router-link to="/admin/mentors">
-            <SecondaryBtn title="CLose" />
+          <router-link 
+            :to="isMentorManager ? '/admin/mentor-managers' : '/admin/mentors'"
+          >
+            <SecondaryBtn title="Close" />
           </router-link>
         </div>
       </div>
@@ -36,6 +39,17 @@
 import { NigerianFlag, Edit } from '@/assets/icons';
 import PrimaryBtn from '@/components/Buttons/PrimaryBtn.vue';
 import SecondaryBtn from '@/components/Buttons/SecondaryBtn.vue';
+
+defineProps({
+  isMentor: {
+    type: Boolean,
+    default: false,
+  },
+  isMentorManager: {
+    type: Boolean,
+    default: false,
+  },
+})
 </script>
 
 <style scoped>

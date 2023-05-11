@@ -2,7 +2,7 @@
   <div class="flex gap-7">
     <div class="flex flex-col w-[309px] gap-5">
       <div class="flex justify-between items-center">
-        <h1 class="font-semibold text-2xl">Mentors</h1>
+        <h1 class="font-semibold text-2xl">Mentor Managers</h1>
         <div class="flex items-center gap-5">
           <IconSearch color="#058B94" size="20" class="cursor-pointer" />
           <Filter class="cursor-pointer" />
@@ -13,14 +13,15 @@
       </div>
     </div>
     <div class="h-[77vh] w-full flex flex-col overflow-hidden">
-      <Header is-mentor/>
+      <Header is-mentor-manager/>
       <div class="h-full flex flex-col">
         <div class="border-b border-[#ccc]">
           <v-tabs v-model="tab" color="#058b94" align-tabs="center" fixed-tabs>
             <v-tab :value="1">About</v-tab>
             <v-tab :value="2">Programs</v-tab>
-            <v-tab :value="3">Tasks</v-tab>
-            <v-tab :value="4">Certificates</v-tab>
+            <v-tab :value="3">Mentors</v-tab>
+            <v-tab :value="4">Tasks</v-tab>
+            <v-tab :value="5">Certificates</v-tab>
           </v-tabs>
         </div>
         <div class="mt-3">
@@ -32,9 +33,12 @@
               <Programs />
             </v-window-item>
             <v-window-item :value="3">
-              <Tasks />
+              <Manager />
             </v-window-item>
             <v-window-item :value="4">
+              <Tasks />
+            </v-window-item>
+            <v-window-item :value="5">
               <Certificates />
             </v-window-item>
           </v-window>
@@ -47,7 +51,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { IconSearch, Filter } from "@/assets/icons";
-import { MentorCard, About, Programs, Header, Tasks, Certificates } from "@/components/Mentors";
+import { MentorCard, About, Programs, Header, Tasks, Certificates, Manager } from "@/components/Mentors";
 
 const tab = ref(null);
 </script>
