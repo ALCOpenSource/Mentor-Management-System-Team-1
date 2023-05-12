@@ -1,5 +1,7 @@
 <template>
-  <div class="bg-green-200 p-2 py-8 justify-center gap-4 flex items-center">
+  <div
+    class="bg-green-200 p-2 py-8 justify-center gap-4 flex items-center w-1/2"
+  >
     <section>
       <h4 class="font-semibold">Add Mentor Manager</h4>
       <div
