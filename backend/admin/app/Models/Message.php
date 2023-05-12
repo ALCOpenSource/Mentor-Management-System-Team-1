@@ -293,7 +293,7 @@ class Message extends Model
      */
     public function getReadAttribute(): bool
     {
-        return $this->is_sender ? true : null !== $this->read_at;
+        return $this->is_receiver ? true : null !== $this->read_at;
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\AppConstants;
 use App\Http\Resources\ApiResource;
 use App\Models\User;
+use App\Models\UserMetadata;
 use App\Rules\CheckPreferences;
 use App\Rules\ValidateCity;
 use App\Rules\ValidateState;
@@ -23,10 +24,19 @@ class UserController extends Controller
         }
     }
 
-    protected function updateUserAvatar($request, $user)
+    public function updateUserAvatar($request, $user)
     {
         // Avatar
-        if ($request->hasFile('avatar')) {
+        if ($request->files->has('avatar')) {
+            // Delete old avatar
+            if ($user->avatar) {
+                $oldAvatar = storage_path('app/public/'.str_replace(route('user.avatar', ['filename' => '']), '', $user->avatar));
+
+                if (file_exists($oldAvatar)) {
+                    unlink($oldAvatar);
+                }
+            }
+
             $avatarName = $user->id.'_avatar'.time().'.'.request()->avatar->getClientOriginalExtension();
             $request->avatar->storeAs('avatars', $avatarName);
             $user->avatar = route('user.avatar', ['filename' => $avatarName]);
@@ -80,7 +90,7 @@ class UserController extends Controller
 
         $request->validate([
             'name' => 'nullable|string|max:255',
-            'email' => 'nullable|string|email|max:255|unique:users,email,'.$user->id,
+            // 'email' => 'nullable|string|email|max:255|unique:users,email,'.$user->id,
             'phone' => 'nullable|string|max:255|phone:INTERNATIONAL|unique:users,phone,'.$user->id,
             'country' => 'nullable|string|max:255|exists:countries,code',
             'state' => ['nullable', 'string', 'max:255', 'exists:states,code', new ValidateState($request->country)],
@@ -98,11 +108,11 @@ class UserController extends Controller
             'tags' => 'nullable|array',
         ]);
 
-        // If email is changed, then send verification email
-        if ($request->email && $request->email != $user->email) {
-            $user->email_verified_at = null;
-            $user->sendEmailVerificationNotification();
-        }
+        // // If email is changed, then send verification email
+        // if ($request->email && $request->email != $user->email) {
+        //     $user->email_verified_at = null;
+        //     $user->sendEmailVerificationNotification();
+        // }
 
         // User model
         foreach ($request->only(['name', 'email', 'phone', 'about_me', 'country', 'state', 'city', 'address', 'zip_code', 'timezone']) as $key => $value) {
@@ -157,6 +167,9 @@ class UserController extends Controller
      */
     public function getPreferences()
     {
+        /**
+         * @var \App\Models\User
+         */
         $user = auth()->user();
         $preferences = $user->getPreferences();
 
@@ -272,6 +285,74 @@ class UserController extends Controller
             ->orWhere('email', 'LIKE', '%'.$keyword.'%')
             ->orWhere('phone', 'LIKE', '%'.$keyword.'%')
             ->paginate(10);
+
+        // Remove sensitive data
+        $users->makeHidden(['phone', 'email_verified_at', 'created_at', 'updated_at', 'unread_messages_count', 'unread_notifications_count']);
+
+        return new ApiResource($users);
+    }
+
+    /**
+     * Alive check.
+     */
+    public function alive()
+    {
+        return new ApiResource(['data' => 'alive']);
+    }
+
+    /**
+     * Search users by role.
+     *
+     * @param mixed|null $keyword
+     */
+    public function searchUsersByRole(Request $request, string $role, $keyword = null)
+    {
+        if (! $request->keyword) {
+            $request->merge(['keyword' => $keyword]);
+        }
+
+        $request->validate([
+            'keyword' => 'nullable|string|max:255',
+        ]);
+
+        $users = callStatic(User::class, 'where', 'role', $role)
+            ->where(function ($query) use ($request) {
+                $query->where('name', 'LIKE', '%'.$request->keyword.'%')
+                    ->orWhere('email', 'LIKE', '%'.$request->keyword.'%')
+                    ->orWhere('phone', 'LIKE', '%'.$request->keyword.'%');
+            })
+            ->paginate(10);
+
+        // Remove sensitive data
+        $users->makeHidden(['phone', 'email_verified_at', 'created_at', 'updated_at', 'unread_messages_count', 'unread_notifications_count']);
+
+        return new ApiResource($users);
+    }
+
+    /**
+     * Search users by tag.
+     */
+    public function searchUsersByMetadata(Request $request, string $metadata_group, string $value)
+    {
+        $request->validate([
+            'keyword' => 'nullable|string|max:255',
+        ]);
+
+        $users = callStatic(UserMetadata::class, 'where', 'group', $metadata_group)
+            ->where('value', 'LIKE', '%'.$value.'%')
+            ->join('users', 'users.id', '=', 'user_metadata.user_id')
+            ->select('users.id')
+            ->where(function ($query) use ($request) {
+                $query->where('users.name', 'LIKE', '%'.$request->keyword.'%')
+                    ->orWhere('users.email', 'LIKE', '%'.$request->keyword.'%')
+                    ->orWhere('users.phone', 'LIKE', '%'.$request->keyword.'%');
+            })
+            ->paginate(10);
+
+        // For each user, get the user model
+        foreach ($users as $key => $user) {
+            $users[$key] = callStatic(User::class, 'find', $user->id);
+        }
 
         // Remove sensitive data
         $users->makeHidden(['phone', 'email_verified_at', 'created_at', 'updated_at', 'unread_messages_count', 'unread_notifications_count']);

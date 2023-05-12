@@ -34,6 +34,21 @@ return [
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
+    'facebook' => [
+        'client_id' => env('FACEBOOK_CLIENT_ID'),         // Your Facebook Client ID
+        'client_secret' => env('FACEBOOK_CLIENT_SECRET'), // Your Facebook Client Secret
+        'redirect' => env('FACEBOOK_REDIRECT_URI'),
+    ],
+    'twitter' => [
+        'client_id' => env('TWITTER_CLIENT_ID'),         // Your Twitter Client ID
+        'client_secret' => env('TWITTER_CLIENT_SECRET'), // Your Twitter Client Secret
+        'redirect' => env('TWITTER_REDIRECT_URI'),
+    ],
+    'github' => [
+        'client_id' => env('GITHUB_CLIENT_ID'),         // Your GitHub Client ID
+        'client_secret' => env('GITHUB_CLIENT_SECRET'), // Your GitHub Client Secret
+        'redirect' => env('GITHUB_REDIRECT_URI'),
+    ],
     'frontend' => [
         'url' => env('FRONTEND_URL'),
     ],
