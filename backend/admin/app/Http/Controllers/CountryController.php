@@ -32,11 +32,20 @@ class CountryController extends Controller
      */
     public function getCities(Request $request)
     {
+        $cache_key = 'cities_'.strtolower($request->country ?? '');
+
+        if (callStatic(Cache::class, 'has', $cache_key)) {
+            return new ApiResource(callStatic(Cache::class, 'get', $cache_key));
+        }
+
         $country = callStatic(Country::class, 'where', 'code', strtoupper($request->country))->first();
 
         if (! $country) {
             return new ApiResource(['error' => 'Country not found', 'status' => 404]);
         }
+
+        // Cache forever
+        callStatic(Cache::class, 'put', $cache_key, $country->cities, 0);
 
         return new ApiResource($country->cities);
     }
@@ -46,11 +55,21 @@ class CountryController extends Controller
      */
     public function getStates(Request $request)
     {
+        // If in cache, return from cache
+        $cache_key = 'states_'.strtolower($request->country ?? '');
+
+        if (callStatic(Cache::class, 'has', $cache_key)) {
+            return new ApiResource(callStatic(Cache::class, 'get', 'states'));
+        }
+
         $country = callStatic(Country::class, 'where', 'code', strtoupper($request->country))->first();
 
         if (! $country) {
             return new ApiResource(['error' => 'Country not found', 'status' => 404]);
         }
+
+        // Cache forever
+        callStatic(Cache::class, 'put', $cache_key, $country->states, 0);
 
         return new ApiResource($country->states);
     }

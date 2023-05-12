@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
@@ -55,6 +54,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'provider',
         'provider_id',
         'role',
+        'avatar',
     ];
 
     /**
@@ -86,6 +86,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'general_metadata',
         'is_online',
         'last_seen',
+        'message_room_id',
+        'country_name',
+        'added_on',
     ];
 
     /**
@@ -133,15 +136,47 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function messages(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Message::class, 'receiver_id');
+        return $this->hasMany(Message::class, 'sender_id');
     }
 
     /**
      * Get the user messages sent by the user.
      */
-    public function sentMessages(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function receivedMessages(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Message::class, 'sender_id');
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
+
+    /**
+     * Task reports for the user.
+     */
+    public function Reports(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Report::class, 'created_by');
+    }
+
+    /**
+     * Get task assigned to the user.
+     */
+    public function assignedTasks(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(TaskAssignment::class);
+    }
+
+    /**
+     * Get task created by the user.
+     */
+    public function tasks(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Task::class, 'created_by');
+    }
+
+    /**
+     * User attachments.
+     */
+    public function attachments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(UserAttachments::class);
     }
 
     /**
@@ -150,6 +185,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function role(): string
     {
         return $this->role;
+    }
+
+    /**
+     * Set the user's name.
+     */
+    public function setNameAttribute(string $name): void
+    {
+        $this->attributes['name'] = ucwords($name);
     }
 
     /**
@@ -173,7 +216,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getAvatarUrlAttribute(): string
     {
-        return $this->avatar ?? 'https://ui-avatars.com/api/?'.http_build_query(['name' => $this->initials, ...getUIAvatarBackgroundAndColor($this->name)]);
+        return $this->avatar ?? 'https://ui-avatars.com/api/?'.http_build_query(['name' => $this->initials, ...getUIAvatarBackgroundAndColor($this->email)]);
     }
 
     /**
@@ -181,7 +224,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getUnreadMessagesCountAttribute(): int
     {
-        return $this->messages()->where('status', 'unread')->count();
+        return callStatic(Message::class, 'where', 'receiver_id', $this->id)->where('status', 'unread')->count();
     }
 
     /**
@@ -242,6 +285,28 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getFlagAttribute(): string
     {
         return $this->country ? asset(sprintf('vendor/blade-flags/country-%s.svg', strtolower($this->country))) : '';
+    }
+
+    /**
+     * Get country name.
+     */
+    public function getCountryNameAttribute(): string
+    {
+        if (! $this->country) {
+            return '';
+        }
+
+        $cacheKey = sprintf('country-%s-%s', $this->id, $this->country);
+
+        if (cache()->has($cacheKey)) {
+            return cache()->get($cacheKey);
+        }
+
+        $country_name = callStatic(Country::class, 'where', 'code', $this->country)->first()?->name;
+
+        cache()->put($cacheKey, $country_name);
+
+        return $country_name;
     }
 
     /**
@@ -420,9 +485,47 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Has role.
+     *
+     * @param mixed $role
      */
-    public function hasRole(array $role): bool
+    public function hasRole($role): bool
     {
+        if (is_string($role)) {
+            $role = explode('|', $role);
+        }
+
         return in_array($this->role, $role);
+    }
+
+    /**
+     * Get message room id attribute.
+     */
+    public function getMessageRoomIdAttribute(): string
+    {
+        return getRoomIdFromUserIds($this->id, auth()->id());
+    }
+
+    /**
+     * Get added on attribute.
+     */
+    public function getAddedOnAttribute(): string
+    {
+        return $this->created_at->format('M, d Y');
+    }
+
+    /**
+     * Public function addTag(string $tag): void.
+     */
+    public function addTag(string $tag): void
+    {
+        $tags = $this->tags;
+
+        if (! in_array($tag, $tags)) {
+            $tags[] = $tag;
+        }
+
+        $this->setMetadata('tags', $tags, 'array', 'tags', [
+            'tags' => $tags,
+        ]);
     }
 }

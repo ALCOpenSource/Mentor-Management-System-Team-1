@@ -1,31 +1,66 @@
 <template>
   <div class="flex gap-8 items-center">
-    <MessageIcon />
-    <NotificationIcon />
+    <div class="relative">
+      <MessageIcon />
+      <span class="indicator">{{ messageCount }}</span>
+    </div>
+    <div class="relative">
+      <NotificationIcon />
+      <span class="indicator">{{ notificationCount }}</span>
+    </div>
     <v-menu>
-        <template v-slot:activator="{ props }">
-          <UserAvatar id="menu-activator" v-bind="props" :image-link="authStore.authUser?.avatar" />
-        </template>
-        <div class="bg-[#f7feff] border-2 border-green-200 rounded py-3 px-5">
-          <router-link to="/admin/profile"><p class="cursor-pointer mb-2">View Profile</p></router-link>
-          <v-divider></v-divider>
-          <p class="cursor-pointer text-center" @click="handleLogout">Log Out</p>
-        </div>
-      </v-menu>
+      <template v-slot:activator="{ props }">
+        <UserAvatar
+          id="menu-activator"
+          v-bind="props"
+          :image-link="userStore.avatar?.avatar_url"
+        />
+      </template>
+      <div class="bg-[#f7feff] border-2 border-green-200 rounded py-3 px-5">
+        <router-link to="/admin/profile"
+          ><p class="cursor-pointer mb-2">View Profile</p></router-link
+        >
+        <v-divider></v-divider>
+        <p class="cursor-pointer text-center" @click="handleLogout">Log Out</p>
+      </div>
+    </v-menu>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import UserAvatar from "../Common/UserAvatar.vue";
 import MessageIcon from "../Icons/IconMessage.vue";
 import NotificationIcon from "../Icons/IconNotification.vue";
-import {useAuthStore} from "../../store/auth"
+import { useUserStore } from "../../store/user";
+import { useAuthStore } from "../../store/auth";
 
+const userStore = useUserStore();
 const authStore = useAuthStore();
 
-const handleLogout = () => {
-  // Handle Log out
-}
+const notificationCount = ref(3)
+const messageCount = ref(4)
+
+const handleLogout = async () => {
+  await authStore.handleLogout();
+};
 </script>
 
-<style></style>
+<style scoped lang="scss">
+.indicator {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 17px;
+  height: 17px;
+  background-color: #CC000E;
+  border-radius: 50%;
+  border: 2px solid var(--bg-primary);
+  color: #fff;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 400;
+}
+</style>

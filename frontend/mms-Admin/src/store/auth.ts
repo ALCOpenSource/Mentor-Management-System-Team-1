@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import router from "../router";
 import { createToaster } from "@meforma/vue-toaster";
 
 const toaster = createToaster({
@@ -45,7 +44,7 @@ export const useAuthStore = defineStore({
     },
 
     async socialLoginRedirect() {
-      await axios.get("auth/social/redirect/google").then((res) => {
+      await axios.get("auth/social/redirect/google").then((res: any) => {
         if (res.data.success) {
           window.location.href = res.data.data.url;
         }
@@ -68,7 +67,8 @@ export const useAuthStore = defineStore({
           if (res.data.success) {
             this.setToken(res.data.data.access_token);
             this.authUser = res.data.data.user;
-            router.push("admin/dashboard");
+            // router.push("admin/dashboard");
+            location.reload();
             toaster.success(res.data.message);
           }
         })
@@ -76,6 +76,23 @@ export const useAuthStore = defineStore({
           toaster.error("Invalid username or password.");
         });
     },
+
+    async handleLogout() {
+        await axios
+          .post("auth/logout")
+          .then((res) => {
+            if (res.data.success) {
+              this.removeToken();
+              this.authUser = null;
+              this.router.push({name: "login"});
+            //   location.reload();
+              toaster.success(res.data.message);
+            }
+          })
+          .catch((error) => {
+            toaster.error("Unable to logout, try again later.");
+          });
+      },
   },
 });
 
@@ -92,6 +109,8 @@ interface AuthUser {
   phone: number;
   timezone: string;
   about_me: string;
+  website: string;
+  member_since: string;
 }
 
 interface LoginData {

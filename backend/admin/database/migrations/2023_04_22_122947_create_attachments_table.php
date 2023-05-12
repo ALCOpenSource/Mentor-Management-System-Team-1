@@ -22,6 +22,10 @@ return new class() extends Migration {
             $table->string('thumbnail')->nullable();
             $table->string('thumbnail_path')->nullable();
             $table->string('thumbnail_size')->nullable();
+
+            // Attachments, morphs to Attachment model
+            $table->uuidMorphs('attachment');
+
             $table->timestamps();
         });
     }

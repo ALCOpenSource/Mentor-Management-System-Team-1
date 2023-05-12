@@ -1,8 +1,8 @@
 <template>
   <div class="w-72 z-10 pt-12 sidebar">
     <div class="pl-16 mb-14">
-      <h2 class="font-bold text-xl">Hi, {{ authStore.authUser?.name }}</h2>
-      <span class="text-mute">Admin</span>
+      <h2 class="font-bold text-xl">Hi, {{ userStore.user?.name }}</h2>
+      <span class="text-mute"> {{ userStore.user?.tags[0] }} </span>
     </div>
 
     <section>
@@ -21,9 +21,9 @@
 </template>
 
 <script setup lang="ts">
-import {useAuthStore} from "../../store/auth"
+import {useUserStore} from "../../store/user"
 
-const authStore = useAuthStore();
+const userStore = useUserStore();
 
 import {
   IconDashboard,

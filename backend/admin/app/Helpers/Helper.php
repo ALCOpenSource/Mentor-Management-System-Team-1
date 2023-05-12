@@ -3,6 +3,8 @@
 // Helper functions will be written here
 // Path: app\Helpers\Helper.php
 
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 /**
@@ -65,7 +67,7 @@ function addUserSession($request)
     if (! $session) {
         $session = $user->userSessions()->create([
             'id' => $token,
-            'last_activity' => now(),
+            'last_activity' => now()->format('Y-m-d H:i:s'),
         ]);
     }
 
@@ -85,11 +87,92 @@ function addUserSession($request)
 }
 
 /**
+ * Linkify urls.
+ */
+function linkifyUrl(string $text): string
+{
+    // URLs starting with http://, https://, or ftp://
+    $matches = [];
+
+    $pattern = '/(https?:\/\/[^\s]+)/';
+    preg_match_all($pattern, $text, $matches);
+
+    foreach ($matches[0] as $match) {
+        $text = str_replace($match, '<a href="'.$match.'" target="_blank">'.$match.'</a>', $text);
+    }
+
+    return $text;
+}
+
+/**
+ * Linkify emails.
+ */
+function linkifyEmail(string $text): string
+{
+    // Change email addresses to mailto:: links
+    $matches = [];
+
+    $pattern = '/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})/';
+    preg_match_all($pattern, $text, $matches);
+
+    foreach ($matches[0] as $match) {
+        $text = str_replace($match, '<a href="mailto:'.$match.'" target="_blank">'.$match.'</a>', $text);
+    }
+
+    return $text;
+}
+
+/**
+ * URLs starting with "www." (without // before it, or it'd re-link the ones done above).
+ */
+function linkifyWww(string $text): string
+{
+    $matches = [];
+
+    $pattern = '/(^|[^\/])(www\.[\S]+(\b|$))/';
+    preg_match_all($pattern, $text, $matches);
+
+    foreach ($matches[0] as $match) {
+        $text = str_replace($match, '<a href="http://'.$match.'" target="_blank">'.$match.'</a>', $text);
+    }
+
+    return $text;
+}
+
+/**
+ * Remove all html tags from a string.
+ */
+function stripHtml(string $text): string
+{
+    return strip_tags($text);
+}
+
+/**
+ * Remove all html tags and links from a string.
+ */
+function stripHtmlAndLinks(string $text): string
+{
+    $text = stripHtml($text);
+
+    // Remove all links i.e. http://, https://, ftp://, mailto:, www.
+    $text = preg_replace('/(https?:\/\/[^\s]+)/', '', $text);
+    $text = preg_replace('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})/', '', $text);
+    $text = preg_replace('/(^|[^\/])(www\.[\S]+(\b|$))/', '', $text);
+
+    return $text;
+}
+
+/**
  * Find links and replace them with anchor tags.
  */
 function linkify(string $text): string
 {
-    return preg_replace('/(https?:\/\/[^\s]+)/', '<a href="$1" target="_blank">$1</a>', $text);
+    $text = stripHtml($text);
+    $text = linkifyUrl($text);
+    $text = linkifyEmail($text);
+    $text = linkifyWww($text);
+
+    return $text;
 }
 
 /**
@@ -136,4 +219,73 @@ function getUIAvatarBackgroundAndColor($str)
 function slugify(string $str): string
 {
     return strHelper('slug', $str);
+}
+
+/**
+ * Get file type given mime type.
+ * Either image, video, audio, or file, or doc, or unknown.
+ */
+function getFileType(string $mimeType): string
+{
+    // Pregematch for image, video, audio, or file
+    preg_match('/(image|video|audio|file|doc)/', strtolower($mimeType), $matches);
+
+    if (count($matches) > 0) {
+        return $matches[0];
+    }
+
+    return 'unknown';
+}
+
+function runMySqlQueryInNonStrictMode(callable $callable)
+{
+    $strictMode = config('database.connections.mysql.strict');
+
+    config(['database.connections.mysql.strict' => false]);
+    callStatic(DB::class, 'reconnect');
+
+    // Run the query
+    $result = $callable();
+
+    config(['database.connections.mysql.strict' => $strictMode]);
+    callStatic(DB::class, 'reconnect');
+
+    return $result;
+}
+
+/**
+ * Get room id given user ids.
+ *
+ * @param mixed $user_id1
+ * @param mixed $user_id2
+ */
+function getRoomIdFromUserIds($user_id1, $user_id2): string
+{
+    // If two ids are same, return empty string
+    if ($user_id1 == $user_id2) {
+        return '';
+    }
+
+    return md5(
+        sprintf(
+            '%s-%s',
+            min([$user_id1, $user_id2]),
+            max([$user_id1, $user_id2])
+        )
+    );
+}
+
+/**
+ * Check if a string contains @ mentions.
+ */
+function containsMentions(string $str, User $user): bool
+{
+    $str = strtolower($str);
+    $user_email = strtolower($user->email);
+    $user_name = strtolower($user->name);
+
+    // Can be @here, @everyone, or @name, or @email
+    $pattern = '/(^|\s)(@here|@everyone|@'.$user_name.'|@'.$user_email.')(\s|$)/';
+
+    return preg_match($pattern, $str);
 }

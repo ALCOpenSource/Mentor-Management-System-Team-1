@@ -1,6 +1,6 @@
 <template>
-  <div class="mx-3">
-    <h1 class="text-xl font-semibold my-5">How can we help you?</h1>
+  <div class="mx-3 mt-10 mb-12">
+    <h1 class="text-xl font-semibold mb-5">How can we help you?</h1>
     <v-form ref="form" v-model="valid" @submit.prevent="handleSubmit">
       <v-text-field
         v-model="supportDetails.name"
@@ -25,24 +25,8 @@
         placeholder="Body"
         rows="5"
       ></textarea>
-      <div class="flex justify-between items-center mt-4 mb-5">
-        <div class="cursor-pointer">
-          <svg
-            width="20"
-            height="21"
-            viewBox="0 0 20 21"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M19 9.52626L10.8445 17.7888C8.5925 20.0705 4.94113 20.0705 2.68905 17.7888C0.436983 15.5072 0.436983 11.8079 2.68905 9.52626L9.4853 2.64082C10.9867 1.11973 13.4209 1.11973 14.9223 2.64082C16.4236 4.16191 16.4236 6.62808 14.9223 8.14917L8.126 15.0346C7.37535 15.7952 6.15824 15.7952 5.40754 15.0346C4.65685 14.2741 4.65685 13.041 5.40754 12.2805L12.2038 5.395"
-              stroke="#808080"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </div>
+      <div class="flex justify-between items-center mt-8 mb-5">
+        <Docs class="cursor-pointer"/>
         <div class="w-[115px]">
           <PrimaryBtn title="Send" type="submit" />
         </div>
@@ -65,6 +49,10 @@ import Email from "../../components/Forms/Email.vue";
 import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 import Modal from "../../components/Forms/Modal.vue";
 import { profileSuccess } from "../../assets/images";
+import { Docs } from "@/assets/icons"
+import {useSupportStore} from "../../store/support"
+
+const supportStore = useSupportStore();
 
 const supportDetails = ref({
   name: "",
@@ -83,10 +71,16 @@ const toggleModal = () => {
   isModalOpen.value = !isModalOpen.value;
 };
 
-const handleSubmit = () => {
+const handleSubmit = async() => {
   if (valid.value) {
+    // Handle the Form submission
+  const response = await supportStore.createTicket(supportDetails);
+  
+  if (response && response.data && response.data.success) {
     toggleModal();
-    // Do something
+    // Handle the success here, toggle modal
+    return;
+  }
   }
 };
 </script>

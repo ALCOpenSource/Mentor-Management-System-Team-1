@@ -5,6 +5,8 @@ import settingsLayout from "@/layouts/settingsLayout.vue";
 import {useAuthStore} from '@/store/auth'
 import messageLayout from "@/layouts/messageLayout.vue";
 import discussionLayout from "@/layouts/discussionLayout.vue";
+import mentorLayout from "@/layouts/mentorLayout.vue";
+import mentorManagerLayout from "@/layouts/mentorManagerLayout.vue";
 import blankLayout from "@/layouts/blankLayout.vue"
 
 const router = createRouter({
@@ -91,18 +93,44 @@ const router = createRouter({
         {
           path: "mentors",
           name: "mentors",
-          component: () => import("@/views/Mentors/Mentors.vue"),
+          component: () => import("@/views/Mentors/MentorList.vue"),
           meta: {
             requiresAuth:true
           },
+          redirect: () => "/admin/mentors/mentor-list",
+          children: [
+            {
+              path: "mentor-list",
+              name: "mentor-list",
+              component: () => import("@/views/Mentors/MentorList.vue"),
+            },
+            {
+              path: "mentor/:id",
+              name: "mentor",
+              component: () => import("@/views/Mentors/Mentor.vue"),
+            }
+          ],
         },
         {
           path: "mentor-managers",
           name: "mentor-managers",
-          component: () => import("@/views/MentorManagers/MentorManagers.vue"),
+          component: () => import("@/views/MentorManagers/MentorManagerList.vue"),
           meta: {
             requiresAuth:true
           },
+          redirect: () => "/admin/mentor-managers/mentor-manager-list",
+          children: [
+            {
+              path: "mentor-manager-list",
+              name: "mentor-manager-list",
+              component: () => import("@/views/MentorManagers/MentorManagerList.vue"),
+            },
+            {
+              path: "mentor-manager/:id",
+              name: "mentor-manager",
+              component: () => import("@/views/MentorManagers/MentorManager.vue"),
+            }
+          ]
         },
         {
           path: "approval-requests",

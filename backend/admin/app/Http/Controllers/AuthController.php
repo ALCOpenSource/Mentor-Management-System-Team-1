@@ -7,6 +7,7 @@ use App\Http\Resources\ApiResource;
 use App\Models\User;
 use App\Notifications\ResetPasswordNotification;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -61,13 +62,19 @@ class AuthController extends Controller
         $user = new User($validatedData);
 
         // If localhost, or ipaddress is 127.0.0.1 then verify the user automatically
-        if ('127.0.0.1' === request()->ip() || 'localhost' === request()->ip()) {
+        if ('127.0.0.1' === request()->ip() ||
+            'localhost' === request()->ip() ||
+            app()->environment('local', 'testing') ||
+            config('app.debug')
+        ) {
             $user->email_verified_at = now();
         }
 
-        // Send verification email
-        $user->sendEmailVerificationNotification();
         $user->save();
+
+        if (! $user->email_verified_at) {
+            $user->sendEmailVerificationNotification();
+        }
 
         // Create a token for the user
         $accessToken = $this->createAuthToken($user);
@@ -251,13 +258,12 @@ class AuthController extends Controller
             $accessToken = $socialite->__callStatic('driver', [$provider])->getAccessTokenResponse($request->code);
             $socialUser = $socialite->__callStatic('driver', [$provider])->userFromToken($accessToken['access_token']);
         } catch (\Exception|\Throwable $e) {
-            callStatic(Log::class, 'error', $e);
+            logger()->error($e->getMessage());
 
-            return redirect()->to(env('FRONTEND_URL').'/login?error=Invalid+credentials');
+            return redirect()->away(config('services.frontend.url').'/login?error=Invalid+credentials');
         }
 
-        $user = new User();
-        $user = $user->__callStatic('where', ['email', $socialUser->getEmail()])->first();
+        $user = callStatic(User::class, 'where', 'email', $socialUser->getEmail())->first();
 
         // Here the logic should be to redirect to the frontend with the access token
         if (! $user) {
@@ -268,11 +274,37 @@ class AuthController extends Controller
                 'role' => AppConstants::ROLE_ADMIN,
                 'provider' => $provider,
                 'provider_id' => $socialUser->getId(),
-                'avatar' => $socialUser->getAvatar(),
-                'email_verified_at' => now(),
             ]);
 
             $user->save();
+        }
+
+        // If email is not verified, then verify it
+        if (! $user->email_verified_at) {
+            $user->email_verified_at = now();
+            $user->save();
+        }
+
+        // Download the avatar and save it to the storage
+        $avatar = $socialUser->getAvatar();
+
+        if (! $user->avatar && $avatar) {
+            $temp_directory = sys_get_temp_dir();
+            $temp_file_name = strHelper('random', 24).'.jpg';
+
+            file_put_contents($temp_directory.'/'.$temp_file_name, file_get_contents($avatar));
+
+            // Save the file
+            $avatar = new UploadedFile($temp_directory.'/'.$temp_file_name, $temp_file_name, 'image/jpeg', null, true);
+            $request->merge([
+                'user' => $user,
+                'avatar' => $avatar,
+            ]);
+
+            // Add file to the request
+            $request->files->add(['avatar' => $avatar]);
+
+            (new UserController())->updateUserAvatar($request, $user);
         }
 
         $accessToken = $this->createAuthToken($user);
@@ -430,5 +462,32 @@ class AuthController extends Controller
         $this->logoutOther($request);
 
         return new ApiResource(['message' => 'Password changed successfully']);
+    }
+
+    /**
+     * Verify email.
+     */
+    public function verifyEmail(Request $request)
+    {
+        // Validate the user, return error using the ApiResource
+        $validator = validator($request->all(), [
+            'token' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return new ApiResource(['errors' => $validator->errors(), 'status' => 422]);
+        }
+
+        $user = User::where('email_verification_token', $request->token)->first();
+
+        if (! $user) {
+            return new ApiResource(['error' => 'Invalid token', 'status' => 422]);
+        }
+
+        $user->email_verified_at = now();
+        $user->email_verification_token = null;
+        $user->save();
+
+        return new ApiResource(['message' => 'Email verified successfully']);
     }
 }

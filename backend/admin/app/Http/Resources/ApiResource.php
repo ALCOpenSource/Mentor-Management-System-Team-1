@@ -44,10 +44,10 @@ class ApiResource extends ResourceCollection
      * @param mixed $default
      * @param mixed $resource
      */
-    protected function addPaginator($resource, $default): void
+    protected function addPaginator($resource, &$default): void
     {
         if ($resource instanceof AbstractPaginator) {
-            $default['meta']['pagination'] = [
+            $default['pagination'] = [
                 'total' => $resource->total(),
                 'count' => $resource->count(),
                 'per_page' => $resource->perPage(),

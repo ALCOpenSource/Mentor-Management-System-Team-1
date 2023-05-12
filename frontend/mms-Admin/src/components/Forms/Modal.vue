@@ -6,6 +6,9 @@
         <v-card-text>
           <img v-if="src" :src="src" alt="img" />
           <p class="text-center text-lg px-16">{{ cardText }}</p>
+          <div v-if="email" class="min-w-[450px]">
+            <Email @update:email="(value) => (emailData = value)" @vnode-updated="$emit('update:email', emailData)"/>
+          </div>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -13,7 +16,7 @@
             v-if="secondaryText"
             class="mr-6"
             :title="secondaryText"
-            @click="toggleModal"
+            @click="closeModal"
           />
           <PrimaryBtn :title="primaryText" @click="toggleModal" />
         </v-card-actions>
@@ -27,6 +30,7 @@ import { ref, watch } from "vue";
 
 import PrimaryBtn from "../Buttons/PrimaryBtn.vue";
 import SecondaryBtn from "../Buttons/SecondaryBtn.vue";
+import Email from "./Email.vue";
 
 interface Props {
   title: string;
@@ -36,17 +40,23 @@ interface Props {
   primaryText: string;
   secondaryText?: string;
   inputText?: string;
+  email?: boolean;
 }
 
 const props = defineProps<Props>();
-
-const emit = defineEmits(["toggleModal"]);
+const emit = defineEmits(["toggleModal", "update:email", "closeModal"]);
 
 const isModalOpen = ref(props.isModalOpen);
+const emailData = ref('');
 
 const toggleModal = () => {
   emit("toggleModal");
+  emit("update:email", emailData.value);
 };
+
+const closeModal = () => {
+  emit("closeModal");
+}
 
 watch(
   () => props.isModalOpen,

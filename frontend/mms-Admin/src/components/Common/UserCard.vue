@@ -4,18 +4,41 @@
       <UserAvatar />
       <div class="flex flex-wrap items-center">
         <div class="flex flex-col mr-8">
-          <h1 class="text-xl font-semibold">Allison Davies</h1>
-          <small class="text-[#808080]">Program Assistant, Andela, She/her</small>
+          <router-link
+            :to="{
+              name: isMentorManager ? 'mentor-manager' : 'mentor',
+              params: { id: 1 },
+            }"
+          >
+            <h1
+              class="text-xl font-semibold cursor-pointer hover:underline transition-all"
+            >
+              Allison Davies
+            </h1>
+          </router-link>
+          <small class="text-[#808080]"
+            >Program Assistant, Andela, She/her</small
+          >
         </div>
         <div class="flex items-center gap-3">
-          <div class="text-sm bg-[#E6FDFE] rounded py-1 px-3">PROGRAM ASST.</div>
-          <div class="text-sm bg-[#E6FDFE] rounded py-1 px-3">MENTOR-GADS</div>
+          <div class="text-xs bg-[#E6FDFE] rounded py-1 px-3">
+            PROGRAM ASST.
+          </div>
+          <div class="text-xs bg-[#E6FDFE] rounded py-1 px-3">MENTOR-GADS</div>
         </div>
       </div>
     </div>
-    <div class="flex flex-wrap items-center gap-6">
-      <Comment class="cursor-pointer" v-if="showComment"/>
-      <IconDelete color="#058B94" class="cursor-pointer" v-if="showDelete"/>
+    <div class="flex flex-wrap items-center justify-end gap-6 mr-0">
+      <!-- Handle routing to a specified chat -->
+      <router-link to="/admin/messages"
+        ><Comment class="cursor-pointer" v-if="showComment"
+      /></router-link>
+      <IconDelete
+        color="#058B94"
+        class="cursor-pointer"
+        v-if="showDelete"
+        @click="$emit('delete')"
+      />
     </div>
   </div>
 </template>
@@ -34,7 +57,17 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  isMentor: {
+    type: Boolean,
+    default: false,
+  },
+  isMentorManager: {
+    type: Boolean,
+    default: false,
+  },
 });
+
+defineEmits(["delete"]);
 </script>
 
 <style scoped lang="scss">
@@ -42,13 +75,12 @@ defineProps({
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 4rem;
+  gap: 8rem;
   padding: 10px 40px;
   background-color: white;
   border-radius: 7px;
   border: 1px solid var(--border);
   width: 100%;
-  margin-bottom: 10px;
 
   &:hover {
     background-color: var(--light-grid-background);
