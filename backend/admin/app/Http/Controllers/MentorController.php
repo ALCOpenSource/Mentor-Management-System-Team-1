@@ -45,11 +45,11 @@ class MentorController extends Controller
     /**
      * Get specific mentor.
      *
-     * @param mixed $id
+     * @param mixed $mentor_id
      */
-    public function getMentor($id)
+    public function getMentor($mentor_id)
     {
-        $mentor = callStatic(User::class, 'where', 'id', $id)
+        $mentor = callStatic(User::class, 'where', 'id', $mentor_id)
             ->where('role', $this->role)
             ->first();
 
@@ -92,16 +92,16 @@ class MentorController extends Controller
     /**
      * Update mentor.
      *
-     * @param mixed $id
+     * @param mixed $mentor_id
      */
-    public function updateMentor(Request $request, $id)
+    public function updateMentor(Request $request, $mentor_id)
     {
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
         ]);
 
-        $user = callStatic(User::class, 'where', 'id', $id)
+        $user = callStatic(User::class, 'where', 'id', $mentor_id)
             ->where('role', $this->role)
             ->first();
 
@@ -123,11 +123,11 @@ class MentorController extends Controller
     /**
      * Delete mentor.
      *
-     * @param mixed $id
+     * @param mixed $mentor_id
      */
-    public function deleteMentor($id)
+    public function deleteMentor($mentor_id)
     {
-        $user = callStatic(User::class, 'where', 'id', $id)
+        $user = callStatic(User::class, 'where', 'id', $mentor_id)
             ->where('role', $this->role)
             ->first();
 

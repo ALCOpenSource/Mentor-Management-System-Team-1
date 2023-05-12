@@ -35,11 +35,11 @@ class MentorManagerController extends Controller
     /**
      * Get specific mentor.
      *
-     * @param mixed $id
+     * @param mixed $mentor_manager_id
      */
-    public function getMentorManager($id)
+    public function getMentorManager($mentor_manager_id)
     {
-        return $this->mentor_controller->getMentor($id);
+        return $this->mentor_controller->getMentor($mentor_manager_id);
     }
 
     /**
@@ -53,20 +53,20 @@ class MentorManagerController extends Controller
     /**
      * Update mentor.
      *
-     * @param mixed $id
+     * @param mixed $mentor_manager_id
      */
-    public function updateMentorManager(Request $request, $id)
+    public function updateMentorManager(Request $request, $mentor_manager_id)
     {
-        return $this->mentor_controller->updateMentor($request, $id);
+        return $this->mentor_controller->updateMentor($request, $mentor_manager_id);
     }
 
     /**
      * Delete mentor.
      *
-     * @param mixed $id
+     * @param mixed $mentor_manager_id
      */
-    public function deleteMentorManager($id)
+    public function deleteMentorManager($mentor_manager_id)
     {
-        return $this->mentor_controller->deleteMentor($id);
+        return $this->mentor_controller->deleteMentor($mentor_manager_id);
     }
 }

@@ -444,6 +444,7 @@ class MessageController extends Controller
 
         if (! $receiverIds) {
             $receiverIds = User::where('id', '!=', $user->id)
+                ->select('id')
                 ->when($user_role, function ($query) use ($user_role) {
                     $query->where('role', $user_role);
                 })
@@ -479,11 +480,7 @@ class MessageController extends Controller
                 $attachments = $message->attachment;
             }
 
-            // If attachment is not null assign attachment
-            if ($attachments && ! $message->attachment) {
-                $message->attachment = $attachments;
-            }
-
+            $message->attachment = $attachments ?? null;
             $message->save();
 
             // Send notification

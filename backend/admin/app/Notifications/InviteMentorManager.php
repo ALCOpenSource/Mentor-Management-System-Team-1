@@ -22,7 +22,7 @@ class InviteMentorManager extends Notification
      *
      * @return array<int, string>
      */
-    public function via(object $notifiable): array
+    public function via(): array
     {
         return ['mail'];
     }
@@ -30,7 +30,7 @@ class InviteMentorManager extends Notification
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): MailMessage
+    public function toMail(): MailMessage
     {
         return (new MailMessage())
             ->line('The introduction to the notification.')
@@ -43,7 +43,7 @@ class InviteMentorManager extends Notification
      *
      * @return array<string, mixed>
      */
-    public function toArray(object $notifiable): array
+    public function toArray(): array
     {
         return [
         ];
