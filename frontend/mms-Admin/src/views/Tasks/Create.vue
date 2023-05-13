@@ -10,7 +10,7 @@
           hint="The title must contain a maximum of 32 characters"
         />
         <Textarea placeholder="Enter task details" label="Details" />
-        <section class="flex gap-6 mb-4">
+        <section class="flex gap-6 mt-4 mb-8">
           <!-- Add Mentor Manager -->
           <ResourceSelector :on-click="toggleResourceList" />
           <!-- Add Mentor -->
@@ -32,12 +32,12 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import PrimaryBtn from "@/components/Buttons/PrimaryBtn.vue";
 import ResourceSelector from "@/components/Common/ResourceSelector.vue";
 import Input from "@/components/Forms/Input.vue";
 import Textarea from "@/components/Forms/Textarea.vue";
 import ResourceList from "@/components/Tasks/ResourceList.vue";
-import type { ResourceType } from "@/typings/components";
 
 const selectedResources: number[] = [];
 const mentorManagers = [
@@ -70,16 +70,13 @@ const mentorManagers = [
     roles: ["Program Asst", "Mentor-GADS"],
   },
 ];
-let showResourceList = true;
+let showResourceList = ref(false);
 
 const addToResourceList = (resourceId: number) => {
-  console.log(`add resource of ${resourceId} to list`);
   selectedResources.push(resourceId);
-  console.log("Selected resource IDs", selectedResources);
 };
 
 const toggleResourceList = () => {
-  console.log("Toggle Resource", showResourceList);
-  showResourceList = !showResourceList;
+  showResourceList.value = !showResourceList.value;
 };
 </script>

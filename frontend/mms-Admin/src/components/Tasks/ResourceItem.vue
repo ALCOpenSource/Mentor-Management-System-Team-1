@@ -1,6 +1,6 @@
 <template>
   <div
-    class="inline-flex cursor-pointer items-center border-2 border-gray-100 rounded-md p-4 gap-4"
+    class="inline-flex items-center border-2 border-gray-100 rounded-md p-4 gap-4"
   >
     <img
       src="https://i.pravatar.cc/300"
@@ -16,12 +16,18 @@
         <span class="bg-green-200 p-2 rounded-md">MENTOR-GADS</span>
       </div>
     </section>
-    <span @click="() => onClick(resource.id)">
+    <span
+      @click="() => updateSelectedResources(resource.id)"
+      class="cursor-pointer"
+    >
       <IconAdd
         color="#058B94"
-        v-if="!selectedResources.includes(resource.id)"
+        v-if="!_selectedResources.includes(resource.id)"
       />
-      <IconTick v-else />
+      <IconTick
+        color="#058B94"
+        v-else-if="_selectedResources.includes(resource.id)"
+      />
     </span>
   </div>
 </template>
@@ -30,12 +36,29 @@
 import type { ResourceType } from "@/typings/components";
 import { IconAdd } from "../Icons";
 import IconTick from "../Icons/IconTick.vue";
+import { ref } from "vue";
+
+let _selectedResources = ref<number[]>([]);
 
 type Props = {
   resource: ResourceType;
   onClick: (id: number) => void;
   selectedResources: number[];
 };
+
+const updateSelectedResources = (id: number) => {
+  console.log(_selectedResources.value);
+
+  if (!_selectedResources.value.includes(id)) {
+    _selectedResources.value = _selectedResources.value.concat(id);
+  } else {
+    _selectedResources.value = _selectedResources.value.filter(
+      (resource) => resource === id
+    );
+  }
+};
+
+const emit = defineEmits(["selectResource"]);
 
 defineProps<Props>();
 </script>

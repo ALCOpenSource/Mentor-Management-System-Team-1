@@ -2,7 +2,7 @@
   <div class="flex gap-6">
     <section class="w-full">
       <h1 class="font-semibold text-2xl">Edit Task</h1>
-      <form class="mt-10 flex flex-col">
+      <form class="mt-10 flex flex-col" @submit="toUpdateTask">
         <!-- Title -->
         <Input
           label="Title"
@@ -23,21 +23,40 @@
 
     <!-- Mentor or Mentor Manager selection list -->
     <ResourceList
-      v-if="showResourceList"
+      v-show="showResourceList"
       :onClick="addToResourceList"
       :resources="mentorManagers"
       :selectedResources="selectedResources"
+    />
+
+    <Modal
+      title="Task updated successfully"
+      :src="updateSuccessful"
+      primary-text="Done"
+      :is-modal-open="modalOpen"
+      @toggle-modal="toggleModal"
     />
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import PrimaryBtn from "@/components/Buttons/PrimaryBtn.vue";
 import ResourceSelector from "@/components/Common/ResourceSelector.vue";
 import Input from "@/components/Forms/Input.vue";
 import Textarea from "@/components/Forms/Textarea.vue";
 import ResourceList from "@/components/Tasks/ResourceList.vue";
-import type { ResourceType } from "@/typings/components";
+import Modal from "@/components/Forms/Modal.vue";
+import { updateSuccessful } from "@/assets/images";
+
+let modalOpen = ref(false);
+
+const toggleModal = () => (modalOpen.value = !modalOpen.value);
+
+const toUpdateTask = (e: Event) => {
+  e.preventDefault();
+  toggleModal();
+};
 
 const selectedResources: number[] = [];
 const mentorManagers = [
@@ -70,16 +89,13 @@ const mentorManagers = [
     roles: ["Program Asst", "Mentor-GADS"],
   },
 ];
-let showResourceList = true;
+let showResourceList = ref(false);
 
 const addToResourceList = (resourceId: number) => {
-  console.log(`add resource of ${resourceId} to list`);
   selectedResources.push(resourceId);
-  console.log("Selected resource IDs", selectedResources);
 };
 
 const toggleResourceList = () => {
-  console.log("Toggle Resource", showResourceList);
-  showResourceList = !showResourceList;
+  showResourceList.value = !showResourceList.value;
 };
 </script>
