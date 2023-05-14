@@ -42,9 +42,14 @@ class Post extends Model
         'preview',
     ];
 
+    public function getIsPublishedHumanAttribute()
+    {
+        return $this->is_published ? 'Yes' : 'No';
+    }
+
     /**
-     * Get user.
-     */
+         * Get user.
+         */
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
