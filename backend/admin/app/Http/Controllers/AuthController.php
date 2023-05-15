@@ -7,6 +7,7 @@ use App\Http\Resources\ApiResource;
 use App\Models\User;
 use App\Notifications\ResetPasswordNotification;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -257,13 +258,12 @@ class AuthController extends Controller
             $accessToken = $socialite->__callStatic('driver', [$provider])->getAccessTokenResponse($request->code);
             $socialUser = $socialite->__callStatic('driver', [$provider])->userFromToken($accessToken['access_token']);
         } catch (\Exception|\Throwable $e) {
-            callStatic(Log::class, 'error', $e);
+            logger()->error($e->getMessage());
 
-            return redirect()->to(env('FRONTEND_URL').'/login?error=Invalid+credentials');
+            return redirect()->away(config('services.frontend.url').'/login?error=Invalid+credentials');
         }
 
-        $user = new User();
-        $user = $user->__callStatic('where', ['email', $socialUser->getEmail()])->first();
+        $user = callStatic(User::class, 'where', 'email', $socialUser->getEmail())->first();
 
         // Here the logic should be to redirect to the frontend with the access token
         if (! $user) {
@@ -274,11 +274,37 @@ class AuthController extends Controller
                 'role' => AppConstants::ROLE_ADMIN,
                 'provider' => $provider,
                 'provider_id' => $socialUser->getId(),
-                'avatar' => $socialUser->getAvatar(),
-                'email_verified_at' => now(),
             ]);
 
             $user->save();
+        }
+
+        // If email is not verified, then verify it
+        if (! $user->email_verified_at) {
+            $user->email_verified_at = now();
+            $user->save();
+        }
+
+        // Download the avatar and save it to the storage
+        $avatar = $socialUser->getAvatar();
+
+        if (! $user->avatar && $avatar) {
+            $temp_directory = sys_get_temp_dir();
+            $temp_file_name = strHelper('random', 24).'.jpg';
+
+            file_put_contents($temp_directory.'/'.$temp_file_name, file_get_contents($avatar));
+
+            // Save the file
+            $avatar = new UploadedFile($temp_directory.'/'.$temp_file_name, $temp_file_name, 'image/jpeg', null, true);
+            $request->merge([
+                'user' => $user,
+                'avatar' => $avatar,
+            ]);
+
+            // Add file to the request
+            $request->files->add(['avatar' => $avatar]);
+
+            (new UserController())->updateUserAvatar($request, $user);
         }
 
         $accessToken = $this->createAuthToken($user);

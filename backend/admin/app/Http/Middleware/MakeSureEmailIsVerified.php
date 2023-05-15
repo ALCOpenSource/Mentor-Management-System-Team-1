@@ -13,12 +13,13 @@ class MakeSureEmailIsVerified
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, \Closure $next): Response
+    public function handle(Request $request, \Closure $next): Response|ApiResource
     {
         if (! $request->user()->hasVerifiedEmail()) {
             return new ApiResource([
-                'message' => 'Your email address is not verified.',
-            ], 403);
+                'error' => 'Your email address is not verified.',
+                'status' => 403,
+            ]);
         }
 
         return $next($request);

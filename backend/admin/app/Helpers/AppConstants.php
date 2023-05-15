@@ -5,6 +5,8 @@
 
 namespace App\Helpers;
 
+use App\Models\Task;
+
 class AppConstants
 {
     public const API_VERSION = 'v1';
@@ -13,6 +15,8 @@ class AppConstants
 
     public const ROLE_ADMIN = 'admin';
     public const ROLE_ASSISTANT = 'assistant';
+    public const ROLE_MENTOR_MANAGER = 'mentor_manager';
+    public const ROLE_MENTOR = 'mentor';
 
     // Socialite Providers
     public const SOCIAL_PROVIDERS = ['google'];
@@ -20,6 +24,12 @@ class AppConstants
     public const PROVIDER_FACEBOOK = 'facebook';
     public const PROVIDER_TWITTER = 'twitter';
     public const PROVIDER_GITHUB = 'github';
+
+    // Reportables
+    public const REPORTABLES = [
+        'task' => Task::class,
+        'program' => Program::class,
+    ];
 
     // Preferences
     public const PREFERENCES = [
@@ -199,4 +209,35 @@ class AppConstants
         'Pacific/Auckland' => '(GMT+12:00) Auckland',
         'Pacific/Fiji' => '(GMT+12:00) Fiji',
     ];
+
+    // Allowed ticket Status Values
+    public const TICKET_STATUS_VALUES = [
+        'new',
+        'open',
+        'pending',
+        'resolved',
+        'closed',
+    ];
+
+    // Allowed Priority Values
+    public const TASK_PRIORITY_VALUES = [
+        'low',
+        'normal',
+        'high',
+        'critical',
+        'blocker',
+    ];
+
+    // Allowed task Status Values
+    public const TASK_STATUS_VALUES = [
+        'todo',
+        'in_progress',
+        'done',
+    ];
+
+    // User Role Tags
+    public const PROGRAM_ASSISTANT_TAG = 'program assistant';
+    public const PROGRAM_MANAGER_TAG = 'program manager';
+    public const MENTOR_TAG = 'mentor';
+    public const MENTOR_MANAGER_TAG = 'mentor manager';
 }
