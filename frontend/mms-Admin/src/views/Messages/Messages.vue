@@ -18,7 +18,7 @@
       </div>
       <div class="mt-4 flex gap-5 justify-between">
         <div class="chats-col">
-          <ChatCard v-for="thread in messageStore.threads.data" :key="thread" :thread="thread" />
+          <ChatCard v-for="thread in messageStore.threads.data" :key="thread" :thread="thread" @openChat="loadMessage"/>
         </div>
         <div class="chat-col">
           <div class="flex justify-between items-center text-[#058B94]">
@@ -32,7 +32,7 @@
             <div v-for="message in messageStore.thread.data" :key="message">
               <div
                 class="w-full flex gap-8 justify-start mb-4"
-                v-if="message.sender_id != userStore.user.user_id"
+                v-if="message.sender_id !== userStore.user.id"
               >
                 <img
                   class="avatar"
@@ -49,7 +49,7 @@
                 <div class="sent">
                   <h1>{{ message.message }}</h1>
                   <div class="flex justify-between items-center">
-                    <small>{{ message.time }}</small>
+                    <small>{{ message.human_date }}</small>
                     <Tick v-if="message.status === 'unread'" />
                     <DoubleTick v-if="message.status === 'read'" />
                   </div>
@@ -99,6 +99,8 @@ const userStore = useUserStore();
 const messageStore = useMessageStore();
 const noMesage = ref(false);
 
+console.log(messageStore.thread);
+
 const emojiPickerSelected = ref(false);
 let emojiIndex = new EmojiIndex(data);
 const toggle = () => {
@@ -117,6 +119,10 @@ const getFile = (files: any) => {
   // Do something with the file
   file.value = files.name;
 };
+
+const loadMessage = (roomid: string) => {
+  messageStore.loadThread(roomid);
+}
 
 // Test Data
 const msgData = [

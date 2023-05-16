@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" @click="openChat(thread.room_id)">
     <div class="flex gap-3 items-center">
       <UserAvatar :imageLink="thread.user.avatar_url"/>
       <div>
@@ -21,11 +21,16 @@
 import UserAvatar from "../Common/UserAvatar.vue";
 import {onMounted} from "vue";
 
+const emit = defineEmits(["openChat"]);
+
 const props = defineProps<{
   thread?: Object;
 }>();
 const thread = props.thread;
 
+const openChat = (roomid: string) => {
+  emit("openChat", roomid); 
+};
 </script>
 
 <style scoped lang="scss">

@@ -30,6 +30,7 @@ export const useMessageStore = defineStore({
         async loadThread(roomid: string) {
             const res = await axios.get('v1/message/thread/' + roomid)
             this.thread = res.data
+            console.log(res.data);
         },
     }
 })
