@@ -18,7 +18,7 @@
       </div>
       <div class="mt-4 flex gap-5 justify-between">
         <div class="chats-col">
-          <ChatCard v-for="item in 10" :key="item" />
+          <ChatCard v-for="thread in messageStore.threads.data" :key="thread" :thread="thread" @openChat="loadMessage"/>
         </div>
         <div class="chat-col">
           <div class="flex justify-between items-center text-[#058B94]">
@@ -29,28 +29,29 @@
             <span class="bo border-b-2 w-full"></span>
           </div>
           <div class="chat-area">
-            <div v-for="message in msgData[0].messages" :key="msgData[0].id">
+            <div v-for="message in messageStore.thread.data" :key="message">
               <div
                 class="w-full flex gap-8 justify-start mb-4"
-                v-if="message.rec"
+                v-if="message.sender_id !== userStore.user.id"
               >
                 <img
                   class="avatar"
-                  src="https://blog.readyplayer.me/content/images/2021/04/IMG_0689.PNG"
+                  :src="message.sender.avatar_url"
                   alt="avatar"
                 />
                 <div class="received">
-                  <h1>{{ message.msg }}</h1>
-                  <small>{{ message.time }}</small>
+                  <h1>{{ message.message }}</h1>
+                  <small>{{ message.human_date }}</small>
                 </div>
               </div>
-              <div class="w-full flex justify-end mb-4" v-if="message.sent">
+              <div class="w-full flex justify-end mb-4" v-else>
+      
                 <div class="sent">
-                  <h1>{{ message.msg }}</h1>
+                  <h1>{{ message.message }}</h1>
                   <div class="flex justify-between items-center">
-                    <small>{{ message.time }}</small>
-                    <Tick v-if="message.status === 'Sent'" />
-                    <DoubleTick v-if="message.status === 'Delivered'" />
+                    <small>{{ message.human_date }}</small>
+                    <Tick v-if="message.status === 'unread'" />
+                    <DoubleTick v-if="message.status === 'read'" />
                   </div>
                 </div>
               </div>
@@ -90,14 +91,22 @@ import ChatCard from "@/components/Messages/ChatCard.vue";
 import { Picker, EmojiIndex } from "emoji-mart-vue-fast/src";
 import data from "emoji-mart-vue-fast/data/all.json";
 import UploadFile from "@/components/Messages/UploadFile.vue";
+import {useMessageStore} from "../../store/message"
+import {useUserStore} from "../../store/user"
 
+const userStore = useUserStore();
+
+const messageStore = useMessageStore();
 const noMesage = ref(false);
+
+console.log(messageStore.thread);
 
 const emojiPickerSelected = ref(false);
 let emojiIndex = new EmojiIndex(data);
 const toggle = () => {
   emojiPickerSelected.value = !emojiPickerSelected.value;
 };
+
 
 const chatInput = ref("");
 const file = ref("");
@@ -110,6 +119,10 @@ const getFile = (files: any) => {
   // Do something with the file
   file.value = files.name;
 };
+
+const loadMessage = (roomid: string) => {
+  messageStore.loadThread(roomid);
+}
 
 // Test Data
 const msgData = [
@@ -165,6 +178,40 @@ onMounted(() => {
   const scrolldown = document.getElementById("scrolldown");
   scrolldown?.scrollIntoView();
 });
+</script>
+
+<script lang="ts">
+
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+  
+  beforeRouteEnter(to, from, next) {
+    const messageStore = useMessageStore();
+    let roomid = '';
+    const thread = (()  => {
+       const thread = messageStore?.threads?.data[0];
+      roomid = thread.room_id;
+      // Exit the loop after the first iteration
+      return;
+    });
+
+    if (messageStore.threads) {
+      // The authentication state is already loaded, so proceed to the dashboard
+      thread();
+      messageStore.loadThread(roomid);
+      next()
+    } else {
+      // The authentication state is not loaded yet, so wait for it before proceeding
+      messageStore.loadThreads().then(() => {
+        thread();
+        return messageStore.loadThread(roomid);
+      }).then(() => {
+        next()
+      })
+    }
+  },
+})
 </script>
 
 <style scoped lang="scss">
