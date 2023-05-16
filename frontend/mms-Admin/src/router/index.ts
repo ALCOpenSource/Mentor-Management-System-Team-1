@@ -7,6 +7,7 @@ import messageLayout from "@/layouts/messageLayout.vue";
 import discussionLayout from "@/layouts/discussionLayout.vue";
 import mentorLayout from "@/layouts/mentorLayout.vue";
 import mentorManagerLayout from "@/layouts/mentorManagerLayout.vue";
+import blankLayout from "@/layouts/blankLayout.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -59,10 +60,27 @@ const router = createRouter({
         {
           path: "tasks",
           name: "tasks",
-          component: () => import("@/views/Tasks/Tasks.vue"),
+          component: blankLayout,
           meta: {
             requiresAuth:true
           },
+          children: [
+            {
+              path: "all",
+              name: "allTasks",
+              component: () => import("@/views/Tasks/Tasks.vue")
+            },
+            {
+              path: "create",
+              name: "create",
+              component: () => import("@/views/Tasks/Create.vue")
+            },
+            {
+              path: "edit",
+              name: "edit",
+              component: () => import("@/views/Tasks/Edit.vue")
+            },
+          ]
         },
         {
           path: "reports",
@@ -75,7 +93,7 @@ const router = createRouter({
         {
           path: "mentors",
           name: "mentors",
-          component: mentorLayout,
+          component: () => import("@/views/Mentors/MentorList.vue"),
           meta: {
             requiresAuth:true
           },
@@ -96,7 +114,7 @@ const router = createRouter({
         {
           path: "mentor-managers",
           name: "mentor-managers",
-          component: mentorManagerLayout,
+          component: () => import("@/views/MentorManagers/MentorManagerList.vue"),
           meta: {
             requiresAuth:true
           },

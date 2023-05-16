@@ -9,3 +9,4 @@ export { default as profileSuccess } from "./profile_success.png";
 export { default as deleteSuccess } from "./delete_sucessful.png";
 export { default as smallCertificate } from "./smallCert.png";
 export { default as largeCertificate } from "./cert.png";
+export {default as updateSuccessful} from "./task_update_success.png"

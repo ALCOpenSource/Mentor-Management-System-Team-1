@@ -28,7 +28,9 @@
       <GhostBtn title="Delete">
         <IconDelete />
       </GhostBtn>
-      <PrimaryBtn title="Edit Task" />
+      <router-link to="edit">
+        <PrimaryBtn title="Edit Task" />
+      </router-link>
     </section>
   </section>
 </template>
