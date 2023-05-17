@@ -4,6 +4,7 @@ import axios from "axios"
 interface MessageState {
     threads: object | null;
     thread: object | null;
+    receiver_id: string | Blob;
 }
 
 export const useMessageStore = defineStore({
@@ -13,6 +14,7 @@ export const useMessageStore = defineStore({
         return {
             threads: null,
             thread: null,
+            receiver_id: null,
         }
     },
 
@@ -27,10 +29,27 @@ export const useMessageStore = defineStore({
             this.threads = res.data
         },
 
-        async loadThread(roomid: string) {
+        async loadThread(roomid: string, receiver_id: string) {
             const res = await axios.get('v1/message/thread/' + roomid)
             this.thread = res.data
-            console.log(res.data);
+            this.receiver_id = receiver_id
+        },
+
+        async sendMessage(messageData: object) {
+
+            console.log(this.receiver_id);
+            const res = await axios.post('v1/message', messageData, {
+                headers: {
+                'Content-Type': 'multipart/form-data'
+                }
+            });
+            this.loadThread(res.data.data.room_id, res.data.data.receiver_id)
+            
+        },
+
+        async markAsRead(uuid: string) {
+            const res = await axios.post('v1/message/read/' + uuid)
+            this.loadThreads();
         },
     }
 })

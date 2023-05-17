@@ -42,10 +42,23 @@
                 <div class="received">
                   <h1>{{ message.message }}</h1>
                   <small>{{ message.human_date }}</small>
+                  <div v-if="message.attachments && message.attachments.length > 0">
+                      <div v-for="attachment in message.attachments" :key="attachment">
+                        <template v-if="attachment.type === 'image'">
+                          <img :src="attachment.url" alt="attachment" />
+                          <p>{{ attachment.name }}</p>
+                          <p>{{ calculateFileSize(attachment.size) }}</p>
+                        </template>
+                        <template v-else>
+                          <a :href="attachment.url" target="_blank"></a>
+                          <p>{{ attachment.name }}</p>
+                          <p>{{ calculateFileSize(attachment.size) }}</p>
+                        </template>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="w-full flex justify-end mb-4" v-else>
-      
                 <div class="sent">
                   <h1>{{ message.message }}</h1>
                   <div class="flex justify-between items-center">
@@ -53,9 +66,24 @@
                     <Tick v-if="message.status === 'unread'" />
                     <DoubleTick v-if="message.status === 'read'" />
                   </div>
+                  <div v-if="message.attachments.length > 0">
+                      <div v-for="attachment in message.attachments" :key="attachment">
+                        <template v-if="attachment.type === 'image'">
+                          <img :src="attachment.url" alt="attachment" />
+                          <p>{{ attachment.name }}</p>
+                          <p>{{ calculateFileSize(attachment.size) }}</p>
+                        </template>
+                        <template v-else>
+                          <a :href="attachment.url" target="_blank"></a>
+                          <p>{{ attachment.name }}</p>
+                          <p>{{ calculateFileSize(attachment.size) }}</p>
+                        </template>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+
             <div id="scrolldown"></div>
           </div>
           <div class="mt-4 w-full flex items-center picker">
@@ -66,6 +94,7 @@
               type="text"
               placeholder="|   Type a message..."
               v-model="chatInput"
+              @keyup.enter="sendMessage"
             />
             <Picker
               v-if="emojiPickerSelected"
@@ -99,8 +128,6 @@ const userStore = useUserStore();
 const messageStore = useMessageStore();
 const noMesage = ref(false);
 
-console.log(messageStore.thread);
-
 const emojiPickerSelected = ref(false);
 let emojiIndex = new EmojiIndex(data);
 const toggle = () => {
@@ -109,70 +136,55 @@ const toggle = () => {
 
 
 const chatInput = ref("");
-const file = ref("");
 
 const convertEmoji = (emoji: any) => {
   chatInput.value += emoji.native;
 };
-
+const attachments: any[] = [];
 const getFile = (files: any) => {
   // Do something with the file
-  file.value = files.name;
+  attachments.push(files);
 };
 
-const loadMessage = (roomid: string) => {
-  messageStore.loadThread(roomid);
+const  calculateFileSize = (size: any) => {
+    if(size < 1024) {
+        return `${size} B`;
+    } else if(size < 1024 * 1024) {
+        return `${(size / 1024).toFixed(2)} KB`;
+    } else if(size < 1024 * 1024 * 1024) {
+        return `${(size / (1024 * 1024)).toFixed(2)} MB`;
+    } else {
+        return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+    }
+}
+const loadMessage = (roomid: string, receiver_id: string, uuid: string, unread: number) => {
+  messageStore.loadThread(roomid, receiver_id).then(() => {
+      const scrolldown = document.getElementById("scrolldown");
+      scrolldown?.scrollIntoView();
+      if(unread !== 0) {
+        messageStore.markAsRead(uuid);
+      }
+  });
 }
 
-// Test Data
-const msgData = [
-  {
-    id: 1,
-    name: "Kabiru",
-    avatar: "https://blog.readyplayer.me/content/images/2021/04/IMG_0689.PNG",
-    messages: [
-      {
-        rec: true,
-        sent: false,
-        msg: "Hello Perculiar",
-        time: "5:59 PM",
-      },
-      {
-        rec: false,
-        sent: true,
-        msg: "Hello Kabiru, trust you are well?",
-        time: "6:00 PM",
-        status: "Delivered",
-      },
-      {
-        rec: false,
-        sent: true,
-        msg: "I need to check up on you",
-        time: "6:00 PM",
-        status: "Sent",
-      },
-      {
-        rec: true,
-        sent: false,
-        msg: "I need to check up on you?",
-        time: "6:10 PM",
-      },
-      {
-        rec: false,
-        sent: true,
-        msg: "Yes, I needed to check up on you, is that a problem",
-        time: "6:12 PM",
-        status: "Sent",
-      },
-      {
-        rec: true,
-        sent: false,
-        msg: "No, I just wasn't expecting it, that's all",
-        time: "6:13 PM",
-      },
-    ],
-  },
-];
+const sendMessage = () => {
+  // Create form data
+    let formData = new FormData();
+    formData.append('message', chatInput.value);
+    formData.append('receiver_id', messageStore.receiver_id);
+
+    // Append attachments
+    attachments.forEach((file) => {
+        formData.append('attachments[]', file);
+    });
+
+    messageStore.sendMessage(formData).then(() => {
+      const scrolldown = document.getElementById("scrolldown");
+      scrolldown?.scrollIntoView();
+
+      chatInput.value = '';
+    });
+}
 
 onMounted(() => {
   const scrolldown = document.getElementById("scrolldown");
@@ -189,9 +201,16 @@ export default defineComponent({
   beforeRouteEnter(to, from, next) {
     const messageStore = useMessageStore();
     let roomid = '';
+    let receiver_id = '';
+    let uuid = '';
+    let unread = 0;
     const thread = (()  => {
        const thread = messageStore?.threads?.data[0];
       roomid = thread.room_id;
+      receiver_id = thread.receiver_id;
+      uuid = thread.uuid;
+      unread = thread.unread;
+
       // Exit the loop after the first iteration
       return;
     });
@@ -199,14 +218,17 @@ export default defineComponent({
     if (messageStore.threads) {
       // The authentication state is already loaded, so proceed to the dashboard
       thread();
-      messageStore.loadThread(roomid);
+      messageStore.loadThread(roomid, receiver_id);
       next()
     } else {
       // The authentication state is not loaded yet, so wait for it before proceeding
       messageStore.loadThreads().then(() => {
         thread();
-        return messageStore.loadThread(roomid);
+        return messageStore.loadThread(roomid, receiver_id);
       }).then(() => {
+        if(unread !== 0) {
+          messageStore.markAsRead(uuid);
+        }
         next()
       })
     }
