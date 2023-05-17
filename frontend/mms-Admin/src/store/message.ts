@@ -36,13 +36,20 @@ export const useMessageStore = defineStore({
         },
 
         async sendMessage(messageData: object) {
+
+            console.log(this.receiver_id);
             const res = await axios.post('v1/message', messageData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }
             });
-            this.loadThread(res.data.data.room_id)
+            this.loadThread(res.data.data.room_id, res.data.data.receiver_id)
             
-        }
+        },
+
+        async markAsRead(uuid: string) {
+            const res = await axios.post('v1/message/read/' + uuid)
+            this.loadThreads();
+        },
     }
 })

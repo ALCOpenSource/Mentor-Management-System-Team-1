@@ -157,10 +157,13 @@ const  calculateFileSize = (size: any) => {
         return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
     }
 }
-const loadMessage = (roomid: string, receiver_id: string) => {
+const loadMessage = (roomid: string, receiver_id: string, uuid: string, unread: number) => {
   messageStore.loadThread(roomid, receiver_id).then(() => {
       const scrolldown = document.getElementById("scrolldown");
       scrolldown?.scrollIntoView();
+      if(unread !== 0) {
+        messageStore.markAsRead(uuid);
+      }
   });
 }
 
@@ -199,10 +202,15 @@ export default defineComponent({
     const messageStore = useMessageStore();
     let roomid = '';
     let receiver_id = '';
+    let uuid = '';
+    let unread = 0;
     const thread = (()  => {
        const thread = messageStore?.threads?.data[0];
       roomid = thread.room_id;
       receiver_id = thread.receiver_id;
+      uuid = thread.uuid;
+      unread = thread.unread;
+
       // Exit the loop after the first iteration
       return;
     });
@@ -218,6 +226,9 @@ export default defineComponent({
         thread();
         return messageStore.loadThread(roomid, receiver_id);
       }).then(() => {
+        if(unread !== 0) {
+          messageStore.markAsRead(uuid);
+        }
         next()
       })
     }
