@@ -3,6 +3,7 @@ import { createPinia } from "pinia";
 import { createToaster } from "@meforma/vue-toaster"
 
 import "./axios";
+import "./pusher"
 import App from "./App.vue";
 import router from "./router";
 import { plugin, defaultConfig } from "@formkit/vue";
