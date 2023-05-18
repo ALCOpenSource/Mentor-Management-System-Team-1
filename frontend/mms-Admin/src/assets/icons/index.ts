@@ -39,3 +39,4 @@ export { default as Reports } from "./Reports.vue";
 export { default as Task } from "./Task.vue";
 export { default as DeleteArchive } from "./Delete-Archive.vue";
 export { default as Download } from "./Download.vue";
+export { default as CheckMark } from "./CheckMark.vue";
