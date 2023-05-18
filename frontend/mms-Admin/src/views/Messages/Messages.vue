@@ -83,7 +83,7 @@
                 </div>
               </div>
             </div>
-
+               <p v-if="typing">Typing...</p>
             <div id="scrolldown"></div>
           </div>
           <div class="mt-4 w-full flex items-center picker">
@@ -95,6 +95,7 @@
               placeholder="|   Type a message..."
               v-model="chatInput"
               @keyup.enter="sendMessage"
+              @keyup="handleTyping"
             />
             <Picker
               v-if="emojiPickerSelected"
@@ -122,6 +123,8 @@ import data from "emoji-mart-vue-fast/data/all.json";
 import UploadFile from "@/components/Messages/UploadFile.vue";
 import {useMessageStore} from "../../store/message"
 import {useUserStore} from "../../store/user"
+import Echo from "laravel-echo"
+import Pusher from "pusher-js";
 
 const userStore = useUserStore();
 
@@ -136,6 +139,7 @@ const toggle = () => {
 
 
 const chatInput = ref("");
+const typing = ref(false)
 
 const convertEmoji = (emoji: any) => {
   chatInput.value += emoji.native;
@@ -186,9 +190,115 @@ const sendMessage = () => {
     });
 }
 
+const handleTyping = (event: any) => {
+    let timer = null;
+    if (event.key !== 'Enter') {
+      // If no active thread, return
+
+      if (!messageStore.active_room || !messageStore.receiver_id) return;
+
+      // If timer is not null, clear it
+      if (timer) clearTimeout(timer);
+
+      // Emit typing event
+      timer = setTimeout(() => {
+        window.Echo.private(`chat.${messageStore.active_room}`).whisper('typing', {
+          typing: true,
+          user_id: userStore.user.id,
+          receiver_id: messageStore.receiver_id,
+          message_room_id: messageStore.active_room,
+        });
+      }, 500);
+    }
+}
+
 onMounted(() => {
   const scrolldown = document.getElementById("scrolldown");
   scrolldown?.scrollIntoView();
+  let echo_previous_state: string;
+    let echo_current_state: string;
+    const user_id = userStore?.user.id; 
+    
+    // document.addEventListener('mousemove', () => {
+    //     messageStore.alivecheck();
+    // });
+
+    document.addEventListener('keydown', () => {
+        messageStore.alivecheck();
+    });
+
+    // Listen for when Echo connects and disconnects
+    window.Echo.connector.pusher.connection.bind('connected', () => {
+      // If previous state was disconnected, reload page
+      if (echo_previous_state == 'disconnected') {
+        // Here you can refresh user data e.g. fetch new notifications
+        messageStore.loadThreads();
+      }
+    });
+
+    window.Echo.connector.pusher.connection.bind('disconnected', () => {
+      console.log('Echo disconnected');
+    });
+
+    // Listen for when Echo reconnects
+    window.Echo.connector.pusher.connection.bind('state_change', (states) => {
+      console.log('Echo state changed', states);
+
+      // Save previous state
+      echo_previous_state = states.previous;
+      echo_current_state = states.current;
+    });
+
+    window.Echo.private(`messages.${user_id}`)
+      .listen('NewMessage', (e) => {
+        console.log('New message', e.message);
+
+        if (e.message.room_id == messageStore.active_room) {
+          messageStore.loadThread(messageStore.active_room, messageStore.receiver_id);
+        }
+
+        messageStore.loadThreads();
+      })
+      .listen('MessageDelivered', (e) => {
+        console.log('Message delivered', e.message);
+
+        if (e.message.room_id == messageStore.active_room) {
+          messageStore.loadThread(messageStore.active_room, messageStore.receiver_id);
+        }
+      })
+      .listen('MessageRead', (e) => {
+        console.log('Message read', e.message);
+
+        if (e.message.room_id == messageStore.active_room) {
+          messageStore.loadThread(messageStore.active_room, messageStore.receiver_id);
+        }
+      })
+      .listen('MessageDeleted', (e) => {
+        console.log('Message deleted', e.message);
+
+        if (e.message.room_id == messageStore.active_room) {
+          messageStore.loadThread(messageStore.active_room, messageStore.receiver_id);
+        }
+      });
+      let timer: number|null|undefined = null;
+      
+      window.Echo.private(`chat.${messageStore.active_room}`)
+        .listenForWhisper('typing', (e) => {
+            console.log("Typing", e);
+
+            if(timer){
+                clearTimeout(timer);
+            }
+
+            if(e.user_id != user_id){
+                typing.value = true;
+                console.log(typing.value);
+            }
+            
+            timer = setTimeout(() => {
+                typing.value = false;
+            }, 3000);
+        });
 });
 </script>
 
