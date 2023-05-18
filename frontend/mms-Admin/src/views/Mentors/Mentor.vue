@@ -8,7 +8,7 @@
           <Filter class="cursor-pointer" />
         </div>
       </div>
-      <div class="mentor-cards">
+      <div class="mentor-cards scrollbar">
         <MentorCard v-for="item in 10" :key="item" />
       </div>
     </div>
@@ -58,19 +58,5 @@ const tab = ref(null);
   height: 70vh;
   overflow-y: scroll;
   padding-right: 5px;
-
-  &::-webkit-scrollbar {
-    width: 5px;
-    transition: all 0.5s ease-in-out;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #06B9C6;
-    border-radius: 50px;
-  }
 }
 </style>

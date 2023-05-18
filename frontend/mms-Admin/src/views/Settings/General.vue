@@ -6,7 +6,7 @@
       </v-avatar>
       <div class="ml-6">
         <h1 class="mb-2 text-xl font-semibold">Set Profile Picture</h1>
-        <UploadProfilePic @upload="getSrc" />
+        <UploadProfilePic @upload="getSrc" :pry="true" title="Upload Picture"/>
       </div>
     </div>
     <div>

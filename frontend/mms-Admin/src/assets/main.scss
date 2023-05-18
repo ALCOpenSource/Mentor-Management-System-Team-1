@@ -133,3 +133,23 @@ body {
     bottom: 50px !important;
   }
 }
+
+.scrollbar {
+  &::-webkit-scrollbar {
+    width: 5px;
+    transition: all 0.5s ease-in-out;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #06B9C6;
+    border-radius: 50px;
+
+    &:hover {
+      background: #058B94;
+    }
+  }
+}
