@@ -3,10 +3,6 @@ import Dashboard from "../views/Dashboard/Dashboard.vue";
 import dashboardLayout from "@/layouts/dashboardLayout.vue";
 import settingsLayout from "@/layouts/settingsLayout.vue";
 import {useAuthStore} from '@/store/auth'
-import messageLayout from "@/layouts/messageLayout.vue";
-import discussionLayout from "@/layouts/discussionLayout.vue";
-import mentorLayout from "@/layouts/mentorLayout.vue";
-import mentorManagerLayout from "@/layouts/mentorManagerLayout.vue";
 import blankLayout from "@/layouts/blankLayout.vue"
 
 const router = createRouter({
@@ -52,10 +48,48 @@ const router = createRouter({
         {
           path: "programs",
           name: "programs",
-          component: () => import("@/views/Programs/Programs.vue"),
+          component: blankLayout,
+          redirect: "/admin/programs/program/all",
           meta: {
             requiresAuth:true
           },
+          children: [
+            {
+              path: "program/:id",
+              name: "program",
+              component: () => import("@/views/Programs/Programs.vue"),
+            },
+            {
+              path: "new-program",
+              name: "new-program",
+              component: () => import("@/views/Programs/CreateProgram.vue"),             
+            },
+            {
+              path: "mentors-assigned/:id",
+              name: "mentors-assigned",
+              component: () => import("@/views/Programs/MentorsAssigned.vue"),
+            },
+            {
+              path: "mentor-managers-assigned/:id",
+              name: "mentor-managers-assigned",
+              component: () => import("@/views/Programs/MentorManagersAssigned.vue"),
+            },
+            {
+              path: "program-reports/:id",
+              name: "program-reports",
+              component: () => import("@/views/Programs/ProgramReports.vue"),
+            },
+            {
+              path: "create-criteria/:id",
+              name: "create-criteria",
+              component: () => import("@/views/Programs/CreateCriteria.vue"),
+            },
+            {
+              path: "edit-program/:id",
+              name: "edit-program",
+              component: () => import("@/views/Programs/EditProgram.vue"),
+            }
+          ]
         },
         {
           path: "tasks",
@@ -91,9 +125,17 @@ const router = createRouter({
           },
         },
         {
+          path: "notifications",
+          name: "notifications",
+          component: () => import("@/views/Notifications/Notifications.vue"),
+          meta: {
+            requiresAuth:true
+          },
+        },
+        {
           path: "mentors",
           name: "mentors",
-          component: () => import("@/views/Mentors/MentorList.vue"),
+          component: blankLayout,
           meta: {
             requiresAuth:true
           },
@@ -114,7 +156,7 @@ const router = createRouter({
         {
           path: "mentor-managers",
           name: "mentor-managers",
-          component: () => import("@/views/MentorManagers/MentorManagerList.vue"),
+          component: blankLayout,
           meta: {
             requiresAuth:true
           },
@@ -151,7 +193,7 @@ const router = createRouter({
         {
           path: "messages",
           name: "messages",
-          component: messageLayout,
+          component: blankLayout,
           meta: {
             requiresAuth:true
           },
@@ -177,7 +219,7 @@ const router = createRouter({
         {
           path: "discussion-forum",
           name: "discussion-forum",
-          component: discussionLayout,
+          component: blankLayout,
           redirect: () => "/admin/discussion-forum/discussions",
           children: [
             {
@@ -209,7 +251,7 @@ const router = createRouter({
             },
             {
               path: "notifications",
-              name: "notifications",
+              name: "settings-notifications",
               component: () => import("@/views/Settings/Notifications.vue"),
             },
             {

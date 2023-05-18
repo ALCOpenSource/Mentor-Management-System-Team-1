@@ -21,15 +21,17 @@ type Props = {
     label?: string;
     rules?: string[];
     hint?: string;
+    initialValue?: string;
 }
 
 defineEmits(["update:textInput"])
+const props = defineProps<Props>()
 
-const inputVal = ref("")
+const inputVal = ref(props.initialValue || '')
 const inputRules = [
     (value: string) => Boolean(value) || `A value is required`
 ]
 
-defineProps<Props>() 
+ 
 
 </script>
