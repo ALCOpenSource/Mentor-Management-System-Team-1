@@ -125,6 +125,14 @@ const router = createRouter({
           },
         },
         {
+          path: "notifications",
+          name: "notifications",
+          component: () => import("@/views/Notifications/Notifications.vue"),
+          meta: {
+            requiresAuth:true
+          },
+        },
+        {
           path: "mentors",
           name: "mentors",
           component: blankLayout,
@@ -243,7 +251,7 @@ const router = createRouter({
             },
             {
               path: "notifications",
-              name: "notifications",
+              name: "settings-notifications",
               component: () => import("@/views/Settings/Notifications.vue"),
             },
             {
