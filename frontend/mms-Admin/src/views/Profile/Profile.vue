@@ -4,7 +4,10 @@
       <div class="flex items-center">
         <v-avatar size="90px">
           <v-img
-            :src="userStore.avatar?.avatar_url || 'https://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder.png'"
+            :src="
+              userStore.avatar?.avatar_url ||
+              'https://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder.png'
+            "
             alt="John"
           ></v-img>
         </v-avatar>
@@ -31,7 +34,9 @@
       </p>
       <div class="flex items-center mb-3 gap-6">
         <h1 class="text-xl font-semibold">Location:</h1>
-        <p class="text-[#808080]">{{ userStore.user?.state }}, {{ userStore.user?.country_name }}</p>
+        <p class="text-[#808080]">
+          {{ userStore.user?.state }}, {{ userStore.user?.country_name }}
+        </p>
       </div>
       <div class="flex items-center mb-3 gap-6">
         <h1 class="text-xl font-semibold">Email:</h1>
@@ -51,21 +56,29 @@
       <div class="grid w-full gap-10 grid-cols-2 mb-6">
         <div class="flex items-center social-card">
           <GitHub />
-          <p class="ml-3">{{ userStore.user?.social_links?.github_username?.name }}</p>
+          <p class="ml-3">
+            {{ userStore.user?.social_links?.github_username?.name }}
+          </p>
         </div>
         <div class="flex items-center social-card">
           <Instagram />
-          <p class="ml-3">{{ userStore.user?.social_links?.instagram_username?.name }}</p>
+          <p class="ml-3">
+            {{ userStore.user?.social_links?.instagram_username?.name }}
+          </p>
         </div>
       </div>
       <div class="grid w-full gap-10 grid-cols-2">
         <div class="flex items-center social-card">
           <LinkedIn />
-          <p class="ml-3">{{ userStore.user?.social_links?.linkedin_username?.name }}</p>
+          <p class="ml-3">
+            {{ userStore.user?.social_links?.linkedin_username?.name }}
+          </p>
         </div>
         <div class="flex items-center social-card">
           <Twitter />
-          <p class="ml-3">{{ userStore.user?.social_links.twitter_username?.name }}</p>
+          <p class="ml-3">
+            {{ userStore.user?.social_links.twitter_username?.name }}
+          </p>
         </div>
       </div>
     </div>
@@ -77,7 +90,7 @@ import { GitHub, Twitter, Instagram, LinkedIn } from "@/assets/icons";
 import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 import { NigerianFlag } from "@/assets/icons";
 
-import {useUserStore} from "../../store/user"
+import { useUserStore } from "../../store/user";
 
 const userStore = useUserStore();
 </script>

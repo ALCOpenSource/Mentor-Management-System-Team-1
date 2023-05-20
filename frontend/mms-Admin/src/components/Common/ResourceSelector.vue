@@ -7,7 +7,7 @@
       <div
         class="bg-white px-8 inline-flex border-2 border-green-200 rounded-md py-2 gap-2 items-center"
       >
-        <p>{{num}} Selected</p>
+        <p>{{ num }} Selected</p>
         <IconRemove />
       </div>
     </section>

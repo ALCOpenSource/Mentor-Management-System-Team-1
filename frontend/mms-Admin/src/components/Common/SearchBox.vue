@@ -12,12 +12,12 @@
 </template>
 
 <script setup lang="ts">
-import { IconSearch } from '@/assets/icons';
+import { IconSearch } from "@/assets/icons";
 
 defineProps({
   placeholder: {
     type: String,
-    default: 'Search for anything',
+    default: "Search for anything",
   },
 });
 </script>

@@ -23,7 +23,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-defineEmits(["update:textInput"])
+defineEmits(["update:textInput"]);
 
 const inputVal = ref(props.initialValue || "");
 </script>

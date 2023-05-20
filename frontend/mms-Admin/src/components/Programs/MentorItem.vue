@@ -29,23 +29,23 @@
           <div class="w-full text-xs truncate bg-[#E6FDFE] rounded py-1 px-3">
             PROGRAM ASST.
           </div>
-          <div class="w-full text-xs truncate bg-[#E6FDFE] rounded py-1 px-3">MENTOR-GADS</div>
+          <div class="w-full text-xs truncate bg-[#E6FDFE] rounded py-1 px-3">
+            MENTOR-GADS
+          </div>
         </div>
       </div>
     </div>
     <div class="flex flex-wrap items-center justify-end mr-0" @click="onClick">
-      <Tick color="#058B94" class="cursor-pointer" v-if="added"/>
-      <IconCircleAdd color="#058B94" class="cursor-pointer" v-else/>
+      <Tick color="#058B94" class="cursor-pointer" v-if="added" />
+      <IconCircleAdd color="#058B94" class="cursor-pointer" v-else />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Tick, IconCircleAdd } from '@/assets/icons';
+import { Tick, IconCircleAdd } from "@/assets/icons";
 
 defineProps<Props>();
-
-defineEmits(["delete"]);
 
 interface Props {
   isMentorManager: boolean;

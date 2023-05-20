@@ -17,7 +17,6 @@
 </template>
 
 <script setup lang="ts">
-
 defineProps({
   width: {
     type: String,

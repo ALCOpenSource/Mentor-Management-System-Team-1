@@ -1,10 +1,17 @@
 <template>
   <div>
-    <div class="w-full h-[78vh] flex flex-col justify-center items-center border rounded-md" v-if="noMesage">
+    <div
+      class="w-full h-[78vh] flex flex-col justify-center items-center border rounded-md"
+      v-if="noMesage"
+    >
       <NoMessage />
       <h1 class="text-xl mt-5 mb-2">No messages yet</h1>
-      <p class="text-[#808080]">No messages in your chatbox, yet. Start chatting with other users</p>
-      <router-link to="/admin/messages/select-someone"><PrimaryBtn title="Browse People" class="mt-12" /></router-link>
+      <p class="text-[#808080]">
+        No messages in your chatbox, yet. Start chatting with other users
+      </p>
+      <router-link to="/admin/messages/select-someone"
+        ><PrimaryBtn title="Browse People" class="mt-12"
+      /></router-link>
     </div>
     <div v-else>
       <div class="flex justify-between items-center">

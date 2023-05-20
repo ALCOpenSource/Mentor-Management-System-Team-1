@@ -12,9 +12,17 @@
         <Textarea placeholder="Enter task details" label="Details" />
         <section class="flex gap-6 mt-4 mb-8">
           <!-- Add Mentor Manager -->
-          <ResourceSelector :on-click="toggleResourceList" title="Add Mentor Manager" :num="10"/>
+          <ResourceSelector
+            :on-click="toggleResourceList"
+            title="Add Mentor Manager"
+            :num="10"
+          />
           <!-- Add Mentor -->
-          <ResourceSelector :on-click="toggleResourceList" title="Add Mentor" :num="6"/>
+          <ResourceSelector
+            :on-click="toggleResourceList"
+            title="Add Mentor"
+            :num="6"
+          />
         </section>
         <!-- Create Task button -->
         <PrimaryBtn title="Create Task" class="small" />

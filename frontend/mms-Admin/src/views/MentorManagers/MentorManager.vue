@@ -9,11 +9,13 @@
         </div>
       </div>
       <div class="mentor-cards scrollbar">
-        <MentorCard v-for="item in 10" :key="item" />
+        <div v-for="item in 10" :key="item">
+          <MentorCard :details="mentorData" class="mb-3" />
+        </div>
       </div>
     </div>
     <div class="h-[77vh] w-full flex flex-col overflow-hidden">
-      <Header is-mentor-manager/>
+      <Header is-mentor-manager />
       <div class="h-full flex flex-col">
         <div class="border-b border-[#ccc]">
           <v-tabs v-model="tab" color="#058b94" align-tabs="center" fixed-tabs>
@@ -51,9 +53,24 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { IconSearch, Filter } from "@/assets/icons";
-import { MentorCard, About, Programs, Header, Tasks, Certificates, Manager } from "@/components/Mentors";
+import {
+  MentorCard,
+  About,
+  Programs,
+  Header,
+  Tasks,
+  Certificates,
+  Manager,
+} from "@/components/Mentors";
 
 const tab = ref(null);
+
+// Should be fetched from the backend
+const mentorData = {
+  name: "Alison Davis",
+  text: "Added 0ct. 10 2022",
+  imgUrl: "http://picsum.photos/100/100",
+};
 </script>
 
 <style scoped lang="scss">

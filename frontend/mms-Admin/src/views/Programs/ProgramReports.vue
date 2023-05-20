@@ -45,14 +45,14 @@
               </v-icon>
             </div>
           </div>
-          <div
-            v-if="showDetails?.show && showDetails?.index === index"
-            class="bg-green-100 py-[10px] px-[20px]"
-          >
-            <v-expand-transition>
-              <h3>Some content</h3>
-            </v-expand-transition>
-          </div>
+          <v-expand-transition>
+            <div
+              v-if="showDetails?.show && showDetails?.index === index"
+              class="bg-green-100 py-[10px] px-[20px]"
+            >
+              <h3>Some contenddjddt</h3>
+            </div>
+          </v-expand-transition>
         </div>
       </div>
     </div>
