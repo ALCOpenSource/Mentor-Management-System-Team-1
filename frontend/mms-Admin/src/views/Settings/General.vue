@@ -2,11 +2,17 @@
   <div>
     <div class="flex items-center mb-8">
       <v-avatar size="90px">
-        <v-img :src="userBio.profilePicture || 'https://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder.png'" :alt="userBio.firstName"></v-img>
+        <v-img
+          :src="
+            userBio.profilePicture ||
+            'https://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder.png'
+          "
+          :alt="userBio.firstName"
+        ></v-img>
       </v-avatar>
       <div class="ml-6">
         <h1 class="mb-2 text-xl font-semibold">Set Profile Picture</h1>
-        <UploadProfilePic @upload="getSrc" :pry="true" title="Upload Picture"/>
+        <UploadProfilePic @upload="getSrc" :pry="true" title="Upload Picture" />
       </div>
     </div>
     <div>
@@ -68,10 +74,19 @@
           <v-row align="center">
             <v-col cols="5" class="my-select">
               <select
-              v-model="userBio.country" @change.prevent="onSelect" class="input" required>
+                v-model="userBio.country"
+                @change.prevent="onSelect"
+                class="input"
+                required
+              >
                 <option value="" hidden disabled>Select Country</option>
-                <option v-for="country in locationStore.country"
-              :key="country.code" :value="country.code">{{ country.name }} </option>
+                <option
+                  v-for="country in locationStore.country"
+                  :key="country.code"
+                  :value="country.code"
+                >
+                  {{ country.name }}
+                </option>
               </select>
               <span class="">
                 <svg
@@ -97,8 +112,13 @@
             <v-col cols="5" class="my-select">
               <select v-model="userBio.city" class="input">
                 <option value="" hidden disabled>Select City</option>
-                <option v-for="city in locationStore.city"
-              :key="city.code" :value="city.name">{{ city.name }}</option>
+                <option
+                  v-for="city in locationStore.city"
+                  :key="city.code"
+                  :value="city.name"
+                >
+                  {{ city.name }}
+                </option>
               </select>
               <span class="">
                 <svg
@@ -198,7 +218,7 @@
 
 <script setup lang="ts">
 import { ref, watch, computed } from "vue";
-import { storeToRefs } from 'pinia'
+import { storeToRefs } from "pinia";
 import LinkedIn from "../../assets/icons/LinkedIn.vue";
 import Twitter from "../../assets/icons/Twitter.vue";
 import Instagram from "../../assets/icons/Instagram.vue";
@@ -207,13 +227,13 @@ import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 import UploadProfilePic from "../../components/Settings/UploadProfilePic.vue";
 import Modal from "../../components/Forms/Modal.vue";
 import { profileSuccess } from "../../assets/images";
-import {useUserStore} from "../../store/user"
-import {useLocationStore} from "../../store/location"
-import router from "../../router/index"
+import { useUserStore } from "../../store/user";
+import { useLocationStore } from "../../store/location";
+import router from "../../router/index";
 
 const userStore = useUserStore();
 const locationStore = useLocationStore();
-const { city, country } = storeToRefs(locationStore)
+const { city, country } = storeToRefs(locationStore);
 //let path = null
 
 const isModalOpen = ref(false);
@@ -232,12 +252,10 @@ const userBio = ref({
 });
 //
 const getSrc = async (file: File, src: string) => {
-  if(userStore.avatar && userStore.avatar.avatar_url)
-  {
-    userBio.value.profilePicture = src
+  if (userStore.avatar && userStore.avatar.avatar_url) {
+    userBio.value.profilePicture = src;
     //path = file
     await userStore.uploadAvatar(file);
-
   }
 };
 
@@ -248,7 +266,7 @@ const toggleModal = () => {
 const handleSubmit = async () => {
   // Handle the Form submission
   const response = await userStore.updateUser(userBio);
-  
+
   if (response && response.data && response.data.success) {
     toggleModal();
     // setTimeout(() => {
@@ -259,13 +277,15 @@ const handleSubmit = async () => {
   }
 };
 
-const onSelect = async() => {
+const onSelect = async () => {
   // update select options if a new country is selected
   await locationStore.setCity(userBio.value.country);
-}
+};
 
 const filteredCities = computed(() => {
-  return locationStore.city?.filter((city: { code: string; }) => city.code === userBio.value.country);
+  return locationStore.city?.filter(
+    (city: { code: string }) => city.code === userBio.value.country
+  );
 });
 
 watch(country, () => {
@@ -284,11 +304,9 @@ watch(filteredCities, () => {
     }
   }
 });
-
-
 </script>
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
 
 function getCountryCode(countryName: any, countries: any) {
   for (let key in countries) {
@@ -300,26 +318,28 @@ function getCountryCode(countryName: any, countries: any) {
 }
 
 export default defineComponent({
-  beforeRouteEnter(to, from, next) {     
-    const locationStore = useLocationStore(); 
-    const userStore = useUserStore(); 
+  beforeRouteEnter(to, from, next) {
+    const locationStore = useLocationStore();
+    const userStore = useUserStore();
     if (locationStore.country && locationStore.city) {
       // The location state is already loaded, so proceed to General Settings
-      next()
+      next();
     } else {
       // The location state is not loaded yet, so wait for it before proceeding
-      const country = userStore.user?.country_name || 'Afghanistan'
-      locationStore.setCountry().then(() => {
-        const countryCode = getCountryCode(country, locationStore.country);
-        return locationStore.setCity(countryCode);
-      }).then(() => {
-        next();
-      });
+      const country = userStore.user?.country_name || "Afghanistan";
+      locationStore
+        .setCountry()
+        .then(() => {
+          const countryCode = getCountryCode(country, locationStore.country);
+          return locationStore.setCity(countryCode);
+        })
+        .then(() => {
+          next();
+        });
     }
   },
-})
+});
 </script>
-
 
 <style scoped lang="scss">
 .input {

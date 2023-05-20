@@ -14,14 +14,12 @@
 </template>
 
 <script setup lang="ts">
-
 defineProps({
   size: {
     type: String,
     default: "60",
   },
 });
-
 </script>
 
 <style scoped></style>

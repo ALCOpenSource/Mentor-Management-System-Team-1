@@ -10,7 +10,9 @@
           class="flex items-center gap-1 cursor-pointer"
           @click="markAllAsRead"
         >
-          <p class="text-base font-semibold" :class="allRead ? 'read' : ''">Mark all as read</p>
+          <p class="text-base font-semibold" :class="allRead ? 'read' : ''">
+            Mark all as read
+          </p>
           <span><CheckMark /></span>
         </div>
         <Pagination />
@@ -51,10 +53,7 @@
               />
             </template>
             <div class="bg-[#f7feff] rounded p-2">
-              <p 
-                class="cursor-pointer"
-                @click="markSingleAsRead(index)"
-              >
+              <p class="cursor-pointer" @click="markSingleAsRead(index)">
                 Mark as Read
               </p>
             </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="card" :class="isSelected ? 'selected' : null" :onClick="onClick">
-    <ProgramHeader :truncate="true" :title="title" :date="date" :time="time"/>
+    <ProgramHeader :truncate="true" :title="title" :date="date" :time="time" />
   </div>
 </template>
 

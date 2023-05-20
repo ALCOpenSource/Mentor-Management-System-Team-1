@@ -30,8 +30,8 @@
 
 <script setup lang="ts">
 import { ref, watch, computed, onMounted } from "vue";
-import {useAuthStore} from "../../store/auth"
-import { useRoute } from 'vue-router'
+import { useAuthStore } from "../../store/auth";
+import { useRoute } from "vue-router";
 
 import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 import Email from "../../components/Forms/Email.vue";
@@ -47,29 +47,28 @@ const isAdmin = ref(true);
 
 const authStore = useAuthStore();
 
-const handleLogin = async() => {
+const handleLogin = async () => {
   if (valid.value && isAdmin.value) {
-    await authStore.handleLogin(loginData.value)
-  } 
+    await authStore.handleLogin(loginData.value);
+  }
 };
 
-const socialLoginRedirect = async() => {
-  await authStore.socialLoginRedirect()
-}
+const socialLoginRedirect = async () => {
+  await authStore.socialLoginRedirect();
+};
 
-const router = useRoute()
+const router = useRoute();
 
 const handleSocialLogin = async () => {
   const access_token = router.query.access_token as string;
   if (access_token) {
-      await authStore.handleSocialLogin(access_token)
+    await authStore.handleSocialLogin(access_token);
   }
 };
 
 onMounted(() => {
   handleSocialLogin();
 });
-
 </script>
 
 <style scoped lang="scss">

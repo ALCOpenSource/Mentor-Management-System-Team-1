@@ -6,9 +6,14 @@
         <v-card-text>
           <img v-if="src" :src="src" alt="img" />
           <p class="text-center text-lg px-16">{{ cardText }}</p>
-          <h2 v-if="centerTitle" class="font-bold text-2xl">{{ centerTitle }}</h2>
+          <h2 v-if="centerTitle" class="font-bold text-2xl">
+            {{ centerTitle }}
+          </h2>
           <div v-if="email" class="min-w-[450px]">
-            <Email @update:email="(value) => (emailData = value)" @vnode-updated="$emit('update:email', emailData)"/>
+            <Email
+              @update:email="(value) => (emailData = value)"
+              @vnode-updated="$emit('update:email', emailData)"
+            />
           </div>
         </v-card-text>
         <v-card-actions>
@@ -49,7 +54,7 @@ const props = defineProps<Props>();
 const emit = defineEmits(["toggleModal", "update:email", "closeModal"]);
 
 const isModalOpen = ref(props.isModalOpen);
-const emailData = ref('');
+const emailData = ref("");
 
 const toggleModal = () => {
   emit("toggleModal");
@@ -58,7 +63,7 @@ const toggleModal = () => {
 
 const closeModal = () => {
   emit("closeModal");
-}
+};
 
 watch(
   () => props.isModalOpen,

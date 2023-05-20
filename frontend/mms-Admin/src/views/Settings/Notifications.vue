@@ -66,7 +66,7 @@
     </v-row>
     <v-row class="mt-10" align-content="center" justify="center">
       <v-col cols="6">
-        <PrimaryBtn title="Save Changes" @click="handleSubmit"/>
+        <PrimaryBtn title="Save Changes" @click="handleSubmit" />
       </v-col>
     </v-row>
     <Modal
