@@ -47,8 +47,6 @@ import { Tick, IconCircleAdd } from "@/assets/icons";
 
 defineProps<Props>();
 
-defineEmits(["delete"]);
-
 interface Props {
   isMentorManager: boolean;
   added?: boolean;
