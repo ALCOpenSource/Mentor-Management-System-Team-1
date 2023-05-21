@@ -9,8 +9,8 @@
         @click="(e) => selected(e, index)"
       >
         <span class="flex items-center justify-between">
-          <img :src="item.imgUrl" alt="" />
-          <p class="w-2/4 font-bold text-base">{{ item.name }}</p>
+          <img :src="item.imgUrl" alt="" class="w-1/6"/>
+          <p class="w-3/4 font-semibold text-base ml-3">{{ item.name }}</p>
           <p class="text-2xl font-bold">{{ item.count }}</p>
         </span>
       </li>

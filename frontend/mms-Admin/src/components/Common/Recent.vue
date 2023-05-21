@@ -2,7 +2,7 @@
   <div class="recent">
     <h1 class="p-2 font-semibold text-lg">Recent</h1>
     <div class="flex flex-col gap-2">
-      <MentorCard v-for="item in 6" :key="item" :details="recentDetails" />
+      <MentorCard v-for="item in 6" :key="item" :details="details" />
     </div>
   </div>
 </template>
@@ -11,12 +11,18 @@
 import MentorCard from "../Mentors/MentorCard.vue";
 import { smallCertificate } from "@/assets/images";
 
-const recentDetails = {
-  name: "Alison Davis",
-  text: "GADS CLOUD 2022 - COMP...",
-  imgUrl: smallCertificate,
-  isCert: true,
-};
+defineProps<RecentDetails>();
+
+interface RecentDetails {
+  details: {
+    name: string;
+    text?: string;
+    imgUrl: string;
+    isView?: boolean;
+    count?: number;
+    isCert?: boolean;
+  };
+}
 </script>
 
 <style scoped lang="scss">
