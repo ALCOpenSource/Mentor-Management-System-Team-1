@@ -7,7 +7,7 @@
         <div class="flex items-center">
           <UserAvatar v-if="user" :image-link="imgUrl" />
           <img v-if="smallUrl" :src="smallUrl" alt="John" />
-          <div class="flex flex-col ml-5">
+          <div class="ml-5">
             <h1
               v-if="isMentorCert"
               class="font-semibold text-xl text-[#333333] uppercase"
@@ -21,6 +21,26 @@
               <h1 class="font-semibold text-base text-[#333333] uppercase">
                 GADS CLOUD 2022 - COMPLETION
               </h1>
+            </div>
+            <div v-if="approval" class="flex flex-wrap items-center">
+              <div class="flex flex-col mr-8">
+                <h1
+                  class="text-xl font-semibold cursor-pointer hover:underline transition-all"
+                >
+                  Allison Davies
+                </h1>
+                <small class="text-[#808080]"
+                  >Program Assistant, Andela, She/her</small
+                >
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="text-xs bg-[#E6FDFE] rounded py-1 px-3">
+                  PROGRAM ASST.
+                </div>
+                <div class="text-xs bg-[#E6FDFE] rounded py-1 px-3">
+                  MENTOR-GADS
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -77,7 +97,8 @@ interface Props {
   smallUrl?: string;
   isMentorCert?: boolean;
   generalCert?: boolean;
-  title: string;
+  title?: string;
+  approval?: boolean;
 }
 </script>
 

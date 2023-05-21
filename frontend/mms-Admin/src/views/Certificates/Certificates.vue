@@ -11,7 +11,7 @@
         />
       </div>
       <div>
-        <Recent />
+        <Recent :details="recentDetails"/>
       </div>
     </div>
     <div class="w-full">
@@ -36,12 +36,7 @@
       </div>
       <div>
         <div v-for="(item, index) in 10" :key="item" class="mb-2">
-          <Accordion
-            :index="index"
-            :smallUrl="smallCertificate"
-            general-cert
-            :title="tabData.title"
-          >
+          <Accordion :index="index" :smallUrl="smallCertificate" general-cert>
             <CertDropdown
               :largeCertificate="largeCertificate"
               :is-pending="isPending"
@@ -80,9 +75,6 @@ const setPending = (value: boolean) => {
 };
 
 // Fetch data from store according to the selected category and pending status
-const tabData = {
-  title: "GADS CLOUD 2022 - COMPLETION",
-};
 
 const category = [
   {
@@ -99,6 +91,12 @@ const category = [
 const pendingDetails = {
   name: "Certificates pending approval",
   count: 3,
+};
+const recentDetails = {
+  name: "Alison Davis",
+  text: "GADS CLOUD 2022 - COMP...",
+  imgUrl: smallCertificate,
+  isCert: true,
 };
 </script>
 
