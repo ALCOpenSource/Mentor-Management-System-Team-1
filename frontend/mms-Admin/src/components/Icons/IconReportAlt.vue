@@ -1,0 +1,26 @@
+<template>
+  <svg
+    :width="size ?? 29"
+    :height="size + 7 ?? 36"
+    viewBox="0 0 29 36"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M20.7782 8.00016H7.88932M20.7782 14.6668H7.88932M20.7782 21.3335H15.9449M24.0004 34.6668H4.6671C2.88747 34.6668 1.44488 33.1745 1.44488 31.3335V4.66683C1.44488 2.82588 2.88747 1.3335 4.6671 1.3335H24.0004C25.78 1.3335 27.2227 2.82588 27.2227 4.66683V31.3335C27.2227 33.1745 25.78 34.6668 24.0004 34.6668Z"
+      :stroke="color ?? '#058B94'"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+</template>
+
+<script setup lang="ts">
+type Props = {
+  size: number;
+  color: string;
+};
+
+defineProps<Props>();
+</script>

@@ -6,6 +6,7 @@ import {useAuthStore} from '@/store/auth'
 import messageLayout from "@/layouts/messageLayout.vue";
 import discussionLayout from "@/layouts/discussionLayout.vue";
 import mentorLayout from "@/layouts/mentorLayout.vue";
+import reportLayout from "@/layouts/reportLayout.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -66,7 +67,20 @@ const router = createRouter({
         {
           path: "reports",
           name: "reports",
-          component: () => import("@/views/Reports/Reports.vue"),
+          component: reportLayout,
+          // component: () => import("@/views/Reports/Reports.vue"),
+          children: [
+            {
+              path: "programs",
+              name: "programs",
+              component: () => import("@/views/Reports/ProgramReport.vue")
+            },
+            {
+              path: "tasks",
+              name: "tasks",
+              component: () => import("@/views/Reports/TaskReport.vue")
+            }
+          ],
           meta: {
             requiresAuth:true
           },

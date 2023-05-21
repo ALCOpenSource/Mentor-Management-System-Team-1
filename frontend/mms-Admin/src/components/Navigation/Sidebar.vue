@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import {useAuthStore} from "../../store/auth"
+import { useAuthStore } from "../../store/auth";
 
 const authStore = useAuthStore();
 
@@ -65,7 +65,7 @@ const sidebarLinks = [
   },
   {
     pathname: "Reports",
-    path: parentPath + "/reports",
+    path: parentPath + "/reports/tasks",
     icon: IconReport,
   },
   {
