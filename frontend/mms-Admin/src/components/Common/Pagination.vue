@@ -18,7 +18,6 @@ const props = defineProps({
   },
 });
 
-console.log(props.pagination);
 </script>
 
 <style scoped lang="scss"></style>
