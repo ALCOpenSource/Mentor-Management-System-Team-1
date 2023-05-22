@@ -68,6 +68,15 @@ export const useMessageStore = defineStore({
       this.broadcast = res.data;
     },
 
+    async sendBroadcast(messageData: Object) {
+      const res = await axios.post('v1/message/broadcast', messageData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      this.loadBroadcast();
+    },
+
     async markAsRead(uuid: String) {
       const res = await axios.post('v1/message/read/' + uuid);
       this.loadThreads();

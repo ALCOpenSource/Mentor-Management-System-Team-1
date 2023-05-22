@@ -42,8 +42,8 @@
     <div class="msg-area">
       <div
         class="flex flex-col items-center center mb-5"
-        v-for="item in 5"
-        :key="item"
+        v-for="message in messageStore.broadcast"
+        :key="message"
       >
         <small class="smallD bg-white p-1 px-2 rounded">09-01-23</small>
         <div class="broadcast-card">
@@ -157,11 +157,14 @@ export default defineComponent({
   
   beforeRouteEnter(to, from, next) {
     const userStore = useUserStore()
-    if (userStore.users) {
+    const messageStore = useMessageStore()
+    if (userStore.users && messageStore.broadcast) {
       next()
     } else {
       userStore.fetchUsers().then(() => {
-        next();
+        return messageStore.loadBroadcast()  
+      }).then(() => {
+         next();
       });
     }
   },
