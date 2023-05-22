@@ -53,8 +53,12 @@ export const useMessageStore = defineStore({
           'Content-Type': 'multipart/form-data',
         },
       });
-      this.loadThreads();
+      if(this.receiver_data !== null)
+      {
+        this.loadThreads();
+      }
       this.loadThread(res.data.data.room_id, res.data.data.receiver_id);
+      this.receiver_data = null;
     },
 
     async markAsRead(uuid: String) {
