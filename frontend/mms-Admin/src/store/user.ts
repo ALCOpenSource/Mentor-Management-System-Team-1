@@ -4,6 +4,8 @@ import axios from "axios"
 interface userState {
     avatar: Avatar | null;
     user: User | null;
+    users: Object | null;
+    pagination: Object | null;
 }
 
 interface Avatar {
@@ -86,12 +88,15 @@ export const useUserStore = defineStore({
         return {
             avatar: null,
             user: null,
+            users: null,
+            pagination: null,
         }
     },
 
     getters:{
         getAvatar: (state) => state.avatar,
         getUser: (state) => state.user,
+        getUsers: (state) => state.users,
     },
 
     actions: {
@@ -121,6 +126,12 @@ export const useUserStore = defineStore({
         async fetchUser() {
             const res = await axios.get('v1/user')
             this.user = res.data.data
+        },
+
+        async fetchUsers() {
+            const res = await axios.get('v1/user/all')
+            this.users = res.data.data
+            this.pagination = res.data.pagination
         },
 
         async updateUser(userData: userData) {

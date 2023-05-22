@@ -10,6 +10,15 @@
 
 <script setup lang="ts">
 import { ArrowLeft, ArrowRight, ArrowRight2, ArrowLeft2 } from "@/assets/icons";
+
+const props = defineProps({
+  pagination: {
+    type: Object,
+    default: null,
+  },
+});
+
+console.log(props.pagination);
 </script>
 
 <style scoped lang="scss"></style>

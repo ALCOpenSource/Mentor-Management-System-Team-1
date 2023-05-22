@@ -28,7 +28,7 @@
             >
             <span class="bo border-b-2 w-full"></span>
           </div>
-          <div class="chat-area">
+          <div v-if="messageStore.threads.data.length !== 0" class="chat-area">
             <div v-for="message in messageStore.thread.data" :key="message">
               <div
                 class="w-full flex gap-8 justify-start mb-4"
@@ -129,7 +129,7 @@ import Pusher from "pusher-js";
 const userStore = useUserStore();
 
 const messageStore = useMessageStore();
-const noMesage = ref(false);
+const noMesage = ref(true);
 
 const emojiPickerSelected = ref(false);
 let emojiIndex = new EmojiIndex(data);
@@ -144,7 +144,9 @@ const typing = ref(false)
 const convertEmoji = (emoji: any) => {
   chatInput.value += emoji.native;
 };
+
 const attachments: any[] = [];
+
 const getFile = (files: any) => {
   // Do something with the file
   attachments.push(files);
@@ -219,6 +221,9 @@ onMounted(() => {
     let echo_current_state: string;
     const user_id = userStore?.user.id; 
     
+    if(messageStore?.threads?.data.length !== 0) {
+      noMesage.value = false;
+    }
     // document.addEventListener('mousemove', () => {
     //     messageStore.alivecheck();
     // });
@@ -314,29 +319,33 @@ export default defineComponent({
     let receiver_id = '';
     let uuid = '';
     let unread = 0;
-    const thread = (()  => {
-       const thread = messageStore?.threads?.data[0];
-      roomid = thread.room_id;
-      receiver_id = thread.receiver_id;
-      uuid = thread.uuid;
-      unread = thread.unread;
 
-      // Exit the loop after the first iteration
+    const thread = (()  => {
+      if(messageStore?.threads?.data.length !== 0)
+      {
+        const thread = messageStore?.threads?.data[0];
+        roomid = thread.room_id;
+        receiver_id = thread.receiver_id;
+        uuid = thread.uuid;
+        unread = thread.unread;
+      }
       return;
     });
 
-    if (messageStore.threads) {
-      // The authentication state is already loaded, so proceed to the dashboard
+    if (messageStore.threads && messageStore?.threads?.data.length !== 0) {
+      // The message state is already loaded, so proceed to the message
       thread();
       messageStore.loadThread(roomid, receiver_id);
       next()
     } else {
-      // The authentication state is not loaded yet, so wait for it before proceeding
+      // The message state is not loaded yet, so wait for it before proceeding
       messageStore.loadThreads().then(() => {
         thread();
-        return messageStore.loadThread(roomid, receiver_id);
+        if(messageStore?.threads?.data.length !== 0) {
+          return messageStore.loadThread(roomid, receiver_id);
+        }
       }).then(() => {
-        if(unread !== 0) {
+        if(messageStore?.threads?.data.length !== 0 && unread !== 0) {
           messageStore.markAsRead(uuid);
         }
         next()
