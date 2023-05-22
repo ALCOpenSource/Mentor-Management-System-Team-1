@@ -1,5 +1,5 @@
 <template>
-  <div class="card" @click="selectUser">
+  <div class="card" @click="$emit('select', user)">
     <div class="flex gap-5 items-center">
       <UserAvatar :imageLink="user.avatar_url"/>
       <div class="flex flex-wrap items-center">
@@ -71,11 +71,8 @@ defineProps({
   },
 });
 
-const selectUser = () => {
-  //
-}
 
-defineEmits(["delete"]);
+defineEmits(["delete", "select"]);
 </script>
 
 <style scoped lang="scss">

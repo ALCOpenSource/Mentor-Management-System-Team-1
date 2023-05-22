@@ -3,11 +3,14 @@ import axios from 'axios';
 import { onBeforeMount } from 'vue';
 
 interface MessageState {
-  threads: object | null;
-  thread: object | null;
+  threads: Object | null;
+  thread: Object | null;
   receiver_id: string | Blob;
   active_room: string | Blob;
   alive: bool;
+  receiver_data: Object | null;
+  noMessage: bool;
+  available: bool;
 }
 
 export const useMessageStore = defineStore({
@@ -20,6 +23,9 @@ export const useMessageStore = defineStore({
       receiver_id: null,
       active_room: null,
       alive: true,
+      receiver_data: null,
+      noMessage: true,
+      available: false,
     };
   },
 
@@ -41,16 +47,17 @@ export const useMessageStore = defineStore({
       this.active_room = roomid;
     },
 
-    async sendMessage(messageData: object) {
+    async sendMessage(messageData: Object) {
       const res = await axios.post('v1/message', messageData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
+      this.loadThreads();
       this.loadThread(res.data.data.room_id, res.data.data.receiver_id);
     },
 
-    async markAsRead(uuid: string) {
+    async markAsRead(uuid: String) {
       const res = await axios.post('v1/message/read/' + uuid);
       this.loadThreads();
     },
@@ -66,6 +73,31 @@ export const useMessageStore = defineStore({
         this.alivecheck();
       }, 120000);
     },
+
+    async updateReceiverData(data: Object) {
+      this.receiver_data = null;
+      this.receiver_id = null;
+      this.available = false;
+
+      this.loadThreads().then(() => {
+        this.threads?.data.some(thread => {
+          if (thread.sender_id === data.id) {
+            this.available = true;
+            this.loadThread(thread.room_id, data.id);
+            return true;
+          }
+        });
+
+        if(this.available === false) {
+          this.receiver_data = data;
+          this.receiver_id = data.id;
+        }
+        this.noMessage = false;
+        
+        this.router.push({ name: "inbox" });
+      });
+      
+    }
   },
 
 });

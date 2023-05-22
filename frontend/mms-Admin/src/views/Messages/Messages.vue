@@ -2,7 +2,7 @@
   <div>
     <div
       class="w-full h-[78vh] flex flex-col justify-center items-center border rounded-md"
-      v-if="noMesage"
+      v-if="messageStore.noMessage"
     >
       <NoMessage />
       <h1 class="text-xl mt-5 mb-2">No messages yet</h1>
@@ -25,6 +25,7 @@
       </div>
       <div class="mt-4 flex gap-5 justify-between">
         <div class="chats-col">
+          <ChatCard v-if="messageStore.receiver_data" :thread="messageStore.receiver_data"/>
           <ChatCard v-for="thread in messageStore.threads.data" :key="thread" :thread="thread" @openChat="loadMessage"/>
         </div>
         <div class="chat-col">
@@ -35,7 +36,7 @@
             >
             <span class="bo border-b-2 w-full"></span>
           </div>
-          <div v-if="messageStore.threads.data.length !== 0" class="chat-area">
+          <div v-if="messageStore.threads.data.length !== 0 && messageStore.receiver_data === null" class="chat-area">
             <div v-for="message in messageStore.thread.data" :key="message">
               <div
                 class="w-full flex gap-8 justify-start mb-4"
@@ -136,7 +137,6 @@ import Pusher from "pusher-js";
 const userStore = useUserStore();
 
 const messageStore = useMessageStore();
-const noMesage = ref(true);
 
 const emojiPickerSelected = ref(false);
 let emojiIndex = new EmojiIndex(data);
@@ -170,8 +170,9 @@ const  calculateFileSize = (size: any) => {
         return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
     }
 }
-const loadMessage = (roomid: string, receiver_id: string, uuid: string, unread: number) => {
-  messageStore.loadThread(roomid, receiver_id).then(() => {
+const loadMessage = (roomid: string, sender_id: string, uuid: string, unread: number) => {
+  messageStore.receiver_data = null;
+  messageStore.loadThread(roomid, sender_id).then(() => {
       const scrolldown = document.getElementById("scrolldown");
       scrolldown?.scrollIntoView();
       if(unread !== 0) {
@@ -196,6 +197,7 @@ const sendMessage = () => {
       scrolldown?.scrollIntoView();
 
       chatInput.value = '';
+      messageStore.receiver_data = null;
     });
 }
 
@@ -229,7 +231,7 @@ onMounted(() => {
     const user_id = userStore?.user.id; 
     
     if(messageStore?.threads?.data.length !== 0) {
-      noMesage.value = false;
+      messageStore.noMessage = false;
     }
     // document.addEventListener('mousemove', () => {
     //     messageStore.alivecheck();
@@ -322,27 +324,40 @@ export default defineComponent({
   
   beforeRouteEnter(to, from, next) {
     const messageStore = useMessageStore();
+    const userStore = useUserStore();
+
     let roomid = '';
     let receiver_id = '';
     let uuid = '';
     let unread = 0;
 
     const thread = (()  => {
-      if(messageStore?.threads?.data.length !== 0)
+      if(messageStore?.threads?.data.length !== 0 && messageStore.available === false && messageStore.receiver_data === null)
       {
         const thread = messageStore?.threads?.data[0];
+
+        console.log('receiver id')
+        console.log(thread.receiver_id)
+        console.log(thread.sender_id)
+        console.log(userStore?.user?.id)
+        if(thread.receiver_id === userStore?.user?.id) {
+          receiver_id = thread.sender_id;
+        }else {
+          receiver_id = thread.receiver_id;
+        }
         roomid = thread.room_id;
-        receiver_id = thread.receiver_id;
         uuid = thread.uuid;
         unread = thread.unread;
       }
       return;
     });
 
-    if (messageStore.threads && messageStore?.threads?.data.length !== 0) {
+    if (messageStore.threads && messageStore?.threads?.data.length !== 0 ) {
       // The message state is already loaded, so proceed to the message
-      thread();
-      messageStore.loadThread(roomid, receiver_id);
+      if(messageStore.available === false) {
+        thread();
+        messageStore.loadThread(roomid, receiver_id);
+      }
       next()
     } else {
       // The message state is not loaded yet, so wait for it before proceeding

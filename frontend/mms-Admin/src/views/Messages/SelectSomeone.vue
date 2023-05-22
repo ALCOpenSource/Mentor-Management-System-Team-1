@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="w-full mb-3" v-for="user in userStore.users" :key="user">
-      <UserCard @click="handleAddToChat" :user="user" class="cursor-pointer"/>
+      <UserCard @select="handleAddToChat" :user="user" class="cursor-pointer"/>
     </div>
   </div>
 </template>
@@ -27,8 +27,10 @@ import Pagination from "@/components/Common/Pagination.vue";
 import UserCard from "@/components/Common/UserCard.vue";
 import { defineComponent } from 'vue'
 import { useUserStore } from "@/store/user"
+import { useMessageStore } from "@/store/message"
 
 const userStore = useUserStore()
+const messageStore = useMessageStore()
 const getNumberToDisplay = () => {
   const height = window.innerHeight - window.innerHeight * 0.3;
   const cardHeight = 80;
@@ -36,8 +38,13 @@ const getNumberToDisplay = () => {
   return numberToDisplay;
 };
 
-const handleAddToChat = (e: Event) => {
+const handleAddToChat = (user: Object) => {
   // Add to Top of Chat Array
+  console.log('Another User')
+  console.log(user)
+
+  messageStore.updateReceiverData(user);
+
 }
 console.log(userStore.users)
 </script>
