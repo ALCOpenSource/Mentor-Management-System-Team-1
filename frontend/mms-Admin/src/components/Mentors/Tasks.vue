@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import SearchBox from "../Common/SearchBox.vue";
 import PlainDropdown from "../Common/PlainDropdown.vue";
-import ProgramDropdown from "./ProgramDropdown.vue"
+import ProgramDropdown from "./ProgramDropdown.vue";
 import { Task } from "@/assets/icons";
 
 const options = [
@@ -31,10 +31,11 @@ const tabData = {
   title: "Room liberary article write...",
   date: "3 days from now",
   mainIcon: Task,
-  content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id nibh nibh, at maximus ante fermentum sit amet. Pellentesque",
+  content:
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id nibh nibh, at maximus ante fermentum sit amet. Pellentesque",
   numberOfReports: 18,
-  isProgram: false
-}
+  isProgram: false,
+};
 </script>
 
 <style scoped lang="scss">

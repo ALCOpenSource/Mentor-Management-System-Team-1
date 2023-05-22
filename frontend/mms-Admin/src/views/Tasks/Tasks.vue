@@ -29,8 +29,8 @@
     <div className="flex flex-col gap-2 w-full">
       <router-link to="create">
         <div class="flex justify-end">
-        <PrimaryBtn title="Create New Task" />
-      </div>
+          <PrimaryBtn title="Create New Task" />
+        </div>
       </router-link>
       <TaskDetails :task="taskToShow" />
     </div>

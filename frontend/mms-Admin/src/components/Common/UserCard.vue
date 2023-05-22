@@ -1,7 +1,7 @@
 <template>
-  <div class="card">
+  <div class="card" @click="$emit('select', user)">
     <div class="flex gap-5 items-center">
-      <UserAvatar />
+      <UserAvatar :imageLink="user.avatar_url"/>
       <div class="flex flex-wrap items-center">
         <div class="flex flex-col mr-8">
           <router-link
@@ -13,7 +13,7 @@
             <h1
               class="text-xl font-semibold cursor-pointer hover:underline transition-all"
             >
-              Allison Davies
+              {{ user.name }}
             </h1>
           </router-link>
           <small class="text-[#808080]"
@@ -37,7 +37,7 @@
         color="#058B94"
         class="cursor-pointer"
         v-if="showDelete"
-        @click="$emit('delete')"
+        @click="$emit('delete')" 
       />
     </div>
   </div>
@@ -65,9 +65,14 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  user: {
+    type: Object,
+    default: null,
+  },
 });
 
-defineEmits(["delete"]);
+
+defineEmits(["delete", "select"]);
 </script>
 
 <style scoped lang="scss">

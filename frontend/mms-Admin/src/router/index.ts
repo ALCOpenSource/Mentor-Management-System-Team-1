@@ -2,12 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../views/Dashboard/Dashboard.vue";
 import dashboardLayout from "@/layouts/dashboardLayout.vue";
 import settingsLayout from "@/layouts/settingsLayout.vue";
-import {useAuthStore} from '@/store/auth'
-import messageLayout from "@/layouts/messageLayout.vue";
-import discussionLayout from "@/layouts/discussionLayout.vue";
-import mentorLayout from "@/layouts/mentorLayout.vue";
-import mentorManagerLayout from "@/layouts/mentorManagerLayout.vue";
-import blankLayout from "@/layouts/blankLayout.vue"
+import { useAuthStore } from "@/store/auth";
+import blankLayout from "@/layouts/blankLayout.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,8 +16,8 @@ const router = createRouter({
       name: "home",
       redirect: "/admin/dashboard",
       meta: {
-        requiresAuth:true
-      }
+        requiresAuth: true,
+      },
     },
     {
       path: "/admin",
@@ -30,7 +26,7 @@ const router = createRouter({
       beforeEnter: dashboardLayout.onBeforeRouteEnter,
       redirect: "/admin/dashboard",
       meta: {
-        requiresAuth:true
+        requiresAuth: true,
       },
       children: [
         {
@@ -38,7 +34,7 @@ const router = createRouter({
           name: "dashboard",
           component: Dashboard,
           meta: {
-            requiresAuth:true
+            requiresAuth: true,
           },
         },
         {
@@ -46,56 +42,108 @@ const router = createRouter({
           name: "profile",
           component: () => import("@/views/Profile/Profile.vue"),
           meta: {
-            requiresAuth:true
+            requiresAuth: true,
           },
         },
         {
           path: "programs",
           name: "programs",
-          component: () => import("@/views/Programs/Programs.vue"),
+          component: blankLayout,
+          redirect: "/admin/programs/program/all",
           meta: {
-            requiresAuth:true
+            requiresAuth: true,
           },
+          children: [
+            {
+              path: "program/:id",
+              name: "program",
+              component: () => import("@/views/Programs/Programs.vue"),
+            },
+            {
+              path: "new-program",
+              name: "new-program",
+              component: () => import("@/views/Programs/CreateProgram.vue"),
+            },
+            {
+              path: "mentors-assigned/:id",
+              name: "mentors-assigned",
+              component: () => import("@/views/Programs/MentorsAssigned.vue"),
+            },
+            {
+              path: "mentor-managers-assigned/:id",
+              name: "mentor-managers-assigned",
+              component: () =>
+                import("@/views/Programs/MentorManagersAssigned.vue"),
+            },
+            {
+              path: "program-reports/:id",
+              name: "program-reports",
+              component: () => import("@/views/Programs/ProgramReports.vue"),
+            },
+            {
+              path: "create-criteria/:id",
+              name: "create-criteria",
+              component: () => import("@/views/Programs/CreateCriteria.vue"),
+            },
+            {
+              path: "edit-program/:id",
+              name: "edit-program",
+              component: () => import("@/views/Programs/EditProgram.vue"),
+            },
+          ],
         },
         {
           path: "tasks",
           name: "tasks",
           component: blankLayout,
           meta: {
-            requiresAuth:true
+            requiresAuth: true,
           },
           children: [
             {
               path: "all",
               name: "allTasks",
-              component: () => import("@/views/Tasks/Tasks.vue")
+              component: () => import("@/views/Tasks/Tasks.vue"),
             },
             {
               path: "create",
               name: "create",
-              component: () => import("@/views/Tasks/Create.vue")
+              component: () => import("@/views/Tasks/Create.vue"),
             },
             {
               path: "edit",
               name: "edit",
-              component: () => import("@/views/Tasks/Edit.vue")
+              component: () => import("@/views/Tasks/Edit.vue"),
             },
-          ]
+          ],
         },
         {
           path: "reports",
           name: "reports",
           component: () => import("@/views/Reports/Reports.vue"),
           meta: {
-            requiresAuth:true
+            requiresAuth: true,
           },
+        },
+        {
+          path: "notifications",
+          name: "notifications",
+          component: () => import("@/views/Others/Notifications.vue"),
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: "search-results/:search",
+          name: "search-results",
+          component: () => import("@/views/Others/SearchResults.vue"),
         },
         {
           path: "mentors",
           name: "mentors",
-          component: () => import("@/views/Mentors/MentorList.vue"),
+          component: blankLayout,
           meta: {
-            requiresAuth:true
+            requiresAuth: true,
           },
           redirect: () => "/admin/mentors/mentor-list",
           children: [
@@ -108,52 +156,67 @@ const router = createRouter({
               path: "mentor/:id",
               name: "mentor",
               component: () => import("@/views/Mentors/Mentor.vue"),
-            }
+            },
           ],
         },
         {
           path: "mentor-managers",
           name: "mentor-managers",
-          component: () => import("@/views/MentorManagers/MentorManagerList.vue"),
+          component: blankLayout,
           meta: {
-            requiresAuth:true
+            requiresAuth: true,
           },
           redirect: () => "/admin/mentor-managers/mentor-manager-list",
           children: [
             {
               path: "mentor-manager-list",
               name: "mentor-manager-list",
-              component: () => import("@/views/MentorManagers/MentorManagerList.vue"),
+              component: () =>
+                import("@/views/MentorManagers/MentorManagerList.vue"),
             },
             {
               path: "mentor-manager/:id",
               name: "mentor-manager",
-              component: () => import("@/views/MentorManagers/MentorManager.vue"),
-            }
-          ]
+              component: () =>
+                import("@/views/MentorManagers/MentorManager.vue"),
+            },
+          ],
         },
         {
           path: "approval-requests",
           name: "approval-requests",
           component: () => import("@/views/Approval/ApprovalRequests.vue"),
           meta: {
-            requiresAuth:true
+            requiresAuth: true,
           },
         },
         {
           path: "certificates",
           name: "certificates",
-          component: () => import("@/views/Certificates/Certificates.vue"),
+          component: blankLayout,
           meta: {
-            requiresAuth:true
+            requiresAuth: true,
           },
+          redirect: () => "/admin/certificates/certificate-list",
+          children: [
+            {
+              path: "certificate-list",
+              name: "certificate-list",
+              component: () => import("@/views/Certificates/Certificates.vue"),
+            },
+            {
+              path: "generate-certificate",
+              name: "generate-certificate",
+              component: () => import("@/views/Certificates/GenerateCerts.vue"),
+            },
+          ],
         },
         {
           path: "messages",
           name: "messages",
-          component: messageLayout,
+          component: blankLayout,
           meta: {
-            requiresAuth:true
+            requiresAuth: true,
           },
           redirect: () => "/admin/messages/inbox",
           children: [
@@ -171,13 +234,13 @@ const router = createRouter({
               path: "select-someone",
               name: "select-someone",
               component: () => import("@/views/Messages/SelectSomeone.vue"),
-            }
+            },
           ],
         },
         {
           path: "discussion-forum",
           name: "discussion-forum",
-          component: discussionLayout,
+          component: blankLayout,
           redirect: () => "/admin/discussion-forum/discussions",
           children: [
             {
@@ -198,7 +261,7 @@ const router = createRouter({
           name: "settings",
           component: settingsLayout,
           meta: {
-            requiresAuth:true
+            requiresAuth: true,
           },
           redirect: () => "/admin/settings/general",
           children: [
@@ -209,7 +272,7 @@ const router = createRouter({
             },
             {
               path: "notifications",
-              name: "notifications",
+              name: "settings-notifications",
               component: () => import("@/views/Settings/Notifications.vue"),
             },
             {
@@ -246,7 +309,7 @@ const router = createRouter({
       name: "loginLayout",
       component: () => import("@/layouts/authLayout.vue"),
       meta: {
-        requiresAuth:false
+        requiresAuth: false,
       },
       children: [
         {
@@ -254,7 +317,7 @@ const router = createRouter({
           name: "login",
           component: () => import("@/views/Auth/Login.vue"),
           meta: {
-            requiresAuth:false
+            requiresAuth: false,
           },
         },
         {
@@ -262,7 +325,7 @@ const router = createRouter({
           name: "reset-password",
           component: () => import("@/views/Auth/ResetPassword.vue"),
           meta: {
-            requiresAuth:false
+            requiresAuth: false,
           },
         },
         {
@@ -270,7 +333,7 @@ const router = createRouter({
           name: "change-password",
           component: () => import("@/views/Auth/ChangePassword.vue"),
           meta: {
-            requiresAuth:false
+            requiresAuth: false,
           },
         },
         {
@@ -278,7 +341,7 @@ const router = createRouter({
           name: "confirm-reset",
           component: () => import("@/views/Auth/AcknowledgePasswordReset.vue"),
           meta: {
-            requiresAuth:false
+            requiresAuth: false,
           },
         },
       ],
@@ -289,13 +352,11 @@ const router = createRouter({
 router.beforeEach((to, from) => {
   const authStore = useAuthStore();
 
-  if(to.meta.requiresAuth && authStore.token == 0)
-  {
-    return {name: "login"}
+  if (to.meta.requiresAuth && authStore.token == 0) {
+    return { name: "login" };
   }
-  if(to.meta.requiresAuth == false && authStore.token != 0)
-  {
-    return {name: "dashboard"}
+  if (to.meta.requiresAuth == false && authStore.token != 0) {
+    return { name: "dashboard" };
   }
-})
+});
 export default router;

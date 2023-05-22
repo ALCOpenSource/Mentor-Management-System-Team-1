@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { Dropdown } from '@/assets/icons';
+import { Dropdown } from "@/assets/icons";
 
 defineProps<DropdownProps>();
 

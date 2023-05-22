@@ -66,7 +66,15 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { Close, Comment, Smiley, Photo, SendChat, Tick, DoubleTick } from "@/assets/icons";
+import {
+  Close,
+  Comment,
+  Smiley,
+  Photo,
+  SendChat,
+  Tick,
+  DoubleTick,
+} from "@/assets/icons";
 import { appLogo } from "../../assets/images";
 
 const showChat = ref(false);
@@ -210,7 +218,7 @@ const msgData = [
 
     .sent {
       max-width: 75%;
-      
+
       h1 {
         background-color: var(--btn-primary);
         color: #fff;
@@ -223,9 +231,9 @@ const msgData = [
 
     .received {
       max-width: 75%;
-      
+
       h2 {
-        background-color: #F1F7FF;
+        background-color: #f1f7ff;
         color: #000;
         padding: 10px 15px;
         border-radius: 0px 10px 10px 10px;
