@@ -128,10 +128,15 @@ const router = createRouter({
         {
           path: "notifications",
           name: "notifications",
-          component: () => import("@/views/Notifications/Notifications.vue"),
+          component: () => import("@/views/Others/Notifications.vue"),
           meta: {
             requiresAuth: true,
           },
+        },
+        {
+          path: "search-results/:search",
+          name: "search-results",
+          component: () => import("@/views/Others/SearchResults.vue"),
         },
         {
           path: "mentors",
