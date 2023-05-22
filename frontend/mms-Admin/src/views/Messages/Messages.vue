@@ -197,7 +197,6 @@ const sendMessage = () => {
       scrolldown?.scrollIntoView();
 
       chatInput.value = '';
-      messageStore.receiver_data = null;
     });
 }
 
