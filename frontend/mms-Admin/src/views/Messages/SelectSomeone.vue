@@ -9,7 +9,9 @@
         <div class="flex items-center gap-4">
           <IconSearch color="#058B94" size="20" class="cursor-pointer" />
           <Filter class="cursor-pointer" />
-          <router-link to="/admin/messages/inbox"><Close class="cursor-pointer" /></router-link>
+          <router-link to="/admin/messages/inbox"
+            ><Close class="cursor-pointer"
+          /></router-link>
         </div>
       </div>
     </div>
@@ -32,7 +34,7 @@ const getNumberToDisplay = () => {
   const cardHeight = 80;
   const numberToDisplay = Math.floor(height / cardHeight);
   return numberToDisplay;
-}
+};
 
 const handleAddToChat = (e: Event) => {
   // Add to Top of Chat Array

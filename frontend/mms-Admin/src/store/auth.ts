@@ -78,21 +78,21 @@ export const useAuthStore = defineStore({
     },
 
     async handleLogout() {
-        await axios
-          .post("auth/logout")
-          .then((res) => {
-            if (res.data.success) {
-              this.removeToken();
-              this.authUser = null;
-              this.router.push({name: "login"});
+      await axios
+        .post("auth/logout")
+        .then((res) => {
+          if (res.data.success) {
+            this.removeToken();
+            this.authUser = null;
+            this.router.push({ name: "login" });
             //   location.reload();
-              toaster.success(res.data.message);
-            }
-          })
-          .catch((error) => {
-            toaster.error("Unable to logout, try again later.");
-          });
-      },
+            toaster.success(res.data.message);
+          }
+        })
+        .catch((error) => {
+          toaster.error("Unable to logout, try again later.");
+        });
+    },
   },
 });
 

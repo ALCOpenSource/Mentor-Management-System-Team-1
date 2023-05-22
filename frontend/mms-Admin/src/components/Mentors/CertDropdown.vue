@@ -1,67 +1,42 @@
 <template>
-  <v-expansion-panels variant="accordion">
-    <v-expansion-panel>
-      <v-expansion-panel-title>
-        <div class="flex items-center">
-          <img :src="smallCertificate" alt="" />
-          <div class="flex flex-col ml-5">
-            <h1 class="font-semibold text-xl text-[#333333] uppercase">
-              {{ tabData.title }}
-            </h1>
-          </div>
+  <div class="cert w-2/4 mx-auto flex flex-col items-end pb-3">
+    <img :src="largeCertificate" alt="" />
+    <div v-if="!isPending" class="flex gap-5 items-center">
+      <div class="flex gap-2 items-center">
+        <h1>Download as</h1>
+        <div class="select-container">
+          <select name="saveas" id="" v-model="select">
+            <option value="pdf">PDF</option>
+            <option value="png">PNG</option>
+            <option value="jpg">JPG</option>
+          </select>
+          <Dropdown class="dropdown" />
         </div>
-        <template v-slot:actions="{ expanded }">
-          <v-icon v-if="!expanded"><IconArrowDown /></v-icon>
-          <v-icon v-else><IconArrowUp /></v-icon>
-        </template>
-      </v-expansion-panel-title>
-      <v-expansion-panel-text>
-        <div class="cert flex flex-col items-center pb-3">
-          <img :src="largeCertificate" alt="" />
-          <div class="flex gap-5 items-center">
-            <div class="flex gap-2 items-center">
-              <h1>Download as</h1>
-              <div class="select-container">
-                <select name="saveas" id="" v-model="select">
-                  <option value="pdf">PDF</option>
-                  <option value="png">PNG</option>
-                  <option value="jpg">JPG</option>
-                </select>
-                <Dropdown class="dropdown" />
-              </div>
-            </div>
-            <a href="/cert.png" download>
-              <PrimaryBtn title="Download" />
-            </a>
-          </div>
-        </div>
-      </v-expansion-panel-text>
-    </v-expansion-panel>
-  </v-expansion-panels>
+      </div>
+      <a href="/cert.png" download>
+        <PrimaryBtn title="Download" />
+      </a>
+    </div>
+    <div v-if="isPending" class="flex gap-5 items-center">
+      <SecondaryBtn title="Decline" />
+      <PrimaryBtn title="Approve" />
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { IconArrowDown, IconArrowUp, Dropdown } from "@/assets/icons";
 import PrimaryBtn from "../Buttons/PrimaryBtn.vue";
-import { smallCertificate, largeCertificate } from "@/assets/images";
-import cert from "@/assets/images/cert.png";
+import SecondaryBtn from "../Buttons/SecondaryBtn.vue";
+import { Dropdown } from "@/assets/icons";
 
 const props = defineProps<Props>();
 
 const select = ref("pdf");
 
 interface Props {
-  tabData: {
-    category: string;
-    title: string;
-    date: string;
-    time?: string;
-    mainIcon: any;
-    content: string;
-    numberOfReports: number;
-    isProgram: boolean;
-  };
+  largeCertificate: string;
+  isPending?: boolean;
 }
 </script>
 
