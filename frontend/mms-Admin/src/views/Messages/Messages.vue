@@ -2,7 +2,7 @@
   <div>
     <div
       class="w-full h-[78vh] flex flex-col justify-center items-center border rounded-md"
-      v-if="noMesage"
+      v-if="messageStore.noMessage"
     >
       <NoMessage />
       <h1 class="text-xl mt-5 mb-2">No messages yet</h1>
@@ -25,6 +25,7 @@
       </div>
       <div class="mt-4 flex gap-5 justify-between">
         <div class="chats-col">
+          <ChatCard v-if="messageStore.receiver_data" :thread="messageStore.receiver_data"/>
           <ChatCard v-for="thread in messageStore.threads.data" :key="thread" :thread="thread" @openChat="loadMessage"/>
         </div>
         <div class="chat-col">
@@ -35,7 +36,7 @@
             >
             <span class="bo border-b-2 w-full"></span>
           </div>
-          <div class="chat-area">
+          <div v-if="messageStore.threads.data.length !== 0 && messageStore.receiver_data === null" class="chat-area">
             <div v-for="message in messageStore.thread.data" :key="message">
               <div
                 class="w-full flex gap-8 justify-start mb-4"
@@ -136,7 +137,6 @@ import Pusher from "pusher-js";
 const userStore = useUserStore();
 
 const messageStore = useMessageStore();
-const noMesage = ref(false);
 
 const emojiPickerSelected = ref(false);
 let emojiIndex = new EmojiIndex(data);
@@ -151,7 +151,9 @@ const typing = ref(false)
 const convertEmoji = (emoji: any) => {
   chatInput.value += emoji.native;
 };
+
 const attachments: any[] = [];
+
 const getFile = (files: any) => {
   // Do something with the file
   attachments.push(files);
@@ -168,8 +170,9 @@ const  calculateFileSize = (size: any) => {
         return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
     }
 }
-const loadMessage = (roomid: string, receiver_id: string, uuid: string, unread: number) => {
-  messageStore.loadThread(roomid, receiver_id).then(() => {
+const loadMessage = (roomid: string, sender_id: string, uuid: string, unread: number) => {
+  messageStore.receiver_data = null;
+  messageStore.loadThread(roomid, sender_id).then(() => {
       const scrolldown = document.getElementById("scrolldown");
       scrolldown?.scrollIntoView();
       if(unread !== 0) {
@@ -226,6 +229,9 @@ onMounted(() => {
     let echo_current_state: string;
     const user_id = userStore?.user.id; 
     
+    if(messageStore?.threads?.data.length !== 0) {
+      messageStore.noMessage = false;
+    }
     // document.addEventListener('mousemove', () => {
     //     messageStore.alivecheck();
     // });
@@ -244,12 +250,12 @@ onMounted(() => {
     });
 
     window.Echo.connector.pusher.connection.bind('disconnected', () => {
-      console.log('Echo disconnected');
+      //console.log('Echo disconnected');
     });
 
     // Listen for when Echo reconnects
     window.Echo.connector.pusher.connection.bind('state_change', (states) => {
-      console.log('Echo state changed', states);
+      //console.log('Echo state changed', states);
 
       // Save previous state
       echo_previous_state = states.previous;
@@ -258,7 +264,7 @@ onMounted(() => {
 
     window.Echo.private(`messages.${user_id}`)
       .listen('NewMessage', (e) => {
-        console.log('New message', e.message);
+        //console.log('New message', e.message);
 
         if (e.message.room_id == messageStore.active_room) {
           messageStore.loadThread(messageStore.active_room, messageStore.receiver_id);
@@ -267,21 +273,21 @@ onMounted(() => {
         messageStore.loadThreads();
       })
       .listen('MessageDelivered', (e) => {
-        console.log('Message delivered', e.message);
+        //console.log('Message delivered', e.message);
 
         if (e.message.room_id == messageStore.active_room) {
           messageStore.loadThread(messageStore.active_room, messageStore.receiver_id);
         }
       })
       .listen('MessageRead', (e) => {
-        console.log('Message read', e.message);
+        //console.log('Message read', e.message);
 
         if (e.message.room_id == messageStore.active_room) {
           messageStore.loadThread(messageStore.active_room, messageStore.receiver_id);
         }
       })
       .listen('MessageDeleted', (e) => {
-        console.log('Message deleted', e.message);
+        //console.log('Message deleted', e.message);
 
         if (e.message.room_id == messageStore.active_room) {
           messageStore.loadThread(messageStore.active_room, messageStore.receiver_id);
@@ -291,7 +297,7 @@ onMounted(() => {
       
       window.Echo.private(`chat.${messageStore.active_room}`)
         .listenForWhisper('typing', (e) => {
-            console.log("Typing", e);
+            //console.log("Typing", e);
 
             if(timer){
                 clearTimeout(timer);
@@ -299,7 +305,7 @@ onMounted(() => {
 
             if(e.user_id != user_id){
                 typing.value = true;
-                console.log(typing.value);
+                //console.log(typing.value);
             }
             
             timer = setTimeout(() => {
@@ -317,33 +323,46 @@ export default defineComponent({
   
   beforeRouteEnter(to, from, next) {
     const messageStore = useMessageStore();
+    const userStore = useUserStore();
+
     let roomid = '';
     let receiver_id = '';
     let uuid = '';
     let unread = 0;
-    const thread = (()  => {
-       const thread = messageStore?.threads?.data[0];
-      roomid = thread.room_id;
-      receiver_id = thread.receiver_id;
-      uuid = thread.uuid;
-      unread = thread.unread;
 
-      // Exit the loop after the first iteration
+    const thread = (()  => {
+      if(messageStore?.threads?.data.length !== 0 && messageStore.available === false && messageStore.receiver_data === null)
+      {
+        const thread = messageStore?.threads?.data[0];
+
+        if(thread.receiver_id === userStore?.user?.id) {
+          receiver_id = thread.sender_id;
+        }else {
+          receiver_id = thread.receiver_id;
+        }
+        roomid = thread.room_id;
+        uuid = thread.uuid;
+        unread = thread.unread;
+      }
       return;
     });
 
-    if (messageStore.threads) {
-      // The authentication state is already loaded, so proceed to the dashboard
-      thread();
-      messageStore.loadThread(roomid, receiver_id);
+    if (messageStore.threads && messageStore?.threads?.data.length !== 0 ) {
+      // The message state is already loaded, so proceed to the message
+      if(messageStore.available === false) {
+        thread();
+        messageStore.loadThread(roomid, receiver_id);
+      }
       next()
     } else {
-      // The authentication state is not loaded yet, so wait for it before proceeding
+      // The message state is not loaded yet, so wait for it before proceeding
       messageStore.loadThreads().then(() => {
         thread();
-        return messageStore.loadThread(roomid, receiver_id);
+        if(messageStore?.threads?.data.length !== 0) {
+          return messageStore.loadThread(roomid, receiver_id);
+        }
       }).then(() => {
-        if(unread !== 0) {
+        if(messageStore?.threads?.data.length !== 0 && unread !== 0) {
           messageStore.markAsRead(uuid);
         }
         next()

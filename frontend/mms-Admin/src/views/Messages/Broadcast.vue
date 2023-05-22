@@ -102,7 +102,6 @@ const toggle = () => {
 
 const broadcastInput = ref("");
 const convertEmoji = (emoji: any) => {
-  console.log(emoji);
   broadcastInput.value += emoji.native;
 };
 const file = ref("");
