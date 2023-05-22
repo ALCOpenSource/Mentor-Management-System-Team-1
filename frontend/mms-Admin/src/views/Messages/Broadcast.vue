@@ -2,7 +2,7 @@
   <div>
     <div class="flex justify-between items-center">
       <div>
-        <h1 class="font-semibold text-2xl">Braodcast Message</h1>
+        <h1 class="font-semibold text-2xl">Broadcast Message</h1>
       </div>
       <router-link to="/admin/messages/inbox">
         <PrimaryBtn title="Close" />
@@ -29,11 +29,10 @@
           <v-expansion-panel-text>
             <ul>
               <li
-                v-for="(item, index) in selected"
-                :key="item.id"
-                @click="setSelected(item.id)"
+                v-for="user in userStore.users" :key="user.id"
+                @click="setSelected(user.id)"
               >
-                {{ item.name }}
+                {{ user.name }}
               </li>
             </ul>
           </v-expansion-panel-text>
@@ -93,6 +92,12 @@ import { IconArrowDown, IconArrowUp, Smiley, DoubleTick } from "@/assets/icons";
 import { Picker, EmojiIndex } from "emoji-mart-vue-fast/src";
 import data from "emoji-mart-vue-fast/data/all.json";
 import UploadFile from "@/components/Messages/UploadFile.vue";
+import { useUserStore } from "@/store/user"
+import { useMessageStore } from "@/store/message"
+import { defineComponent } from 'vue'
+
+const userStore = useUserStore()
+const messageStore = useMessageStore()
 
 const emojiPickerSelected = ref(false);
 let emojiIndex = new EmojiIndex(data);
@@ -112,29 +117,29 @@ const getFile = (files: any) => {
   file.value = files.name;
 };
 
-const selected = ref([
-  {
-    id: 1,
-    name: "Mentor Managers",
-  },
-  {
-    id: 2,
-    name: "Mentors",
-  },
-  {
-    id: 3,
-    name: "Perculiar",
-  },
-  {
-    id: 4,
-    name: "Kabiru",
-  },
-]);
+// const selected = ref([
+//   {
+//     id: 1,
+//     name: "Mentor Managers",
+//   },
+//   {
+//     id: 2,
+//     name: "Mentors",
+//   },
+//   {
+//     id: 3,
+//     name: "Perculiar",
+//   },
+//   {
+//     id: 4,
+//     name: "Kabiru",
+//   },
+// ]);
 
 const isSelected = ref<string[]>([]);
 
 const setSelected = (id: number) => {
-  const item = selected.value.find((item) => item.id === id);
+  const item = userStore.users?.find((item: { id: number; }) => item.id === id);
   if (item) {
     const index = isSelected.value.findIndex((it) => it === item.name);
     if (index === -1) {
@@ -144,6 +149,23 @@ const setSelected = (id: number) => {
     }
   }
 };
+</script>
+
+<script lang="ts">
+
+export default defineComponent({
+  
+  beforeRouteEnter(to, from, next) {
+    const userStore = useUserStore()
+    if (userStore.users) {
+      next()
+    } else {
+      userStore.fetchUsers().then(() => {
+        next();
+      });
+    }
+  },
+})
 </script>
 
 <style scoped lang="scss">

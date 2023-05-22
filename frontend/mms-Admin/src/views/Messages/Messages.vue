@@ -335,10 +335,6 @@ export default defineComponent({
       {
         const thread = messageStore?.threads?.data[0];
 
-        console.log('receiver id')
-        console.log(thread.receiver_id)
-        console.log(thread.sender_id)
-        console.log(userStore?.user?.id)
         if(thread.receiver_id === userStore?.user?.id) {
           receiver_id = thread.sender_id;
         }else {
