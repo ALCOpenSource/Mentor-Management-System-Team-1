@@ -93,7 +93,7 @@ const isMentorManagerList = ref(false);
 const num = ref(0);
 
 const getSrc = (file: any, src: any) => {
-  console.log(file, src);
+  //console.log(file, src);
 };
 
 const closeModal = () => {
@@ -103,7 +103,7 @@ const closeModal = () => {
 const handleSubmit = () => {
   if (!valid.value) return;
   isModalOpen.value = !isModalOpen.value;
-  console.log("submitted");
+  //console.log("submitted");
 };
 
 const showMentorList = () => {

@@ -40,13 +40,9 @@ const getNumberToDisplay = () => {
 
 const handleAddToChat = (user: Object) => {
   // Add to Top of Chat Array
-  console.log('Another User')
-  console.log(user)
-
   messageStore.updateReceiverData(user);
 
 }
-console.log(userStore.users)
 </script>
 
 <script lang="ts">

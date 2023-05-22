@@ -27,7 +27,6 @@ const props = defineProps<{
   thread?: Object;
 }>();
 const thread = props.thread;
-console.log(thread)
 const openChat = (roomid: string, sender_id: string, uuid: string, unread: number) => {
   emit("openChat", roomid, sender_id, uuid, unread); 
 };
