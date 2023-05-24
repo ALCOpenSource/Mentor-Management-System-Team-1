@@ -123,6 +123,18 @@ class MessageController extends Controller
             ->latest()
             ->paginate(20);
 
+        // Reverse the messages
+        $messages = new LengthAwarePaginator(
+            $messages->reverse()->values(),
+            $messages->total(),
+            $messages->perPage(),
+            $messages->currentPage(),
+            [
+                'path' => $request->url(),
+                'query' => $request->query(),
+            ]
+        );
+
         // For each of the message if status = unread, and receiver_id = current user id, then send message delivered notification
         // to the sender
         foreach ($messages as $message) {
@@ -312,11 +324,25 @@ class MessageController extends Controller
 
         // Delete attachments
         foreach ($message->attachment as $attachment) {
+            // If broadcast message and user is not the sender skip deleting attachment
+            if ($message->broadcast && $message->sender_id != $user->id) {
+                continue;
+            }
+
             if (file_exists(storage_path($attachment->path))) {
                 unlink(storage_path($attachment->path));
             }
 
             $attachment->delete();
+        }
+
+        // If broadcast message and current user is sender delete all other messages in the broadcast
+        if ($message->broadcast && $message->sender_id == $user->id) {
+            $user->messages()
+                ->whereNotNull('broadcast_id')
+                ->where('broadcast_id', $message->broadcast_id)
+                ->where('uuid', '!=', $message->uuid)
+                ->delete();
         }
 
         // Delete message
@@ -342,20 +368,7 @@ class MessageController extends Controller
 
         // Delete attachment
         foreach ($messages as $message) {
-            // Delete attachments
-            foreach ($message->attachment as $attachment) {
-                if (file_exists(storage_path($attachment->path))) {
-                    unlink(storage_path($attachment->path));
-                }
-
-                $attachment->delete();
-            }
-
-            // Delete message
-            $message->delete();
-
-            // Dispatch event
-            event(new MessageDeleted($message));
+            $this->deleteMessage($request, $message->uuid);
         }
 
         return new ApiResource(['message' => 'All messages deleted']);
@@ -453,6 +466,15 @@ class MessageController extends Controller
         }
 
         $receiverIds = array_unique($receiverIds);
+
+        // If receiver ids are empty return error
+        if (! $receiverIds) {
+            return new ApiResource([
+                'message' => 'No receiver found',
+                'status' => 422,
+            ]);
+        }
+
         $request->merge(['receiver_ids' => $receiverIds]);
         $message = null;
         $broadcast_id = strHelper('uuid');
@@ -477,18 +499,17 @@ class MessageController extends Controller
                 $this->saveAttachments($request->attachments, $message);
 
                 // Save attachments for reuse
-                $attachments = $message->attachment;
+                $attachments = $message->attachment()->get();
             }
 
-            $message->attachment = $attachments ?? null;
-            $message->save();
+            $message->attachment()->saveMany($attachments ?? []);
 
             // Send notification
             event(new NewMessage($message));
         }
 
         // Remove receiver_id from the message
-        $message->makeHidden(['receiver_id', 'sender_id', 'uuid', 'sender', 'receiver']);
+        $message->makeHidden(['receiver_id', 'sender_id', 'uuid', 'sender', 'receiver', 'user']);
 
         // Return the message
         return new ApiResource(['data' => $message]);

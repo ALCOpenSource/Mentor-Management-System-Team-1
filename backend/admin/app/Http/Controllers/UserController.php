@@ -46,26 +46,26 @@ class UserController extends Controller
     protected function updateUserSocialLinks($request, $user)
     {
         if ($request->github_username) {
-            $user->setMetadata('github_username', $request->github_username, 'string', 'social', [
-                'url' => 'https://github.com/'.$request->github_username,
+            $user->setMetadata('github_username', removeAtSymbol($request->github_username), 'string', 'social', [
+                'url' => 'https://github.com/'.removeAtSymbol($request->github_username),
             ]);
         }
 
         if ($request->linkedin_username) {
-            $user->setMetadata('linkedin_username', $request->linkedin_username, 'string', 'social', [
-                'url' => 'https://linkedin.com/in/'.$request->linkedin_username,
+            $user->setMetadata('linkedin_username', removeAtSymbol($request->linkedin_username), 'string', 'social', [
+                'url' => 'https://linkedin.com/in/'.removeAtSymbol($request->linkedin_username),
             ]);
         }
 
         if ($request->twitter_username) {
-            $user->setMetadata('twitter_username', $request->twitter_username, 'string', 'social', [
-                'url' => 'https://twitter.com/'.$request->twitter_username,
+            $user->setMetadata('twitter_username', removeAtSymbol($request->twitter_username), 'string', 'social', [
+                'url' => 'https://twitter.com/'.removeAtSymbol($request->twitter_username),
             ]);
         }
 
         if ($request->instagram_username) {
-            $user->setMetadata('instagram_username', $request->instagram_username, 'string', 'social', [
-                'url' => 'https://instagram.com/'.$request->instagram_username,
+            $user->setMetadata('instagram_username', removeAtSymbol($request->instagram_username), 'string', 'social', [
+                'url' => 'https://instagram.com/'.removeAtSymbol($request->instagram_username),
             ]);
         }
     }
