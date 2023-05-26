@@ -133,6 +133,12 @@ export const useUserStore = defineStore({
             this.pagination = res.data.pagination
         },
 
+        async fetchUserPerPage(page: number) {
+            const res = await axios.get('v1/user/all?page='+page)
+            this.users = res.data.data
+            this.pagination = res.data.pagination
+        },
+
         async updateUser(userData: userData) {
           
             try {
