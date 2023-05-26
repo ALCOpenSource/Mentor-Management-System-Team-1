@@ -42,22 +42,19 @@
     <div class="msg-area">
       <div
         class="flex flex-col items-center center mb-5"
-        v-for="message in messageStore.broadcast"
+        v-for="message in messageStore.broadcast.data"
         :key="message"
       >
-        <small class="smallD bg-white p-1 px-2 rounded">09-01-23</small>
+        <small class="smallD bg-white p-1 px-2 rounded">{{message.human_date}}</small>
         <div class="broadcast-card">
           <p class="text-[#4D4D4D] text-xl">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
-            dignissim pharetra metus, ut cursus purus efficitur et. Duis ac enim
-            tellus. Phasellus eget tortor dapibus, laoreet mauris sed, dignissim
-            lectus.
+            {{message.message}}
           </p>
           <div class="flex justify-between items-center mt-3">
-            <h3 class="font-semibold underline">Mentor Managers</h3>
+            <h3 class="font-semibold underline">{{ message }}</h3>
             <div class="flex items-center">
-              <small class="text-[#4D4D4D] mr-2">09-01-23</small>
-              <DoubleTick />
+              <small class="text-[#4D4D4D] mr-2">{{ message.human_date }}</small>
+              <DoubleTick v-if="message.status === 'read'" />
             </div>
           </div>
         </div>
@@ -72,6 +69,7 @@
         rows="1"
         placeholder="|   Type a message..."
         v-model="broadcastInput"
+        @keyup.enter="broadcastMessage"
       />
       <Picker
         v-if="emojiPickerSelected"
@@ -112,9 +110,10 @@ const convertEmoji = (emoji: any) => {
 };
 const file = ref("");
 
+const attachments: any[] = [];
 const getFile = (files: any) => {
   // Do something with the file
-  file.value = files.name;
+  attachments.push(files);
 };
 
 // const selected = ref([
@@ -137,6 +136,7 @@ const getFile = (files: any) => {
 // ]);
 
 const isSelected = ref<string[]>([]);
+const selectedId = ref<string[]>([]);
 
 const setSelected = (id: number) => {
   const item = userStore.users?.find((item: { id: number; }) => item.id === id);
@@ -144,11 +144,23 @@ const setSelected = (id: number) => {
     const index = isSelected.value.findIndex((it) => it === item.name);
     if (index === -1) {
       isSelected.value.push(item.name);
+      selectedId.value.push(item.id);
     } else {
       isSelected.value.splice(index, 1);
+      selectedId.value.splice(index, 1);
     }
   }
 };
+
+const broadcastMessage = () => {
+
+    messageStore.sendBroadcast(broadcastInput, selectedId, attachments).then(() => {
+      const scrolldown = document.getElementById("scrolldown");
+      scrolldown?.scrollIntoView();
+
+      broadcastInput.value = '';
+    });
+}
 </script>
 
 <script lang="ts">
