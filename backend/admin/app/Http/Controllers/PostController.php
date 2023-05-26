@@ -16,13 +16,12 @@ class PostController extends Controller
     public function getPosts()
     {
         $post = callStatic(Post::class, 'latest')
-        ->paginate(20);
+            ->paginate(20);
 
-            // If post is empty return error
+        // If post is empty return error
         if ($post->isEmpty()) {
             return new ApiResource(['data' => null, 'error' => 'Posts not found.', 'status' => 404]);
         }
-
 
         return new ApiResource($post);
     }
@@ -249,6 +248,7 @@ class PostController extends Controller
      *
      * @param mixed $request
      * @param mixed $post_id
+     * @param mixed $comment_id
      */
     public function updatePostComment(Request $request, $post_id, $comment_id)
     {
@@ -263,11 +263,11 @@ class PostController extends Controller
         }
 
         $comment = callStatic(PostDiscussions::class, 'where', 'post_uuid', $post_id)
-        ->where('uuid', $comment_id)
-        ->first();
+            ->where('uuid', $comment_id)
+            ->first();
 
-// If comment is empty return error
-        if (!$comment) {
+        // If comment is empty return error
+        if (! $comment) {
             return new ApiResource(['data' => null, 'error' => 'Comment not found.', 'status' => 404]);
         }
         $comment->comment = $request->comment;
@@ -346,8 +346,8 @@ class PostController extends Controller
         $comment = callStatic(PostDiscussions::class, 'where', 'post_uuid', $post_id)
             ->where('uuid', $comment_id)->first();
 
-            // If comment is empty return error
-        if (!$comment) {
+        // If comment is empty return error
+        if (! $comment) {
             return new ApiResource(['data' => null, 'error' => 'Comment not found.', 'status' => 404]);
         }
 
