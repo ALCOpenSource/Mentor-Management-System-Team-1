@@ -68,11 +68,12 @@ export const useMessageStore = defineStore({
       this.broadcast = res.data;
     },
 
-    async sendBroadcast(message, receiver_ids, attachements) {
+    async sendBroadcast(message, receiver_ids, attachments) {
+      console.log(attachments)
       const res = await axios.post('v1/message/broadcast', {
         message: message.value,
         receiver_ids: receiver_ids.value,
-        attachements: attachements.value,
+        attachments: attachments,
       }, {
         headers: {
           'Content-Type': 'multipart/form-data',

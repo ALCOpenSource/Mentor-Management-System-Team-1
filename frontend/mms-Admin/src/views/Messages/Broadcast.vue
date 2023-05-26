@@ -39,7 +39,7 @@
         </v-expansion-panel>
       </v-expansion-panels>
     </div>
-    <div class="msg-area">
+    <div v-if="messageStore.broadcast.data.length !== 0" class="msg-area">
       <div
         class="flex flex-col items-center center mb-5"
         v-for="message in messageStore.broadcast.data"
@@ -51,11 +51,26 @@
             {{message.message}}
           </p>
           <div class="flex justify-between items-center mt-3">
-            <h3 class="font-semibold underline">{{ message }}</h3>
+            <h3 class="font-semibold underline">Mentor Manager</h3>
             <div class="flex items-center">
               <small class="text-[#4D4D4D] mr-2">{{ message.human_date }}</small>
               <DoubleTick v-if="message.status === 'read'" />
             </div>
+
+              <div v-if="message.attachments && message.attachments.length > 0">
+                  <div v-for="attachment in message.attachments" :key="attachment">
+                    <template v-if="attachment.type === 'image'">
+                      <img :src="attachment.url" alt="attachment" />
+                      <p>{{ attachment.name }}</p>
+                      <p>{{ calculateFileSize(attachment.size) }}</p>
+                    </template>
+                    <template v-else>
+                      <a :href="attachment.url" target="_blank"></a>
+                      <p>{{ attachment.name }}</p>
+                      <p>{{ calculateFileSize(attachment.size) }}</p>
+                    </template>
+                </div>
+              </div>
           </div>
         </div>
       </div>
@@ -151,6 +166,18 @@ const setSelected = (id: number) => {
     }
   }
 };
+
+const  calculateFileSize = (size: any) => {
+    if(size < 1024) {
+        return `${size} B`;
+    } else if(size < 1024 * 1024) {
+        return `${(size / 1024).toFixed(2)} KB`;
+    } else if(size < 1024 * 1024 * 1024) {
+        return `${(size / (1024 * 1024)).toFixed(2)} MB`;
+    } else {
+        return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+    }
+}
 
 const broadcastMessage = () => {
 
