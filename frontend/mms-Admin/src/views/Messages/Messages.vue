@@ -39,7 +39,7 @@
             >
             <span class="bo border-b-2 w-full"></span>
           </div>
-          <div v-if="messageStore.threads.data.length !== 0 && messageStore.receiver_data === null" class="chat-area">
+          <div v-if="messageStore?.threads?.data.length !== 0 && messageStore.receiver_data === null && messageStore?.thread?.data.length !==0" class="chat-area">
             <div v-for="message in messageStore.thread.data" :key="message">
               <div
                 class="w-full flex gap-8 justify-start mb-4"
@@ -194,7 +194,7 @@ const sendMessage = () => {
     attachments.forEach((file) => {
         formData.append('attachments[]', file);
     });
-
+    
     messageStore.sendMessage(formData).then(() => {
       const scrolldown = document.getElementById("scrolldown");
       scrolldown?.scrollIntoView();
@@ -354,22 +354,25 @@ export default defineComponent({
       // The message state is already loaded, so proceed to the message
       if(messageStore.available === false) {
         thread();
-        messageStore.loadThread(roomid, receiver_id);
+        if(roomid !== '') {
+          messageStore.loadThread(roomid, receiver_id);
+        }
       }
       next()
     } else {
-      // The message state is not loaded yet, so wait for it before proceeding
-      messageStore.loadThreads().then(() => {
+        // The message state is not loaded yet, so wait for it before proceeding
+        return messageStore.loadThreads().then(() => {
         thread();
-        if(messageStore?.threads?.data.length !== 0) {
+
+        if (roomid !== '') {
           return messageStore.loadThread(roomid, receiver_id);
         }
       }).then(() => {
-        if(messageStore?.threads?.data.length !== 0 && unread !== 0) {
+        if (messageStore?.threads?.data.length !== 0 && unread !== 0) {
           messageStore.markAsRead(uuid);
         }
-        next()
-      })
+        next();
+      });
     }
   },
 })

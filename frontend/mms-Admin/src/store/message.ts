@@ -68,11 +68,11 @@ export const useMessageStore = defineStore({
       this.broadcast = res.data;
     },
 
-    async sendBroadcast(message, receiver_ids, attachments) {
-      console.log(attachments)
+    async sendBroadcast(message, roles, attachments) {
+    
       const res = await axios.post('v1/message/broadcast', {
         message: message.value,
-        receiver_ids: receiver_ids.value,
+        optional_role: roles.value,
         attachments: attachments,
       }, {
         headers: {
@@ -106,8 +106,10 @@ export const useMessageStore = defineStore({
 
       this.loadThreads().then(() => {
         this.threads?.data.some(thread => {
+          
           if (thread.sender_id === data.id) {
             this.available = true;
+            console.log('here')
             this.loadThread(thread.room_id, data.id);
             return true;
           }
@@ -116,6 +118,7 @@ export const useMessageStore = defineStore({
         if(this.available === false) {
           this.receiver_data = data;
           this.receiver_id = data.id;
+          console.log('there')
         }
         this.noMessage = false;
         
