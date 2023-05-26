@@ -87,7 +87,6 @@ const read = ref<Read[]>(
 
 const markAllAsRead = () => {
   allRead.value = true;
-  console.log(allRead.value);
 };
 
 const markSingleAsRead = (index: number) => {

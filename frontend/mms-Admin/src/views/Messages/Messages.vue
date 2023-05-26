@@ -253,12 +253,12 @@ onMounted(() => {
     });
 
     window.Echo.connector.pusher.connection.bind('disconnected', () => {
-      console.log('Echo disconnected');
+      //console.log('Echo disconnected');
     });
 
     // Listen for when Echo reconnects
     window.Echo.connector.pusher.connection.bind('state_change', (states) => {
-      console.log('Echo state changed', states);
+      //console.log('Echo state changed', states);
 
       // Save previous state
       echo_previous_state = states.previous;
@@ -267,7 +267,7 @@ onMounted(() => {
 
     window.Echo.private(`messages.${user_id}`)
       .listen('NewMessage', (e) => {
-        console.log('New message', e.message);
+        //console.log('New message', e.message);
 
         if (e.message.room_id == messageStore.active_room) {
           messageStore.loadThread(messageStore.active_room, messageStore.receiver_id);
@@ -276,21 +276,21 @@ onMounted(() => {
         messageStore.loadThreads();
       })
       .listen('MessageDelivered', (e) => {
-        console.log('Message delivered', e.message);
+        //console.log('Message delivered', e.message);
 
         if (e.message.room_id == messageStore.active_room) {
           messageStore.loadThread(messageStore.active_room, messageStore.receiver_id);
         }
       })
       .listen('MessageRead', (e) => {
-        console.log('Message read', e.message);
+        //console.log('Message read', e.message);
 
         if (e.message.room_id == messageStore.active_room) {
           messageStore.loadThread(messageStore.active_room, messageStore.receiver_id);
         }
       })
       .listen('MessageDeleted', (e) => {
-        console.log('Message deleted', e.message);
+        //console.log('Message deleted', e.message);
 
         if (e.message.room_id == messageStore.active_room) {
           messageStore.loadThread(messageStore.active_room, messageStore.receiver_id);
@@ -300,7 +300,7 @@ onMounted(() => {
       
       window.Echo.private(`chat.${messageStore.active_room}`)
         .listenForWhisper('typing', (e) => {
-            console.log("Typing", e);
+            //console.log("Typing", e);
 
             if(timer){
                 clearTimeout(timer);
@@ -308,7 +308,7 @@ onMounted(() => {
 
             if(e.user_id != user_id){
                 typing.value = true;
-                console.log(typing.value);
+                //console.log(typing.value);
             }
             
             timer = setTimeout(() => {
