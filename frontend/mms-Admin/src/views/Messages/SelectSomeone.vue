@@ -31,6 +31,7 @@ import { useMessageStore } from "@/store/message"
 
 const userStore = useUserStore()
 const messageStore = useMessageStore()
+
 const getNumberToDisplay = () => {
   const height = window.innerHeight - window.innerHeight * 0.3;
   const cardHeight = 80;
@@ -41,7 +42,6 @@ const getNumberToDisplay = () => {
 const handleAddToChat = (user: Object) => {
   // Add to Top of Chat Array
   messageStore.updateReceiverData(user);
-
 }
 </script>
 

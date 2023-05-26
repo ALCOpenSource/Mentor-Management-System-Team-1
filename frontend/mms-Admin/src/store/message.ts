@@ -11,6 +11,7 @@ interface MessageState {
   receiver_data: Object | null;
   noMessage: bool;
   available: bool;
+  broadcast: Object;
 }
 
 export const useMessageStore = defineStore({
@@ -26,6 +27,7 @@ export const useMessageStore = defineStore({
       receiver_data: null,
       noMessage: true,
       available: false,
+      broadcast: null,
     };
   },
 
@@ -59,6 +61,25 @@ export const useMessageStore = defineStore({
       }
       this.loadThread(res.data.data.room_id, res.data.data.receiver_id);
       this.receiver_data = null;
+    },
+
+    async loadBroadcast() {
+      const res = await axios.get('v1/message/broadcast');
+      this.broadcast = res.data;
+    },
+
+    async sendBroadcast(message, receiver_ids, attachments) {
+      console.log(attachments)
+      const res = await axios.post('v1/message/broadcast', {
+        message: message.value,
+        receiver_ids: receiver_ids.value,
+        attachments: attachments,
+      }, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      this.loadBroadcast();
     },
 
     async markAsRead(uuid: String) {

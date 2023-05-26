@@ -17,7 +17,10 @@
       <div class="flex justify-between items-center">
         <div class="flex w-[320px] justify-between items-center">
           <h1 class="font-semibold text-2xl">Chats</h1>
-          <IconSearch color="#058B94" size="20" class="cursor-pointer" />
+          <router-link to="/admin/messages/select-someone"> 
+            <IconSearch color="#058B94" size="20" class="cursor-pointer" />
+          </router-link>
+         
         </div>
         <router-link to="/admin/messages/broadcast">
           <PrimaryBtn title="Send Broadcast Message" />
