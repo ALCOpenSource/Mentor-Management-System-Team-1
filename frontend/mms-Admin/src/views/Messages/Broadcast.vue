@@ -29,10 +29,10 @@
           <v-expansion-panel-text>
             <ul>
               <li
-                v-for="user in userStore.users" :key="user.id"
-                @click="setSelected(user.id)"
+                v-for="selected in selected" :key="selected.id"
+                @click="setSelected(selected.id)"
               >
-                {{ user.name }}
+                {{ selected.name }}
               </li>
             </ul>
           </v-expansion-panel-text>
@@ -130,38 +130,42 @@ const getFile = (files: any) => {
   attachments.push(files);
 };
 
-// const selected = ref([
-//   {
-//     id: 1,
-//     name: "Mentor Managers",
-//   },
-//   {
-//     id: 2,
-//     name: "Mentors",
-//   },
-//   {
-//     id: 3,
-//     name: "Perculiar",
-//   },
-//   {
-//     id: 4,
-//     name: "Kabiru",
-//   },
-// ]);
+const selected = ref([
+  {
+    id: 1,
+    name: "Mentor Managers",
+    value: "mentor_manager"
+  },
+  {
+    id: 2,
+    name: "Mentors",
+    value: "mentor",
+  },
+  {
+    id: 3,
+    name: "Admin",
+    value: "admin",
+  },
+  {
+    id: 4,
+    name: "Assistant",
+    value: "assistant",
+  },
+]);
 
 const isSelected = ref<string[]>([]);
-const selectedId = ref<string[]>([]);
+const selectedRoles = ref<string[]>([]);
 
 const setSelected = (id: number) => {
-  const item = userStore.users?.find((item: { id: number; }) => item.id === id);
+  const item = selected.value?.find((item: { id: number; }) => item.id === id);
   if (item) {
     const index = isSelected.value.findIndex((it) => it === item.name);
     if (index === -1) {
       isSelected.value.push(item.name);
-      selectedId.value.push(item.id);
+      selectedRoles.value.push(item.value);
     } else {
       isSelected.value.splice(index, 1);
-      selectedId.value.splice(index, 1);
+      selectedRoles.value.splice(index, 1);
     }
   }
 };
@@ -180,7 +184,7 @@ const  calculateFileSize = (size: any) => {
 
 const broadcastMessage = () => {
 
-    messageStore.sendBroadcast(broadcastInput, selectedId, attachments).then(() => {
+    messageStore.sendBroadcast(broadcastInput, selectedRoles, attachments).then(() => {
       const scrolldown = document.getElementById("scrolldown");
       scrolldown?.scrollIntoView();
 

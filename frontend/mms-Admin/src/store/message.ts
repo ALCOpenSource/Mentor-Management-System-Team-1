@@ -12,6 +12,7 @@ interface MessageState {
   noMessage: bool;
   available: bool;
   broadcast: Object;
+  timer: number | null;
 }
 
 export const useMessageStore = defineStore({
@@ -28,6 +29,7 @@ export const useMessageStore = defineStore({
       noMessage: true,
       available: false,
       broadcast: null,
+      timer: null,
     };
   },
 
@@ -68,11 +70,11 @@ export const useMessageStore = defineStore({
       this.broadcast = res.data;
     },
 
-    async sendBroadcast(message, receiver_ids, attachments) {
-      console.log(attachments)
+    async sendBroadcast(message, roles, attachments) {
+    
       const res = await axios.post('v1/message/broadcast', {
         message: message.value,
-        receiver_ids: receiver_ids.value,
+        roles: roles.value,
         attachments: attachments,
       }, {
         headers: {
@@ -80,6 +82,7 @@ export const useMessageStore = defineStore({
         },
       });
       this.loadBroadcast();
+      this.loadThreads();
     },
 
     async markAsRead(uuid: String) {
@@ -88,9 +91,8 @@ export const useMessageStore = defineStore({
     },
 
     async alivecheck() {
-      let timer = null;
-      if(timer) clearTimeout(timer);
-      timer = setTimeout( async() => {
+      if(this.timer) clearTimeout(this.timer);
+      this.timer = setTimeout( async() => {
         const res = await axios.get('v1/user/alive');
         if (res.data.success) {
             this.alive = res.data.success;
@@ -99,28 +101,50 @@ export const useMessageStore = defineStore({
       }, 120000);
     },
 
+    // async updateReceiverData(data: Object) {
+    //   this.receiver_data = null;
+    //   this.receiver_id = null;
+    //   this.available = false;
+    //   this.loadThread(data.message_room_id, data.id);
+    //   this.loadThreads().then(() => {
+    //     this.threads?.data.some(thread => {
+          
+    //       if (thread.receiver_id === data.id) {
+    //         this.available = true;
+            
+    //         return true;
+    //       }
+    //     });
+
+    //     if(this.available === false) {
+    //       this.receiver_data = data;
+    //       this.receiver_id = data.id;
+    //       this.available = true;
+    //     }
+    //     this.noMessage = false;
+        
+    //     this.router.push({ name: "inbox" });
+    //   });
+      
+    // },
+
     async updateReceiverData(data: Object) {
       this.receiver_data = null;
       this.receiver_id = null;
       this.available = false;
-
-      this.loadThreads().then(() => {
-        this.threads?.data.some(thread => {
-          if (thread.sender_id === data.id) {
-            this.available = true;
-            this.loadThread(thread.room_id, data.id);
-            return true;
-          }
-        });
-
-        if(this.available === false) {
+      this.loadThread(data.message_room_id, data.id).then(() => {
+        
+        if(this.thread.data.length === 0) {
           this.receiver_data = data;
+        }
+        if(this.available === false) {
           this.receiver_id = data.id;
+          this.available = true;
         }
         this.noMessage = false;
         
         this.router.push({ name: "inbox" });
-      });
+      })
       
     }
   },
