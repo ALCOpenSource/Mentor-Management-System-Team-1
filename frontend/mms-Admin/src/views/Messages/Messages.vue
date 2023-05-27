@@ -39,7 +39,7 @@
             >
             <span class="bo border-b-2 w-full"></span>
           </div>
-          <div v-if="messageStore?.threads?.data.length !== 0 && messageStore.receiver_data === null && messageStore?.thread?.data.length !==0" class="chat-area">
+          <div v-if="messageStore.threads.data.length !== 0 && messageStore.receiver_data === null" class="chat-area">
             <div v-for="message in messageStore.thread.data" :key="message">
               <div
                 class="w-full flex gap-8 justify-start mb-4"
@@ -91,6 +91,10 @@
                         </template>
                     </div>
                   </div>
+
+                  <template v-if="message.is_broadcast === true">
+                    <p>🗣️</p>
+                  </template>
                 </div>
               </div>
             </div>
@@ -173,9 +177,10 @@ const  calculateFileSize = (size: any) => {
         return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
     }
 }
-const loadMessage = (roomid: string, sender_id: string, uuid: string, unread: number) => {
+const loadMessage = (roomid: string, receiver_id: string, uuid: string, unread: number) => {
   messageStore.receiver_data = null;
-  messageStore.loadThread(roomid, sender_id).then(() => {
+  
+  messageStore.loadThread(roomid, receiver_id).then(() => {
       const scrolldown = document.getElementById("scrolldown");
       scrolldown?.scrollIntoView();
       if(unread !== 0) {
@@ -194,7 +199,7 @@ const sendMessage = () => {
     attachments.forEach((file) => {
         formData.append('attachments[]', file);
     });
-    
+
     messageStore.sendMessage(formData).then(() => {
       const scrolldown = document.getElementById("scrolldown");
       scrolldown?.scrollIntoView();
@@ -267,7 +272,7 @@ onMounted(() => {
 
     window.Echo.private(`messages.${user_id}`)
       .listen('NewMessage', (e) => {
-        //console.log('New message', e.message);
+        // console.log('New message', e.message);
 
         if (e.message.room_id == messageStore.active_room) {
           messageStore.loadThread(messageStore.active_room, messageStore.receiver_id);
@@ -334,7 +339,7 @@ export default defineComponent({
     let unread = 0;
 
     const thread = (()  => {
-      if(messageStore?.threads?.data.length !== 0 && messageStore.available === false && messageStore.receiver_data === null)
+      if(messageStore?.threads?.data.length !== 0 && messageStore.available === false)
       {
         const thread = messageStore?.threads?.data[0];
 
@@ -346,6 +351,10 @@ export default defineComponent({
         roomid = thread.room_id;
         uuid = thread.uuid;
         unread = thread.unread;
+        console.log('room Id')
+        console.log(roomid)
+        console.log('receiver Id')
+        console.log(receiver_id)
       }
       return;
     });
@@ -354,25 +363,22 @@ export default defineComponent({
       // The message state is already loaded, so proceed to the message
       if(messageStore.available === false) {
         thread();
-        if(roomid !== '') {
-          messageStore.loadThread(roomid, receiver_id);
-        }
+        messageStore.loadThread(roomid, receiver_id);
       }
       next()
     } else {
-        // The message state is not loaded yet, so wait for it before proceeding
-        return messageStore.loadThreads().then(() => {
+      // The message state is not loaded yet, so wait for it before proceeding
+      messageStore.loadThreads().then(() => {
         thread();
-
-        if (roomid !== '') {
+        if(messageStore?.threads?.data.length !== 0) {
           return messageStore.loadThread(roomid, receiver_id);
         }
       }).then(() => {
-        if (messageStore?.threads?.data.length !== 0 && unread !== 0) {
+        if(messageStore?.threads?.data.length !== 0 && unread !== 0) {
           messageStore.markAsRead(uuid);
         }
-        next();
-      });
+        next()
+      })
     }
   },
 })
