@@ -35,7 +35,7 @@ interface User {
   social_links: Links | null;
   website: Site | null;
   flag: string;
-  tags: array | null;
+  tags: [] | null;
 }
 
 interface Links {
@@ -158,7 +158,7 @@ export const useUserStore = defineStore({
               }
               
               return response;
-            } catch (error) {
+            } catch (error: any) {
               this.toaster.error(error.response.data.message);
               return error.response;
             }
@@ -188,5 +188,5 @@ interface userData {
   social_links: Links | null;
   website: Site | null;
   flag: string;
-  tags: array | null;
+  tags: [] | null;
 }
