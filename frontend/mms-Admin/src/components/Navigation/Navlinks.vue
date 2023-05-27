@@ -3,13 +3,17 @@
     <div class="relative">
       <router-link :to="{ name: 'messages' }">
         <MessageIcon />
-        <span class="indicator">{{ messageCount }}</span>
+        <span v-if="messageCount" class="indicator">
+          {{ messageCount }}
+        </span>
       </router-link>
     </div>
     <div class="relative">
       <router-link :to="{ name: 'notifications' }">
         <NotificationIcon />
-        <span class="indicator">{{ notificationCount }}</span>
+        <span v-if="notificationCount" class="indicator">{{
+          notificationCount
+        }}</span>
       </router-link>
     </div>
     <v-menu>
@@ -42,8 +46,8 @@ import { useAuthStore } from "../../store/auth";
 const userStore = useUserStore();
 const authStore = useAuthStore();
 
-const notificationCount = ref(3);
-const messageCount = ref(4);
+const notificationCount = ref(userStore.user?.unread_notifications_count);
+const messageCount = ref(userStore.user?.unread_messages_count);
 
 const handleLogout = async () => {
   await authStore.handleLogout();

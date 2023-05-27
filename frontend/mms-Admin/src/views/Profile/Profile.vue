@@ -18,7 +18,9 @@
             </h1>
             <NigerianFlag />
           </div>
-          <p class="text-slate-500">{{ userStore.user?.tags[0] }}</p>
+          <p class="text-slate-500">{{ 
+            userStore.user?.tags?.map((tag: any) => tag.name).join(", ")
+          }}</p>
         </div>
       </div>
       <div>
@@ -77,7 +79,7 @@
         <div class="flex items-center social-card">
           <Twitter />
           <p class="ml-3">
-            {{ userStore.user?.social_links.twitter_username?.name }}
+            {{ userStore.user?.social_links?.twitter_username?.name }}
           </p>
         </div>
       </div>
