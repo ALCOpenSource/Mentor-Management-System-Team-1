@@ -1,0 +1,21 @@
+<template>
+  <svg
+    width="8"
+    height="5"
+    viewBox="0 0 8 5"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M6.52626 1.3916L3.99995 3.91792L1.47363 1.3916"
+      stroke="#058B94"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+</template>
+
+<script setup lang="ts"></script>
+
+<style></style>

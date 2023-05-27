@@ -9,6 +9,7 @@
   --btn-secondary-hover: #e6fdfe;
   --btn-disabled: #808080;
   --btn-secondary: #fff;
+  --text-primary: #023C40;
   --text-inactive: #808080;
   --text-active: #000;
   --border: #e6e6e6;
@@ -131,5 +132,22 @@ body {
     position: absolute !important;
     z-index: 9999 !important;
     bottom: 50px !important;
+  }
+}
+
+
+.fancy-scroll {
+  &::-webkit-scrollbar {
+    width: 5px;
+    transition: all 0.5s ease-in-out;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #06b9c6;
+    border-radius: 50px;
   }
 }

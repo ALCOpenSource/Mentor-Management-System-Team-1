@@ -18,7 +18,7 @@ type Props = {
 defineProps<Props>();
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .card {
   display: flex;
   cursor: pointer;
