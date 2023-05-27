@@ -351,10 +351,6 @@ export default defineComponent({
         roomid = thread.room_id;
         uuid = thread.uuid;
         unread = thread.unread;
-        console.log('room Id')
-        console.log(roomid)
-        console.log('receiver Id')
-        console.log(receiver_id)
       }
       return;
     });
