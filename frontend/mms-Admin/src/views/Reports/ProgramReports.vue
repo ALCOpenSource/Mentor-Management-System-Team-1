@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <h2 class="text-xl font-semibold">Program Report for View</h2>
+  <div class="flex gap-8">
     <ViewReport />
   </div>
 </template>

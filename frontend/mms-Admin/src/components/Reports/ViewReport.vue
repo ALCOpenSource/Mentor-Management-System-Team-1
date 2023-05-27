@@ -61,7 +61,7 @@
 
         <!-- ACTION BUTTONS -->
         <div class="flex justify-between mt-10">
-          <PrimaryBtn title="Share" />
+          <OutlineBtn title="Share" />
           <PrimaryBtn title="Download" />
         </div>
       </div>
@@ -70,6 +70,7 @@
 </template>
 
 <script setup lang="ts">
+import OutlineBtn from "../Buttons/OutlineBtn.vue";
 import PrimaryBtn from "../Buttons/PrimaryBtn.vue";
 import { IconTask } from "../Icons";
 </script>

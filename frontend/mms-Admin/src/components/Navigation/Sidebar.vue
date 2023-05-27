@@ -65,7 +65,7 @@ const sidebarLinks = [
   },
   {
     pathname: "Reports",
-    path: parentPath + "/reports/tasks",
+    path: parentPath + "/reports",
     icon: IconReport,
   },
   {

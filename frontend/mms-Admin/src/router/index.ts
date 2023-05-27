@@ -68,17 +68,27 @@ const router = createRouter({
           path: "reports",
           name: "reports",
           component: reportLayout,
-          // component: () => import("@/views/Reports/Reports.vue"),
+          redirect: "/admin/reports/tasks",
           children: [
             {
               path: "programs",
               name: "programs",
-              component: () => import("@/views/Reports/ProgramReport.vue")
+              component: () => import("@/views/Reports/EmptyReport.vue")
             },
             {
               path: "tasks",
               name: "tasks",
-              component: () => import("@/views/Reports/TaskReport.vue")
+              component: () => import("@/views/Reports/EmptyReport.vue")
+            },
+            {
+              path: "tasks/:id",
+              name: "task-report",
+              component: () => import("@/views/Reports/TaskReports.vue")
+            },
+            {
+              path: "programs/:id",
+              name: "programs-report",
+              component: () => import("@/views/Reports/ProgramReports.vue")
             }
           ],
           meta: {
