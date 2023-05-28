@@ -1,8 +1,9 @@
 import { createApp, markRaw } from "vue";
 import { createPinia } from "pinia";
-import { createToaster } from "@meforma/vue-toaster"
+import { createToaster } from "@meforma/vue-toaster";
 
 import "./axios";
+import "./pusher"
 import App from "./App.vue";
 import router from "./router";
 import { plugin, defaultConfig } from "@formkit/vue";
@@ -21,13 +22,13 @@ const vuetify = createVuetify({
   directives,
 });
 const pinia = createPinia();
-const toaster = createToaster({ 
+const toaster = createToaster({
   position: "top-right",
 });
-pinia.use(({store}) => {
+pinia.use(({ store }) => {
   store.router = markRaw(router);
   store.toaster = markRaw(toaster);
-})
+});
 const app = createApp(App);
 
 app.use(plugin, defaultConfig);

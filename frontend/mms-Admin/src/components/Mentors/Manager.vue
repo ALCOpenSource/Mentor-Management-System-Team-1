@@ -8,14 +8,14 @@
     </div>
     <div class="archive-card">
       <div class="mb-3" v-for="n in 10" :key="n">
-        <UserCard is-mentor/>
+        <UserCard is-mentor />
       </div>
     </div>
   </div>
-</template>\
+</template>
 
 <script setup lang="ts">
-import UserCard from '../Common/UserCard.vue';
+import UserCard from "../Common/UserCard.vue";
 import SearchBox from "../Common/SearchBox.vue";
 import PlainDropdown from "../Common/PlainDropdown.vue";
 

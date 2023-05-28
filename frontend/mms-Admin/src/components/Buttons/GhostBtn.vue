@@ -1,5 +1,8 @@
 <template>
-  <button class="text-red-400 flex items-center gap-2">
+  <button
+    :class="underline ? 'underline' : ''"
+    class="text-red-400 flex items-center gap-2"
+  >
     <slot></slot>
     <span class="mt-1">{{ title }}</span>
   </button>
@@ -9,6 +12,7 @@
 type Props = {
   title: string;
   Icon?: any;
+  underline?: boolean;
 };
 defineProps<Props>();
 </script>
