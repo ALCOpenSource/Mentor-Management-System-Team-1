@@ -18,8 +18,8 @@ class PostController extends Controller
         $post = callStatic(Post::class, 'latest')
             ->paginate(20);
 
-        // If post is empty return error
-        if ($post->isEmpty()) {
+        // If post is empty return error.
+        if (! $post) {
             return new ApiResource(['data' => null, 'error' => 'Posts not found.', 'status' => 404]);
         }
 
@@ -63,7 +63,7 @@ class PostController extends Controller
             'attachment' => 'nullable|file|max:10240|mimes:jpg,jpeg,png,webm,txt,mpeg,ogg,mp4,webm,3gp,mov,flv,avi,wmv,ts',
         ]);
 
-        // If body is empty and attachment is empty return error
+        // If body is empty and attachment is empty return error.
         if (! $request->body && ! $request->title && ! $request->attachment) {
             return new ApiResource(['data' => null, 'message' => 'body or title or attachment is required.', 'status' => 422]);
         }
@@ -105,7 +105,7 @@ class PostController extends Controller
             'attachment' => 'nullable|file|max:10240|mimes:jpg,jpeg,png,webm,txt,mpeg,ogg,mp4,webm,3gp,mov,flv,avi,wmv,ts',
         ]);
 
-        // If body is empty and attachment is empty return error
+        // If body is empty and attachment is empty return error.
         if (! $request->body && ! $request->title && ! $request->attachment) {
             return new ApiResource(['data' => null, 'message' => 'body or title or attachment is required.', 'status' => 422]);
         }
@@ -116,7 +116,6 @@ class PostController extends Controller
         if (! $post) {
             return new ApiResource(['data' => null, 'message' => 'Post not found.', 'status' => 404]);
         }
-        // callStatic(Post::class, "where", "uuid", $post_id)->first();
 
         $post->title = $request->title;
         $post->body = $request->body;
@@ -216,7 +215,7 @@ class PostController extends Controller
             'attachment' => 'nullable|file|max:10240|mimes:jpg,jpeg,png,webm,txt,mpeg,ogg,mp4,webm,3gp,mov,flv,avi,wmv,ts',
         ]);
 
-        // If comment is empty and attachment is empty return error
+        // If comment is empty and attachment is empty return error.
         if (! $request->comment && ! $request->attachment) {
             return new ApiResource(['data' => null, 'message' => 'body or title or attachment is required.', 'status' => 422]);
         }
@@ -257,7 +256,7 @@ class PostController extends Controller
             'attachment' => 'nullable|file|max:10240|mimes:jpg,jpeg,png,webm,txt,mpeg,ogg,mp4,webm,3gp,mov,flv,avi,wmv,ts',
         ]);
 
-        // If comment is empty and attachment is empty return error
+        // If comment is empty and attachment is empty return error.
         if (! $request->comment && ! $request->attachment) {
             return new ApiResource(['data' => null, 'error' => 'Comment or attachment is required.', 'status' => 422]);
         }
@@ -266,7 +265,7 @@ class PostController extends Controller
             ->where('uuid', $comment_id)
             ->first();
 
-        // If comment is empty return error
+        // If comment is empty return error.
         if (! $comment) {
             return new ApiResource(['data' => null, 'error' => 'Comment not found.', 'status' => 404]);
         }
@@ -346,7 +345,7 @@ class PostController extends Controller
         $comment = callStatic(PostDiscussions::class, 'where', 'post_uuid', $post_id)
             ->where('uuid', $comment_id)->first();
 
-        // If comment is empty return error
+        // If comment is empty return error.
         if (! $comment) {
             return new ApiResource(['data' => null, 'error' => 'Comment not found.', 'status' => 404]);
         }

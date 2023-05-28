@@ -50,9 +50,16 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Get Human readable.
+     */
     public function getIsPublishedHumanAttribute()
     {
-        return $this->is_published ? 'Published' : 'Not Published';
+        if ($this->is_published) {
+            return 'Published';
+        }
+
+        return 'Not Published';
     }
 
     /**
