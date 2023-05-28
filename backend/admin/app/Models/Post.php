@@ -55,7 +55,7 @@ class Post extends Model
      */
     public function getIsPublishedHumanAttribute()
     {
-        if ($this->is_published) {
+        if (true === $this->is_published) {
             return 'Published';
         }
 
