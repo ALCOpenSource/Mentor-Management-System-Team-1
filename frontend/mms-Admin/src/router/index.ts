@@ -2,11 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../views/Dashboard/Dashboard.vue";
 import dashboardLayout from "@/layouts/dashboardLayout.vue";
 import settingsLayout from "@/layouts/settingsLayout.vue";
-import {useAuthStore} from '@/store/auth'
-import messageLayout from "@/layouts/messageLayout.vue";
-import discussionLayout from "@/layouts/discussionLayout.vue";
-import mentorLayout from "@/layouts/mentorLayout.vue";
-import reportLayout from "@/layouts/reportLayout.vue"z
+import reportLayout from "@/layouts/reportLayout.vue"
+import { useAuthStore } from "@/store/auth";
 import blankLayout from "@/layouts/blankLayout.vue";
 
 const router = createRouter({
@@ -124,9 +121,40 @@ const router = createRouter({
         {
           path: "reports",
           name: "reports",
-          component: () => import("@/views/Reports/Reports.vue"),
+          component: reportLayout,
+          redirect: "/admin/reports/tasks",
+          children: [
+            {
+              path: "programs",
+              name: "programs",
+              component: () => import("@/views/Reports/EmptyReport.vue")
+            },
+            {
+              path: "tasks",
+              name: "tasks",
+              component: () => import("@/views/Reports/EmptyReport.vue")
+            },
+            {
+              path: "tasks/:id",
+              name: "task-report",
+              component: () => import("@/views/Reports/TaskReports.vue")
+            },
+            {
+              path: "programs/:id",
+              name: "programs-report",
+              component: () => import("@/views/Reports/ProgramReports.vue")
+            }
+          ],
           meta: {
-            requiresAuth:true
+            requiresAuth: true,
+          },
+        },
+        {
+          path: "notifications",
+          name: "notifications",
+          component: () => import("@/views/Others/Notifications.vue"),
+          meta: {
+            requiresAuth: true,
           },
         },
         {
