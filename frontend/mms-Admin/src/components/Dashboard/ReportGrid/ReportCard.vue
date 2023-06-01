@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { Reports } from '@/assets/icons';
+import { Reports } from "@/assets/icons";
 </script>
 
 <style scoped lang="scss">

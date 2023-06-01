@@ -1,16 +1,26 @@
 <template>
   <div>
-    <div class="w-full h-[78vh] flex flex-col justify-center items-center border rounded-md" v-if="noMesage">
+    <div
+      class="w-full h-[78vh] flex flex-col justify-center items-center border rounded-md"
+      v-if="messageStore.noMessage"
+    >
       <NoMessage />
       <h1 class="text-xl mt-5 mb-2">No messages yet</h1>
-      <p class="text-[#808080]">No messages in your chatbox, yet. Start chatting with other users</p>
-      <router-link to="/admin/messages/select-someone"><PrimaryBtn title="Browse People" class="mt-12" /></router-link>
+      <p class="text-[#808080]">
+        No messages in your chatbox, yet. Start chatting with other users
+      </p>
+      <router-link to="/admin/messages/select-someone"
+        ><PrimaryBtn title="Browse People" class="mt-12"
+      /></router-link>
     </div>
     <div v-else>
       <div class="flex justify-between items-center">
         <div class="flex w-[320px] justify-between items-center">
           <h1 class="font-semibold text-2xl">Chats</h1>
-          <IconSearch color="#058B94" size="20" class="cursor-pointer" />
+          <router-link to="/admin/messages/select-someone"> 
+            <IconSearch color="#058B94" size="20" class="cursor-pointer" />
+          </router-link>
+         
         </div>
         <router-link to="/admin/messages/broadcast">
           <PrimaryBtn title="Send Broadcast Message" />
@@ -18,7 +28,8 @@
       </div>
       <div class="mt-4 flex gap-5 justify-between">
         <div class="chats-col">
-          <ChatCard v-for="item in 10" :key="item" />
+          <ChatCard v-if="messageStore.receiver_data" :thread="messageStore.receiver_data"/>
+          <ChatCard v-for="thread in messageStore.threads.data" :key="thread" :thread="thread" @openChat="loadMessage"/>
         </div>
         <div class="chat-col">
           <div class="flex justify-between items-center text-[#058B94]">
@@ -28,33 +39,66 @@
             >
             <span class="bo border-b-2 w-full"></span>
           </div>
-          <div class="chat-area">
-            <div v-for="message in msgData[0].messages" :key="msgData[0].id">
+          <div v-if="messageStore.threads.data.length !== 0 && messageStore.receiver_data === null" class="chat-area">
+            <div v-for="message in messageStore.thread.data" :key="message">
               <div
                 class="w-full flex gap-8 justify-start mb-4"
-                v-if="message.rec"
+                v-if="message.sender_id !== userStore.user.id"
               >
                 <img
                   class="avatar"
-                  src="https://blog.readyplayer.me/content/images/2021/04/IMG_0689.PNG"
+                  :src="message.sender.avatar_url"
                   alt="avatar"
                 />
                 <div class="received">
-                  <h1>{{ message.msg }}</h1>
-                  <small>{{ message.time }}</small>
-                </div>
-              </div>
-              <div class="w-full flex justify-end mb-4" v-if="message.sent">
-                <div class="sent">
-                  <h1>{{ message.msg }}</h1>
-                  <div class="flex justify-between items-center">
-                    <small>{{ message.time }}</small>
-                    <Tick v-if="message.status === 'Sent'" />
-                    <DoubleTick v-if="message.status === 'Delivered'" />
+                  <h1>{{ message.message }}</h1>
+                  <small>{{ message.human_date }}</small>
+                  <div v-if="message.attachments && message.attachments.length > 0">
+                      <div v-for="attachment in message.attachments" :key="attachment">
+                        <template v-if="attachment.type === 'image'">
+                          <img :src="attachment.url" alt="attachment" />
+                          <p>{{ attachment.name }}</p>
+                          <p>{{ calculateFileSize(attachment.size) }}</p>
+                        </template>
+                        <template v-else>
+                          <a :href="attachment.url" target="_blank"></a>
+                          <p>{{ attachment.name }}</p>
+                          <p>{{ calculateFileSize(attachment.size) }}</p>
+                        </template>
+                    </div>
                   </div>
                 </div>
               </div>
+              <div class="w-full flex justify-end mb-4" v-else>
+                <div class="sent">
+                  <h1>{{ message.message }}</h1>
+                  <div class="flex justify-between items-center">
+                    <small>{{ message.human_date }}</small>
+                    <Tick v-if="message.status === 'unread'" />
+                    <DoubleTick v-if="message.status === 'read'" />
+                  </div>
+                  <div v-if="message.attachments.length > 0">
+                      <div v-for="attachment in message.attachments" :key="attachment">
+                        <template v-if="attachment.type === 'image'">
+                          <img :src="attachment.url" alt="attachment" />
+                          <p>{{ attachment.name }}</p>
+                          <p>{{ calculateFileSize(attachment.size) }}</p>
+                        </template>
+                        <template v-else>
+                          <a :href="attachment.url" target="_blank"></a>
+                          <p>{{ attachment.name }}</p>
+                          <p>{{ calculateFileSize(attachment.size) }}</p>
+                        </template>
+                    </div>
+                  </div>
+
+                  <template v-if="message.is_broadcast === true">
+                    <p>🗣️</p>
+                  </template>
+                </div>
+              </div>
             </div>
+               <p v-if="typing">Typing...</p>
             <div id="scrolldown"></div>
           </div>
           <div class="mt-4 w-full flex items-center picker">
@@ -65,6 +109,8 @@
               type="text"
               placeholder="|   Type a message..."
               v-model="chatInput"
+              @keyup.enter="sendMessage"
+              @keyup="handleTyping"
             />
             <Picker
               v-if="emojiPickerSelected"
@@ -90,8 +136,14 @@ import ChatCard from "@/components/Messages/ChatCard.vue";
 import { Picker, EmojiIndex } from "emoji-mart-vue-fast/src";
 import data from "emoji-mart-vue-fast/data/all.json";
 import UploadFile from "@/components/Messages/UploadFile.vue";
+import {useMessageStore} from "../../store/message"
+import {useUserStore} from "../../store/user"
+import Echo from "laravel-echo"
+import Pusher from "pusher-js";
 
-const noMesage = ref(false);
+const userStore = useUserStore();
+
+const messageStore = useMessageStore();
 
 const emojiPickerSelected = ref(false);
 let emojiIndex = new EmojiIndex(data);
@@ -99,72 +151,233 @@ const toggle = () => {
   emojiPickerSelected.value = !emojiPickerSelected.value;
 };
 
+
 const chatInput = ref("");
-const file = ref("");
+const typing = ref(false)
 
 const convertEmoji = (emoji: any) => {
   chatInput.value += emoji.native;
 };
 
+const attachments: any[] = [];
+
 const getFile = (files: any) => {
   // Do something with the file
-  file.value = files.name;
+  attachments.push(files);
 };
 
-// Test Data
-const msgData = [
-  {
-    id: 1,
-    name: "Kabiru",
-    avatar: "https://blog.readyplayer.me/content/images/2021/04/IMG_0689.PNG",
-    messages: [
-      {
-        rec: true,
-        sent: false,
-        msg: "Hello Perculiar",
-        time: "5:59 PM",
-      },
-      {
-        rec: false,
-        sent: true,
-        msg: "Hello Kabiru, trust you are well?",
-        time: "6:00 PM",
-        status: "Delivered",
-      },
-      {
-        rec: false,
-        sent: true,
-        msg: "I need to check up on you",
-        time: "6:00 PM",
-        status: "Sent",
-      },
-      {
-        rec: true,
-        sent: false,
-        msg: "I need to check up on you?",
-        time: "6:10 PM",
-      },
-      {
-        rec: false,
-        sent: true,
-        msg: "Yes, I needed to check up on you, is that a problem",
-        time: "6:12 PM",
-        status: "Sent",
-      },
-      {
-        rec: true,
-        sent: false,
-        msg: "No, I just wasn't expecting it, that's all",
-        time: "6:13 PM",
-      },
-    ],
-  },
-];
+const  calculateFileSize = (size: any) => {
+    if(size < 1024) {
+        return `${size} B`;
+    } else if(size < 1024 * 1024) {
+        return `${(size / 1024).toFixed(2)} KB`;
+    } else if(size < 1024 * 1024 * 1024) {
+        return `${(size / (1024 * 1024)).toFixed(2)} MB`;
+    } else {
+        return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+    }
+}
+const loadMessage = (roomid: string, receiver_id: string, uuid: string, unread: number) => {
+  messageStore.receiver_data = null;
+  
+  messageStore.loadThread(roomid, receiver_id).then(() => {
+      const scrolldown = document.getElementById("scrolldown");
+      scrolldown?.scrollIntoView();
+      if(unread !== 0) {
+        messageStore.markAsRead(uuid);
+      }
+  });
+}
+
+const sendMessage = () => {
+  // Create form data
+    let formData = new FormData();
+    formData.append('message', chatInput.value);
+    formData.append('receiver_id', messageStore.receiver_id);
+
+    // Append attachments
+    attachments.forEach((file) => {
+        formData.append('attachments[]', file);
+    });
+
+    messageStore.sendMessage(formData).then(() => {
+      const scrolldown = document.getElementById("scrolldown");
+      scrolldown?.scrollIntoView();
+
+      chatInput.value = '';
+    });
+}
+
+const handleTyping = (event: any) => {
+    let timer = null;
+    if (event.key !== 'Enter') {
+      // If no active thread, return
+
+      if (!messageStore.active_room || !messageStore.receiver_id) return;
+
+      // If timer is not null, clear it
+      if (timer) clearTimeout(timer);
+
+      // Emit typing event
+      timer = setTimeout(() => {
+        window.Echo.private(`chat.${messageStore.active_room}`).whisper('typing', {
+          typing: true,
+          user_id: userStore.user.id,
+          receiver_id: messageStore.receiver_id,
+          message_room_id: messageStore.active_room,
+        });
+      }, 500);
+    }
+}
 
 onMounted(() => {
   const scrolldown = document.getElementById("scrolldown");
   scrolldown?.scrollIntoView();
+  let echo_previous_state: string;
+    let echo_current_state: string;
+    const user_id = userStore?.user.id; 
+    
+    if(messageStore?.threads?.data.length !== 0) {
+      messageStore.noMessage = false;
+    }
+    // document.addEventListener('mousemove', () => {
+    //     messageStore.alivecheck();
+    // });
+
+    document.addEventListener('keydown', () => {
+        messageStore.alivecheck();
+    });
+
+    // Listen for when Echo connects and disconnects
+    window.Echo.connector.pusher.connection.bind('connected', () => {
+      // If previous state was disconnected, reload page
+      if (echo_previous_state == 'disconnected') {
+        // Here you can refresh user data e.g. fetch new notifications
+        messageStore.loadThreads();
+      }
+    });
+
+    window.Echo.connector.pusher.connection.bind('disconnected', () => {
+      //console.log('Echo disconnected');
+    });
+
+    // Listen for when Echo reconnects
+    window.Echo.connector.pusher.connection.bind('state_change', (states) => {
+      //console.log('Echo state changed', states);
+
+      // Save previous state
+      echo_previous_state = states.previous;
+      echo_current_state = states.current;
+    });
+
+    window.Echo.private(`messages.${user_id}`)
+      .listen('NewMessage', (e) => {
+        // console.log('New message', e.message);
+
+        if (e.message.room_id == messageStore.active_room) {
+          messageStore.loadThread(messageStore.active_room, messageStore.receiver_id);
+        }
+
+        messageStore.loadThreads();
+      })
+      .listen('MessageDelivered', (e) => {
+        //console.log('Message delivered', e.message);
+
+        if (e.message.room_id == messageStore.active_room) {
+          messageStore.loadThread(messageStore.active_room, messageStore.receiver_id);
+        }
+      })
+      .listen('MessageRead', (e) => {
+        //console.log('Message read', e.message);
+
+        if (e.message.room_id == messageStore.active_room) {
+          messageStore.loadThread(messageStore.active_room, messageStore.receiver_id);
+        }
+      })
+      .listen('MessageDeleted', (e) => {
+        //console.log('Message deleted', e.message);
+
+        if (e.message.room_id == messageStore.active_room) {
+          messageStore.loadThread(messageStore.active_room, messageStore.receiver_id);
+        }
+      });
+      let timer: number|null|undefined = null;
+      
+      window.Echo.private(`chat.${messageStore.active_room}`)
+        .listenForWhisper('typing', (e) => {
+            //console.log("Typing", e);
+
+            if(timer){
+                clearTimeout(timer);
+            }
+
+            if(e.user_id != user_id){
+                typing.value = true;
+                //console.log(typing.value);
+            }
+            
+            timer = setTimeout(() => {
+                typing.value = false;
+            }, 3000);
+        });
 });
+</script>
+
+<script lang="ts">
+
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+  
+  beforeRouteEnter(to, from, next) {
+    const messageStore = useMessageStore();
+    const userStore = useUserStore();
+
+    let roomid = '';
+    let receiver_id = '';
+    let uuid = '';
+    let unread = 0;
+
+    const thread = (()  => {
+      if(messageStore?.threads?.data.length !== 0 && messageStore.available === false)
+      {
+        const thread = messageStore?.threads?.data[0];
+
+        if(thread.receiver_id === userStore?.user?.id) {
+          receiver_id = thread.sender_id;
+        }else {
+          receiver_id = thread.receiver_id;
+        }
+        roomid = thread.room_id;
+        uuid = thread.uuid;
+        unread = thread.unread;
+      }
+      return;
+    });
+
+    if (messageStore.threads && messageStore?.threads?.data.length !== 0 ) {
+      // The message state is already loaded, so proceed to the message
+      if(messageStore.available === false) {
+        thread();
+        messageStore.loadThread(roomid, receiver_id);
+      }
+      next()
+    } else {
+      // The message state is not loaded yet, so wait for it before proceeding
+      messageStore.loadThreads().then(() => {
+        thread();
+        if(messageStore?.threads?.data.length !== 0) {
+          return messageStore.loadThread(roomid, receiver_id);
+        }
+      }).then(() => {
+        if(messageStore?.threads?.data.length !== 0 && unread !== 0) {
+          messageStore.markAsRead(uuid);
+        }
+        next()
+      })
+    }
+  },
+})
 </script>
 
 <style scoped lang="scss">

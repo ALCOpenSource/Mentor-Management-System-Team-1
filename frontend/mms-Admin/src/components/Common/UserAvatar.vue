@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {useAuthStore} from "../../store/auth"
+import { useUserStore } from "../../store/user";
 
-const authStore = useAuthStore();
+const userStore = useUserStore();
 </script>
 
 <script lang="ts">
@@ -12,11 +12,15 @@ export default defineComponent({
   },
 });
 </script>
-
+// src="userStore.avatar?.avatar_url ||
+'https://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder.png'"
 <template>
   <img
     class="avatar"
-    :src="imageLink || 'https://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder.png'"
+    :src="
+      imageLink ||
+      'https://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder.png'
+    "
     alt=""
     srcset=""
   />

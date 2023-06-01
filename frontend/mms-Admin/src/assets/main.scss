@@ -87,7 +87,7 @@ body {
 }
 
 .v-expansion-panel-title--active > .v-expansion-panel-title__overlay {
-  background-color: var(--btn-primary);
+  display: none !important;
 }
 
 .v-expansion-panel {
@@ -132,6 +132,26 @@ body {
     position: absolute !important;
     z-index: 9999 !important;
     bottom: 50px !important;
+  }
+}
+
+.scrollbar {
+  &::-webkit-scrollbar {
+    width: 5px;
+    transition: all 0.5s ease-in-out;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #06b9c6;
+    border-radius: 50px;
+
+    &:hover {
+      background: #058b94;
+    }
   }
 }
 

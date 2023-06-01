@@ -21,7 +21,7 @@
     </v-row>
     <v-row class="mt-10" align-content="center" justify="center">
       <v-col cols="8">
-        <PrimaryBtn title="Save Changes" @click="handleSubmit"/>
+        <PrimaryBtn title="Save Changes" @click="handleSubmit" />
       </v-col>
     </v-row>
     <Modal
@@ -40,56 +40,85 @@ import Checkbox from "../../components/Forms/Checkbox.vue";
 import Modal from "../../components/Forms/Modal.vue";
 import { profileSuccess } from "../../assets/images";
 import PrimaryBtn from "@/components/Buttons/PrimaryBtn.vue";
+import { usePrivacyStore } from "@/store/settings/privacy";
+import { storeToRefs } from "pinia";
 
 const isModalOpen = ref(false);
+
+const store = usePrivacyStore();
+const { fetchPrivacy, updatePrivacy } = usePrivacyStore();
+fetchPrivacy();
+
+const {
+  show_contact_info,
+  show_github,
+  show_instagram,
+  show_linkedin,
+  show_twitter,
+  show_modal,
+} = storeToRefs(usePrivacyStore());
 
 const toggleModal = () => {
   isModalOpen.value = !isModalOpen.value;
 };
 
-const handleSubmit = () => {
-  toggleModal();
-
-  // Handle Submit
+const handleSubmit = async () => {
+  await updatePrivacy();
+  if (show_modal) toggleModal();
 };
 
 // Should come from the backend
 const privacy = ref([
   {
     name: "Show contact info",
-    switchName: "switch1",
+    switchName: "show_contact_info",
     id: "1",
-    checked: false,
+    checked: show_contact_info,
   },
   {
     name: "Show GitHub",
-    switchName: "switch2",
+    switchName: "show_github",
     id: "2",
-    checked: true,
+    checked: show_github,
   },
   {
     name: "Show Instagram",
-    switchName: "switch3",
+    switchName: "show_instagram",
     id: "3",
-    checked: false,
+    checked: show_instagram,
   },
   {
     name: "Show Linkdein",
-    switchName: "switch4",
+    switchName: "show_linkedin",
     id: "4",
-    checked: true,
+    checked: show_linkedin,
   },
   {
     name: "Show Twitter",
-    switchName: "switch5",
+    switchName: "show_twitter",
     id: "5",
-    checked: false,
+    checked: show_twitter,
   },
 ]);
 
-const toggleChecked = (id: String) => {
+const toggleChecked = async ({ id, checked }) => {
   const index = privacy.value.findIndex((item) => item.id === id);
   privacy.value[index].checked = !privacy.value[index].checked;
+
+  if (privacy.value[index].switchName === "show_contact_info")
+    store.$patch({ show_contact_info: checked });
+
+  if (privacy.value[index].switchName === "show_github")
+    store.$patch({ show_github: checked });
+
+  if (privacy.value[index].switchName === "show_instagram")
+    store.$patch({ show_instagram: checked });
+
+  if (privacy.value[index].switchName === "show_linkedin")
+    store.$patch({ show_linkedin: checked });
+
+  if (privacy.value[index].switchName === "show_twitter")
+    store.$patch({ show_twitter: checked });
 };
 </script>
 

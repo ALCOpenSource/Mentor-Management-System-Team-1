@@ -26,7 +26,7 @@
         rows="5"
       ></textarea>
       <div class="flex justify-between items-center mt-8 mb-5">
-        <Docs class="cursor-pointer"/>
+        <Docs class="cursor-pointer" />
         <div class="w-[115px]">
           <PrimaryBtn title="Send" type="submit" />
         </div>
@@ -49,7 +49,10 @@ import Email from "../../components/Forms/Email.vue";
 import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 import Modal from "../../components/Forms/Modal.vue";
 import { profileSuccess } from "../../assets/images";
-import { Docs } from "@/assets/icons"
+import { Docs } from "@/assets/icons";
+import { useSupportStore } from "../../store/support";
+
+const supportStore = useSupportStore();
 
 const supportDetails = ref({
   name: "",
@@ -68,10 +71,16 @@ const toggleModal = () => {
   isModalOpen.value = !isModalOpen.value;
 };
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
   if (valid.value) {
-    toggleModal();
-    // Do something
+    // Handle the Form submission
+    const response = await supportStore.createTicket(supportDetails);
+
+    if (response && response.data && response.data.success) {
+      toggleModal();
+      // Handle the success here, toggle modal
+      return;
+    }
   }
 };
 </script>

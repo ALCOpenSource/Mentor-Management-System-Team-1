@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import SearchBox from "../Common/SearchBox.vue";
 import PlainDropdown from "../Common/PlainDropdown.vue";
-import ProgramDropdown from "./ProgramDropdown.vue"
+import ProgramDropdown from "./ProgramDropdown.vue";
 import { Google } from "@/assets/icons";
 
 const options = [
@@ -32,10 +32,11 @@ const tabData = {
   date: "Dec 12, 2022",
   time: "12:00 PM",
   mainIcon: Google,
-  content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id nibh nibh, at maximus ante fermentum sit amet. Pellentesque",
+  content:
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id nibh nibh, at maximus ante fermentum sit amet. Pellentesque",
   numberOfReports: 40,
-  isProgram: true
-}
+  isProgram: true,
+};
 </script>
 
 <style scoped lang="scss">

@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import router from "../router";
 import { createToaster } from "@meforma/vue-toaster";
 
 const toaster = createToaster({
@@ -68,12 +67,30 @@ export const useAuthStore = defineStore({
           if (res.data.success) {
             this.setToken(res.data.data.access_token);
             this.authUser = res.data.data.user;
-            router.push("admin/dashboard");
+            // router.push("admin/dashboard");
+            location.reload();
             toaster.success(res.data.message);
           }
         })
         .catch((error) => {
           toaster.error("Invalid username or password.");
+        });
+    },
+
+    async handleLogout() {
+      await axios
+        .post("auth/logout")
+        .then((res) => {
+          if (res.data.success) {
+            this.removeToken();
+            this.authUser = null;
+            this.router.push({ name: "login" });
+            //   location.reload();
+            toaster.success(res.data.message);
+          }
+        })
+        .catch((error) => {
+          toaster.error("Unable to logout, try again later.");
         });
     },
   },
