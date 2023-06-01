@@ -14,3 +14,5 @@ export { default as IconAdd } from "./IconAdd.vue";
 export { default as IconTask } from "./IconTask.vue";
 export { default as IconSearch } from "./IconSearch.vue";
 export { default as IconDelete } from "./IconDelete.vue";
+export { default as IconNotSelected } from "./IconNotSelected.vue";
+export { default as IconCaret } from "./IconCaret.vue";
