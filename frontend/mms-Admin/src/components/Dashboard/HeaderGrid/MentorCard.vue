@@ -1,10 +1,10 @@
 <template>
-  <div class="mentor w-2/5">
+  <div class="mentor w-full">
     <div>
-      <h1>Mentors</h1>
-      <p class="flex items-center">
-        <span class="first">30</span>
-        <span class="sec">+12%</span>
+      <h1 class="text-lg 2xl:text-xl text-[#333333]">Mentors</h1>
+      <p class="flex items-center gap-2 -mt-2">
+        <span class="text-lg 2xl:text-xl font-semibold">30</span>
+        <span class="sec text-sm 2xl:text-base">+12%</span>
       </p>
     </div>
     <svg
@@ -39,6 +39,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 20px;
   padding-left: 15px;
   padding-right: 15px;
   background-color: var(--card-light);
@@ -48,20 +49,7 @@
   &:hover {
     background-color: var(--card-light-hover);
   }
-
-  h1 {
-    font-size: 1.2rem;
-    font-weight: 400;
-    color: var(--text-dark);
-  }
-
-  .first {
-    font-size: 1.3rem;
-    font-weight: 600;
-    margin-right: 8px;
-  }
   .sec {
-    font-size: 1rem;
     font-weight: 400;
     color: var(--text-inactive);
   }

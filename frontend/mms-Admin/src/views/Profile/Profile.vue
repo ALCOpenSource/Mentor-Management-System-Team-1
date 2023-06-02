@@ -2,7 +2,7 @@
   <div>
     <div class="flex justify-between items-center mb-12">
       <div class="flex items-center">
-        <v-avatar size="90px">
+        <v-avatar size="80px">
           <v-img
             :src="
               userStore.avatar?.avatar_url ||
@@ -13,7 +13,7 @@
         </v-avatar>
         <div class="ml-6">
           <div class="flex items-center">
-            <h1 class="mr-2 text-xl font-semibold">
+            <h1 class="mr-2 text-xl 2xl:text-2xl font-semibold">
               {{ userStore.user?.name }}
             </h1>
             <NigerianFlag />
@@ -30,41 +30,41 @@
       </div>
     </div>
     <div class="card p-6">
-      <h1 class="text-2xl font-semibold mb-6">About</h1>
-      <p class="sub-card">
+      <h1 class="text-xl 2xl:text-2xl font-semibold mb-6">About</h1>
+      <p class="sub-card text-sm 2xl:text-base">
         {{ userStore.user?.about_me }}
       </p>
       <div class="flex items-center mb-3 gap-6">
-        <h1 class="text-xl font-semibold">Location:</h1>
-        <p class="text-[#808080]">
+        <h1 class="text-base 2xl:text-xl font-semibold">Location:</h1>
+        <p class="text-[#808080] text-sm 2xl:text-base">
           {{ userStore.user?.state }}, {{ userStore.user?.country_name }}
         </p>
       </div>
       <div class="flex items-center mb-3 gap-6">
-        <h1 class="text-xl font-semibold">Email:</h1>
-        <p class="text-[#808080]">{{ userStore.user?.email }}</p>
+        <h1 class="text-base 2xl:text-xl font-semibold">Email:</h1>
+        <p class="text-[#808080] text-sm 2xl:text-base">{{ userStore.user?.email }}</p>
       </div>
       <div class="flex items-center mb-3 gap-6">
-        <h1 class="text-xl font-semibold">Website:</h1>
-        <p class="text-[#808080]">
+        <h1 class="text-base 2xl:text-xl font-semibold">Website:</h1>
+        <p class="text-[#808080] text-sm 2xl:text-base">
           {{ userStore.user?.website?.my_website?.url }}
         </p>
       </div>
       <div class="flex items-center gap-6">
-        <h1 class="text-xl font-semibold">Member since:</h1>
-        <p class="text-[#808080]">{{ userStore.user?.member_since }}</p>
+        <h1 class="text-base 2xl:text-xl font-semibold">Member since:</h1>
+        <p class="text-[#808080] text-sm 2xl:text-base">{{ userStore.user?.member_since }}</p>
       </div>
-      <h1 class="text-2xl font-semibold mb-6 mt-10">Social</h1>
+      <h1 class="text-xl 2xl:text-2xl font-semibold mb-6 mt-10">Social</h1>
       <div class="grid w-full gap-10 grid-cols-2 mb-6">
         <div class="flex items-center social-card">
           <GitHub />
-          <p class="ml-3">
+          <p class="ml-3 text-base 2xl:text-xl">
             {{ userStore.user?.social_links?.github_username?.name }}
           </p>
         </div>
         <div class="flex items-center social-card">
           <Instagram />
-          <p class="ml-3">
+          <p class="ml-3 text-base 2xl:text-xl">
             {{ userStore.user?.social_links?.instagram_username?.name }}
           </p>
         </div>
@@ -72,13 +72,13 @@
       <div class="grid w-full gap-10 grid-cols-2">
         <div class="flex items-center social-card">
           <LinkedIn />
-          <p class="ml-3">
+          <p class="ml-3 text-base 2xl:text-xl">
             {{ userStore.user?.social_links?.linkedin_username?.name }}
           </p>
         </div>
         <div class="flex items-center social-card">
           <Twitter />
-          <p class="ml-3">
+          <p class="ml-3 text-base 2xl:text-xl">
             {{ userStore.user?.social_links?.twitter_username?.name }}
           </p>
         </div>
@@ -117,7 +117,6 @@ const userStore = useUserStore();
     font-weight: 600;
     border-radius: 5px;
     background-color: var(--card-light);
-    font-size: 20px;
     padding: 8px 12px;
 
     &:hover {

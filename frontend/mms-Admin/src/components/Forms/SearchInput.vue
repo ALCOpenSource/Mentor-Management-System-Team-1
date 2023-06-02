@@ -6,7 +6,7 @@
     <form @submit.prevent="(e: Event)=>handleSubmit(e)">
       <input
         v-model="searchValue"
-        class="p-4 py-2 pl-12 text-xl bg-white rounded-md w-full focus:outline-[#058b94]"
+        class="p-4 py-1.5 pl-12 text-lg bg-white rounded-md w-full focus:outline-[#058b94]"
         type="text"
         placeholder="Search for anything"
       />

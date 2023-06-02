@@ -27,6 +27,11 @@ button {
   transition: all 0.2s cubic-bezier(0.77, 0, 0.175, 1);
   font-weight: 600;
 
+  @media (max-width: 1280px) {
+    font-weight: 500;
+    padding: 10px 30px;
+  }
+
   &:hover {
     background-color: var(--btn-secondary-hover);
   }

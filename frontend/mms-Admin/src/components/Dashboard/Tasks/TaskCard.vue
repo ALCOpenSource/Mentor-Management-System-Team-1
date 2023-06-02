@@ -12,8 +12,8 @@
         fill="#058B94"
       />
     </svg>
-    <div class="mr-2">
-      <h1 class="font-normal text-lg">Room liberary article write...</h1>
+    <div>
+      <h1 class="font-normal text-base 2xl:text-lg">Room liberary article write...</h1>
       <div class="flex">
         <svg
           width="18"
@@ -27,7 +27,7 @@
             fill="#058B94"
           />
         </svg>
-        <small class="text-semibold text-base">3 days from now</small>
+        <small class="text-xs">3 days from now</small>
       </div>
     </div>
   </div>
@@ -38,13 +38,11 @@
 <style scoped lang="scss">
 .task {
   display: flex;
-  gap: 20px;
+  gap: 15px;
   align-items: center;
   padding: 15px;
   background-color: var(--card-light);
   border-radius: 7px;
-  min-width: 285px;
-  max-width: 300px;
   cursor: pointer;
 
   &:hover {

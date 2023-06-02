@@ -1,8 +1,8 @@
 <template>
   <div class="mx-auto flex h-full w-3/5 flex-col justify-center">
     <div>
-      <h1 class="mb-1">Welcome!</h1>
-      <h3>Login to continue</h3>
+      <h1 class="mb-1 font-semibold text-2xl 2xl:text-3xl 2xl:font-bold">Welcome!</h1>
+      <h3 class="font-normal text-xl 2xl:text-[22px]">Login to continue</h3>
     </div>
     <v-form v-model="valid" class="mt-14 mb-5" @submit.prevent="handleLogin">
       <Email @update:email="(value) => (loginData.email = value)" />
@@ -24,7 +24,7 @@
       <img src="../../assets/images/google.png" alt="" />
       <span>Signin with Google</span>
     </button>
-    <p class="text-center">New User? <span class="underline">Signup</span></p>
+    <!-- <p class="text-center">New User? <span class="underline">Signup</span></p> -->
   </div>
 </template>
 
@@ -72,14 +72,7 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-h1 {
-  font-weight: 700;
-  font-size: 32px;
-}
-
 h3 {
-  font-weight: 400;
-  font-size: 22px;
   color: var(--text-inactive);
 }
 
