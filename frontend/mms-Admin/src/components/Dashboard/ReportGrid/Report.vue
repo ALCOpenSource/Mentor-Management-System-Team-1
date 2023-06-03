@@ -7,7 +7,9 @@
       <ReportCard />
     </div>
     <div class="flex justify-end mt-4">
-      <SmallPrimaryBtn title="View All" class="px-6"/>
+      <router-link :to="{ name: 'reports' }">
+        <SmallPrimaryBtn title="View All" class="px-6" />
+      </router-link>
     </div>
   </div>
 </template>

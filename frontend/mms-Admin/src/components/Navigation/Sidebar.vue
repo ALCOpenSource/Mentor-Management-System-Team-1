@@ -1,8 +1,12 @@
 <template>
   <div class="w-[270px] 2xl:w-72 z-10 pt-10 sidebar">
     <div class="pl-16 mb-12">
-      <h2 class="font-semibold 2xl:font-bold text-lg 2xl:text-xl">Hi, {{ userStore.user?.name }}</h2>
-      <span class="text-mute text-base text-[#808080]"> {{ userStore.user?.tags[0] }} </span>
+      <h2 class="font-semibold 2xl:font-bold text-lg 2xl:text-xl">
+        Hi, {{ userStore.user?.name }}
+      </h2>
+      <span class="text-mute text-base text-[#808080]">
+        {{ userStore.user?.tags[0] }}
+      </span>
     </div>
 
     <section class="mb-8">
@@ -60,7 +64,7 @@ const sidebarLinks = [
   },
   {
     pathname: "Tasks",
-    path: parentPath + "/tasks/all",
+    path: parentPath + "/tasks",
     icon: IconTask,
   },
   {

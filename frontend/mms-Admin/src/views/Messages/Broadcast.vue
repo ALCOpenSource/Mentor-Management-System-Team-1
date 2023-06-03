@@ -2,7 +2,7 @@
   <div>
     <div class="flex justify-between items-center">
       <div>
-        <h1 class="font-semibold text-2xl">Braodcast Message</h1>
+        <h1 class="font-semibold text-xl 2xl:text-2xl">Braodcast Message</h1>
       </div>
       <router-link to="/admin/messages/inbox">
         <PrimaryBtn title="Close" />
@@ -12,7 +12,7 @@
       <v-expansion-panels variant="inset">
         <v-expansion-panel>
           <v-expansion-panel-title>
-            <h1>
+            <h2 class="text-base">
               Select recepient<span v-if="isSelected.length > 0">: </span>
               <span
                 v-for="item in isSelected"
@@ -20,7 +20,7 @@
                 v-if="isSelected.length > 0"
                 >{{ item }},
               </span>
-            </h1>
+            </h2>
             <template v-slot:actions="{ expanded }">
               <v-icon v-if="!expanded"><IconArrowDown /></v-icon>
               <v-icon v-else><IconArrowUp /></v-icon>
@@ -48,7 +48,7 @@
       >
         <small class="smallD bg-white p-1 px-2 rounded">09-01-23</small>
         <div class="broadcast-card">
-          <p class="text-[#4D4D4D] text-xl">
+          <p class="text-[#4D4D4D] text-base 2xl:text-lg">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
             dignissim pharetra metus, ut cursus purus efficitur et. Duis ac enim
             tellus. Phasellus eget tortor dapibus, laoreet mauris sed, dignissim

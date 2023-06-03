@@ -1,7 +1,9 @@
 <template>
   <div class="mx-auto flex h-full w-3/5 flex-col justify-center">
     <div>
-      <h1 class="mb-1 font-semibold text-2xl 2xl:text-3xl 2xl:font-bold">Welcome!</h1>
+      <h1 class="mb-1 font-semibold text-2xl 2xl:text-3xl 2xl:font-bold">
+        Welcome!
+      </h1>
       <h3 class="font-normal text-xl 2xl:text-[22px]">Login to continue</h3>
     </div>
     <v-form v-model="valid" class="mt-14 mb-5" @submit.prevent="handleLogin">

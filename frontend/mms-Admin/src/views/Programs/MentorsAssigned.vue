@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex justify-between items-center">
-      <h1 class="font-semibold text-2xl">
+      <h1 class="font-semibold text-xl 2xl:text-2xl">
         Mentors Assigned to Google Africa...
       </h1>
       <div class="flex items-center gap-3">

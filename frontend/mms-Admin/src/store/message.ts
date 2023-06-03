@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia';
-import axios from 'axios';
-import { onBeforeMount } from 'vue';
+import { defineStore } from "pinia";
+import axios from "axios";
+import { onBeforeMount } from "vue";
 
 interface MessageState {
   threads: Object | null;
@@ -14,7 +14,7 @@ interface MessageState {
 }
 
 export const useMessageStore = defineStore({
-  id: 'message',
+  id: "message",
 
   state: (): MessageState => {
     return {
@@ -36,25 +36,24 @@ export const useMessageStore = defineStore({
 
   actions: {
     async loadThreads() {
-      const res = await axios.get('v1/message/threads');
+      const res = await axios.get("v1/message/threads");
       this.threads = res.data;
     },
 
     async loadThread(roomid: string, receiver_id: string) {
-      const res = await axios.get('v1/message/thread/' + roomid);
+      const res = await axios.get("v1/message/thread/" + roomid);
       this.thread = res.data;
       this.receiver_id = receiver_id;
       this.active_room = roomid;
     },
 
     async sendMessage(messageData: Object) {
-      const res = await axios.post('v1/message', messageData, {
+      const res = await axios.post("v1/message", messageData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       });
-      if(this.receiver_data !== null)
-      {
+      if (this.receiver_data !== null) {
         this.loadThreads();
       }
       this.loadThread(res.data.data.room_id, res.data.data.receiver_id);
@@ -62,17 +61,17 @@ export const useMessageStore = defineStore({
     },
 
     async markAsRead(uuid: String) {
-      const res = await axios.post('v1/message/read/' + uuid);
+      const res = await axios.post("v1/message/read/" + uuid);
       this.loadThreads();
     },
 
     async alivecheck() {
       let timer = null;
-      if(timer) clearTimeout(timer);
-      timer = setTimeout( async() => {
-        const res = await axios.get('v1/user/alive');
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(async () => {
+        const res = await axios.get("v1/user/alive");
         if (res.data.success) {
-            this.alive = res.data.success;
+          this.alive = res.data.success;
         }
         this.alivecheck();
       }, 120000);
@@ -84,7 +83,7 @@ export const useMessageStore = defineStore({
       this.available = false;
 
       this.loadThreads().then(() => {
-        this.threads?.data.some(thread => {
+        this.threads?.data.some((thread) => {
           if (thread.sender_id === data.id) {
             this.available = true;
             this.loadThread(thread.room_id, data.id);
@@ -92,16 +91,14 @@ export const useMessageStore = defineStore({
           }
         });
 
-        if(this.available === false) {
+        if (this.available === false) {
           this.receiver_data = data;
           this.receiver_id = data.id;
         }
         this.noMessage = false;
-        
+
         this.router.push({ name: "inbox" });
       });
-      
-    }
+    },
   },
-
 });

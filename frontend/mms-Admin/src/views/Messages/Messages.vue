@@ -16,7 +16,7 @@
     <div v-else>
       <div class="flex justify-between items-center">
         <div class="flex w-[320px] justify-between items-center">
-          <h1 class="font-semibold text-2xl">Chats</h1>
+          <h1 class="font-semibold text-xl 2xl:text-2xl">Chats</h1>
           <IconSearch color="#058B94" size="20" class="cursor-pointer" />
         </div>
         <router-link to="/admin/messages/broadcast">
@@ -38,11 +38,11 @@
         </div>
         <div class="chat-col">
           <div class="flex justify-between items-center text-[#058B94]">
-            <span class="bo border-b-2 w-full"></span>
-            <small class="px-1 whitespace-nowrap"
+            <span class="border-b-2 w-full"></span>
+            <small class="px-1 whitespace-nowrap text-xs"
               >Conversation Started, 15 Oct</small
             >
-            <span class="bo border-b-2 w-full"></span>
+            <span class="border-b-2 w-full"></span>
           </div>
           <div
             v-if="
@@ -62,8 +62,8 @@
                   alt="avatar"
                 />
                 <div class="received">
-                  <h1>{{ message.message }}</h1>
-                  <small>{{ message.human_date }}</small>
+                  <h1 class="text-sm 2xl:text-base">{{ message.message }}</h1>
+                  <small class="text-[#808080]">{{ message.human_date }}</small>
                   <div
                     v-if="message.attachments && message.attachments.length > 0"
                   >
@@ -73,13 +73,21 @@
                     >
                       <template v-if="attachment.type === 'image'">
                         <img :src="attachment.url" alt="attachment" />
-                        <p>{{ attachment.name }}</p>
-                        <p>{{ calculateFileSize(attachment.size) }}</p>
+                        <p class="text-xs text-[#808080]">
+                          {{ attachment.name }}
+                        </p>
+                        <p class="text-xs text-[#808080]">
+                          {{ calculateFileSize(attachment.size) }}
+                        </p>
                       </template>
                       <template v-else>
                         <a :href="attachment.url" target="_blank"></a>
-                        <p>{{ attachment.name }}</p>
-                        <p>{{ calculateFileSize(attachment.size) }}</p>
+                        <p class="text-xs text-[#808080]">
+                          {{ attachment.name }}
+                        </p>
+                        <p class="text-xs text-[#808080]">
+                          {{ calculateFileSize(attachment.size) }}
+                        </p>
                       </template>
                     </div>
                   </div>
@@ -87,9 +95,11 @@
               </div>
               <div class="w-full flex justify-end mb-4" v-else>
                 <div class="sent">
-                  <h1>{{ message.message }}</h1>
+                  <h1 class="text-sm 2xl:text-base">{{ message.message }}</h1>
                   <div class="flex justify-between items-center">
-                    <small>{{ message.human_date }}</small>
+                    <small class="text-[#808080]">{{
+                      message.human_date
+                    }}</small>
                     <Tick v-if="message.status === 'unread'" />
                     <DoubleTick v-if="message.status === 'read'" />
                   </div>
@@ -99,21 +109,49 @@
                       :key="attachment"
                     >
                       <template v-if="attachment.type === 'image'">
-                        <img :src="attachment.url" alt="attachment" />
-                        <p>{{ attachment.name }}</p>
-                        <p>{{ calculateFileSize(attachment.size) }}</p>
+                        <v-img
+                          :src="attachment.url"
+                          alt="attachment"
+                          lazy-src="https://picsum.photos/10/3?image=0"
+                          aspect-ratio="1"
+                          cover
+                          class="bg-grey-lighten-2"
+                        >
+                          <template v-slot:placeholder>
+                            <v-row
+                              class="fill-height ma-0"
+                              align="center"
+                              justify="center"
+                            >
+                              <v-progress-circular
+                                indeterminate
+                                color="grey-lighten-5"
+                              ></v-progress-circular>
+                            </v-row>
+                          </template>
+                        </v-img>
+                        <p class="text-xs text-[#808080]">
+                          {{ attachment.name }}
+                        </p>
+                        <p class="text-xs text-[#808080]">
+                          {{ calculateFileSize(attachment.size) }}
+                        </p>
                       </template>
                       <template v-else>
                         <a :href="attachment.url" target="_blank"></a>
-                        <p>{{ attachment.name }}</p>
-                        <p>{{ calculateFileSize(attachment.size) }}</p>
+                        <p class="text-xs text-[#808080]">
+                          {{ attachment.name }}
+                        </p>
+                        <p class="text-xs text-[#808080]">
+                          {{ calculateFileSize(attachment.size) }}
+                        </p>
                       </template>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <p v-if="typing">Typing...</p>
+            <p v-if="typing" class="text-sm text-[#808080]">Typing...</p>
             <div id="scrolldown"></div>
           </div>
           <div>
@@ -145,7 +183,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import PrimaryBtn from "@/components/Buttons/PrimaryBtn.vue";
 import { IconSearch } from "@/components/Icons";
 import { Tick, DoubleTick, Smiley, NoMessage } from "@/assets/icons";
@@ -358,6 +396,15 @@ onMounted(() => {
     }
   );
 });
+
+// watch the msg and scrolldown
+watch(
+  () => messageStore?.threads?.data,
+  (newVal, oldVal) => {
+    const scrolldown = document.getElementById("scrolldown");
+    scrolldown?.scrollIntoView();
+  }
+);
 </script>
 
 <script lang="ts">
@@ -453,13 +500,13 @@ export default defineComponent({
   background-color: var(--light-grid-background);
   border-radius: 20px;
   border: 1px solid var(--card-light);
-  padding: 25px 20px;
+  padding: 10px 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
   .chat-area {
-    margin-top: 5px;
+    margin-top: 8px;
     height: 100%;
     overflow-y: scroll;
     color: #141414;
@@ -469,7 +516,7 @@ export default defineComponent({
     }
 
     small {
-      color: var(#4d4d4d);
+      color: var(#808080);
     }
 
     .sent {

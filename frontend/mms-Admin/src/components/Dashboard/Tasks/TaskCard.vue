@@ -13,7 +13,9 @@
       />
     </svg>
     <div>
-      <h1 class="font-normal text-base 2xl:text-lg">Room liberary article write...</h1>
+      <h1 class="font-normal text-base 2xl:text-lg">
+        Room liberary article write...
+      </h1>
       <div class="flex">
         <svg
           width="18"

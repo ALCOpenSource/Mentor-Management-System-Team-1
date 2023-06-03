@@ -3,7 +3,9 @@
     <v-form v-model="valid" @submit.prevent="handleSubmit">
       <v-row no-gutters class="mb-2">
         <v-col cols="4"
-          ><h1 class="font-semibold text-sm 2xl:text-base pt-4">Current Password</h1></v-col
+          ><h1 class="font-semibold text-sm 2xl:text-base pt-4">
+            Current Password
+          </h1></v-col
         >
         <v-col cols="8" class="pr-8">
           <v-text-field
@@ -17,7 +19,11 @@
         </v-col>
       </v-row>
       <v-row no-gutters class="mb-2">
-        <v-col cols="4"><h1 class="font-semibold text-sm 2xl:text-base pt-4">New Password</h1></v-col>
+        <v-col cols="4"
+          ><h1 class="font-semibold text-sm 2xl:text-base pt-4">
+            New Password
+          </h1></v-col
+        >
         <v-col cols="8" class="pr-8">
           <v-text-field
             v-model="password"
@@ -31,7 +37,9 @@
       </v-row>
       <v-row no-gutters class="mb-2">
         <v-col cols="4"
-          ><h1 class="font-semibold text-sm 2xl:text-base pt-4">Confirm New Password</h1></v-col
+          ><h1 class="font-semibold text-sm 2xl:text-base pt-4">
+            Confirm New Password
+          </h1></v-col
         >
         <v-col cols="8" class="pr-8">
           <v-text-field

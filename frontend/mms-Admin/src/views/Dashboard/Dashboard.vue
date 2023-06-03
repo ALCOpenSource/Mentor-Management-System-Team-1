@@ -1,8 +1,10 @@
 <template>
   <div class="overflow-hidden">
     <div class="flex justify-between items-center">
-      <h1 class="text-2xl text-left font-semibold 2xl:font-bold mb-4">Dashboard</h1>
-      <Dropdown :options="filterOptions" class="mb-2"/>
+      <h1 class="text-2xl text-left font-semibold 2xl:font-bold mb-4">
+        Dashboard
+      </h1>
+      <Dropdown :options="filterOptions" class="mb-2" />
     </div>
     <HeadGrid />
     <Program />

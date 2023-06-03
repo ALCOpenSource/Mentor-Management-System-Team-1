@@ -11,7 +11,9 @@
         ></v-img>
       </v-avatar>
       <div class="ml-6">
-        <h1 class="mb-2 text-lg 2xl:text-xl font-semibold">Set Profile Picture</h1>
+        <h1 class="mb-2 text-lg 2xl:text-xl font-semibold">
+          Set Profile Picture
+        </h1>
         <UploadProfilePic @upload="getSrc" :pry="true" title="Upload Picture" />
       </div>
     </div>
@@ -107,7 +109,9 @@
               </span>
             </v-col>
             <v-col cols="2"
-              ><h1 class="font-semibold text-center text-sm 2xl:text-base">City</h1></v-col
+              ><h1 class="font-semibold text-center text-sm 2xl:text-base">
+                City
+              </h1></v-col
             >
             <v-col cols="5" class="my-select">
               <select v-model="userBio.city" class="input">
@@ -150,7 +154,9 @@
             <v-col class="mr-6">
               <v-row no-gutters>
                 <v-col cols="12" class="gits mb-3">
-                  <span class="text-sm font-[500] 2xl:text-base 2xl:font-semibold">
+                  <span
+                    class="text-sm font-[500] 2xl:text-base 2xl:font-semibold"
+                  >
                     <GitHub />
                     GitHub
                   </span>
@@ -161,7 +167,9 @@
                   />
                 </v-col>
                 <v-col cols="12" class="gits">
-                  <span class="text-sm font-[500] 2xl:text-base 2xl:font-semibold">
+                  <span
+                    class="text-sm font-[500] 2xl:text-base 2xl:font-semibold"
+                  >
                     <LinkedIn />
                     LinkedIn
                   </span>
@@ -176,8 +184,10 @@
             <v-col class="ml-6">
               <v-row no-gutters>
                 <v-col cols="12" class="gits mb-3">
-                  <span class="text-xs font-[500] 2xl:text-base 2xl:font-semibold">
-                    <Instagram class="w-full"/>
+                  <span
+                    class="text-xs font-[500] 2xl:text-base 2xl:font-semibold"
+                  >
+                    <Instagram class="w-full" />
                     Instagram
                   </span>
                   <input
@@ -187,7 +197,9 @@
                   />
                 </v-col>
                 <v-col cols="12" class="gits">
-                  <span class="text-sm font-[500] 2xl:text-base 2xl:font-semibold">
+                  <span
+                    class="text-sm font-[500] 2xl:text-base 2xl:font-semibold"
+                  >
                     <Twitter />
                     Twitter
                   </span>

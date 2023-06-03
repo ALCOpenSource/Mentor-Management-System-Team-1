@@ -8,7 +8,7 @@
         <img :src="details.imgUrl" alt="" />
       </div>
       <div class="w-3/5">
-        <h1 class="text-base font-semibold">{{ details.name }}</h1>
+        <h1 class="text-sm 2xl:text-base font-semibold">{{ details.name }}</h1>
         <p class="text-xs text-[#4D4D4D] truncate">{{ details.text }}</p>
       </div>
     </div>

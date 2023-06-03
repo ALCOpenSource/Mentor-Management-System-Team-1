@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="flex justify-between items-center mb-5">
-      <h1 class="font-semibold text-2xl">
+      <h1 class="font-semibold text-xl 2xl:text-2xl">
         Select someone to start a conversation
       </h1>
       <div class="flex gap-6 items-center">
-        <Pagination :pagination="userStore.pagination"/>
+        <Pagination :pagination="userStore.pagination" />
         <div class="flex items-center gap-4">
           <IconSearch color="#058B94" size="20" class="cursor-pointer" />
           <Filter class="cursor-pointer" />
@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="w-full mb-3" v-for="user in userStore.users" :key="user">
-      <UserCard @select="handleAddToChat" :user="user" class="cursor-pointer"/>
+      <UserCard @select="handleAddToChat" :user="user" class="cursor-pointer" />
     </div>
   </div>
 </template>
@@ -25,12 +25,12 @@
 import { IconSearch, Close, Filter } from "@/assets/icons";
 import Pagination from "@/components/Common/Pagination.vue";
 import UserCard from "@/components/Common/UserCard.vue";
-import { defineComponent } from 'vue'
-import { useUserStore } from "@/store/user"
-import { useMessageStore } from "@/store/message"
+import { defineComponent } from "vue";
+import { useUserStore } from "@/store/user";
+import { useMessageStore } from "@/store/message";
 
-const userStore = useUserStore()
-const messageStore = useMessageStore()
+const userStore = useUserStore();
+const messageStore = useMessageStore();
 const getNumberToDisplay = () => {
   const height = window.innerHeight - window.innerHeight * 0.3;
   const cardHeight = 80;
@@ -41,25 +41,22 @@ const getNumberToDisplay = () => {
 const handleAddToChat = (user: Object) => {
   // Add to Top of Chat Array
   messageStore.updateReceiverData(user);
-
-}
+};
 </script>
 
 <script lang="ts">
-
 export default defineComponent({
-  
   beforeRouteEnter(to, from, next) {
-    const userStore = useUserStore()
+    const userStore = useUserStore();
     if (userStore.users) {
-      next()
+      next();
     } else {
       userStore.fetchUsers().then(() => {
         next();
       });
     }
   },
-})
+});
 </script>
 
 <style scoped></style>

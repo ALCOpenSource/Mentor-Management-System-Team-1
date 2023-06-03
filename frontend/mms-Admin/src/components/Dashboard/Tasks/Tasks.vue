@@ -11,8 +11,10 @@
         <TaskCard />
       </div>
       <div class="flex justify-end">
-      <SmallPrimaryBtn title="View All" class="px-6"/>
-    </div>
+        <router-link :to="{ name: 'tasks' }">
+          <SmallPrimaryBtn title="View All" class="px-6" />
+        </router-link>
+      </div>
     </div>
     <div>
       <div class="flex my-4 gap-4 justify-between">
@@ -22,7 +24,9 @@
         <TaskCard />
       </div>
       <div class="flex justify-end">
-        <SmallPrimaryBtn title="View All" class="px-6" />
+        <router-link :to="{ name: 'tasks' }">
+          <SmallPrimaryBtn title="View All" class="px-6" />
+        </router-link>
       </div>
     </div>
   </div>

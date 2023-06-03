@@ -1,14 +1,16 @@
 <template>
   <div class="flex justify-between gap-5">
     <div class="w-full transition-all">
-      <h1 class="text-2xl font-semibold mb-10">Generate Certificate</h1>
+      <h1 class="text-xl 2xl:text-2xl font-semibold mb-10">
+        Generate Certificate
+      </h1>
       <div class="transition-all">
         <div class="gen-card mb-7">
           <div
             v-if="!addedRef"
             class="w-full flex items-center justify-between mx-10 py-2"
           >
-            <h2 class="text-2xl">Select a Beneficiary</h2>
+            <h2 class="text-xl 2xl:text-2xl">Select a Beneficiary</h2>
             <SmallPrimaryBtn title="Select" @click="showList('mentors')" />
           </div>
           <Beneficiary v-else :on-click="undoAdd" />
@@ -18,7 +20,7 @@
             v-if="!programRef"
             class="w-full flex items-center justify-between mx-10 py-2"
           >
-            <h2 class="text-2xl">Select a Program</h2>
+            <h2 class="text-xl 2xl:text-2xl">Select a Program</h2>
             <SmallPrimaryBtn title="Select" @click="showList('programs')" />
           </div>
           <SelectedProgram v-else :on-click="undoProgram" />
@@ -52,7 +54,7 @@
             <IconSearch color="#058b94" />
           </span>
           <input
-            class="bg-[#F7FEFF] p-4 py-2 pl-14 rounded-md w-full focus:outline-[#058b94] placeholder:text-[16px]"
+            class="bg-[#F7FEFF] p-4 py-2 pl-14 rounded-md w-full focus:outline-[#058b94] placeholder:text-[14px]"
             type="text"
             placeholder="Search for beneficiary..."
           />

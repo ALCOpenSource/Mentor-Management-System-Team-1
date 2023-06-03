@@ -7,9 +7,13 @@
           <v-expansion-panel-title>
             <IconCircleAdd v-if="!expanded1.includes(index)" />
             <IconCircleMinus v-else />
-            <p class="font-semibold text-sm 2xl:text-base ml-6">{{ item.question }}</p>
+            <p class="font-semibold text-sm 2xl:text-base ml-6">
+              {{ item.question }}
+            </p>
           </v-expansion-panel-title>
-          <v-expansion-panel-text class="text-sm"> {{ item.answer }} </v-expansion-panel-text>
+          <v-expansion-panel-text class="text-sm">
+            {{ item.answer }}
+          </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
     </div>
@@ -23,9 +27,13 @@
           <v-expansion-panel-title>
             <IconCircleAdd v-if="!expanded2.includes(index)" />
             <IconCircleMinus v-else />
-            <p class="font-semibold text-sm 2xl:text-base ml-6">{{ item.question }}</p>
+            <p class="font-semibold text-sm 2xl:text-base ml-6">
+              {{ item.question }}
+            </p>
           </v-expansion-panel-title>
-          <v-expansion-panel-text class="text-sm"> {{ item.answer }} </v-expansion-panel-text>
+          <v-expansion-panel-text class="text-sm">
+            {{ item.answer }}
+          </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
     </div>

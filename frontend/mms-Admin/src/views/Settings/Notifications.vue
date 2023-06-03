@@ -3,8 +3,14 @@
     <h1 class="text-lg 2xl:text-xl font-semibold">General Notifications</h1>
     <v-row no-gutters class="my-2" align="center">
       <v-col cols="6"></v-col>
-      <v-col cols="1" class="font-semibold text-sm 2xl:text-base mr-4">Email</v-col>
-      <v-col cols="1" class="font-semibold text-sm 2xl:text-base whitespace-nowrap">In-app</v-col>
+      <v-col cols="1" class="font-semibold text-sm 2xl:text-base mr-4"
+        >Email</v-col
+      >
+      <v-col
+        cols="1"
+        class="font-semibold text-sm 2xl:text-base whitespace-nowrap"
+        >In-app</v-col
+      >
     </v-row>
     <v-row
       v-for="item in generalNotifications"
@@ -32,11 +38,19 @@
         />
       </v-col>
     </v-row>
-    <h1 class="text-lg 2xl:text-xl font-semibold mt-12">Discussion Notifications</h1>
+    <h1 class="text-lg 2xl:text-xl font-semibold mt-12">
+      Discussion Notifications
+    </h1>
     <v-row no-gutters class="my-2" align="center">
       <v-col cols="6"></v-col>
-      <v-col cols="1" class="font-semibold text-sm 2xl:text-base mr-4">Email</v-col>
-      <v-col cols="1" class="font-semibold text-sm 2xl:text-base whitespace-nowrap">In-app</v-col>
+      <v-col cols="1" class="font-semibold text-sm 2xl:text-base mr-4"
+        >Email</v-col
+      >
+      <v-col
+        cols="1"
+        class="font-semibold text-sm 2xl:text-base whitespace-nowrap"
+        >In-app</v-col
+      >
     </v-row>
     <v-row
       v-for="item in discussionNotifications"

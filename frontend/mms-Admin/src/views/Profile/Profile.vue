@@ -18,9 +18,9 @@
             </h1>
             <NigerianFlag />
           </div>
-          <p class="text-slate-500">{{ 
-            userStore.user?.tags?.map((tag: any) => tag.name).join(", ")
-          }}</p>
+          <p class="text-slate-500">
+            {{ userStore.user?.tags?.map((tag: any) => tag.name).join(", ") }}
+          </p>
         </div>
       </div>
       <div>
@@ -42,7 +42,9 @@
       </div>
       <div class="flex items-center mb-3 gap-6">
         <h1 class="text-base 2xl:text-xl font-semibold">Email:</h1>
-        <p class="text-[#808080] text-sm 2xl:text-base">{{ userStore.user?.email }}</p>
+        <p class="text-[#808080] text-sm 2xl:text-base">
+          {{ userStore.user?.email }}
+        </p>
       </div>
       <div class="flex items-center mb-3 gap-6">
         <h1 class="text-base 2xl:text-xl font-semibold">Website:</h1>
@@ -52,7 +54,9 @@
       </div>
       <div class="flex items-center gap-6">
         <h1 class="text-base 2xl:text-xl font-semibold">Member since:</h1>
-        <p class="text-[#808080] text-sm 2xl:text-base">{{ userStore.user?.member_since }}</p>
+        <p class="text-[#808080] text-sm 2xl:text-base">
+          {{ userStore.user?.member_since }}
+        </p>
       </div>
       <h1 class="text-xl 2xl:text-2xl font-semibold mb-6 mt-10">Social</h1>
       <div class="grid w-full gap-10 grid-cols-2 mb-6">

@@ -1,8 +1,11 @@
 <template>
   <div class="flex flex-col">
-    <label v-if="label" class="text-xl mb-2 font-semibold" :for="label">{{
-      label
-    }}</label>
+    <label
+      v-if="label"
+      class="text-lg 2xl:text-xl mb-2 font-semibold"
+      :for="label"
+      >{{ label }}</label
+    >
     <v-text-field
       v-model="inputVal"
       variant="solo"

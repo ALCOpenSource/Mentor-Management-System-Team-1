@@ -12,8 +12,12 @@ const isButtonDisabled = computed(() => !email.value.length);
 <template>
   <div class="w-3/5 mx-auto flex flex-col justify-center h-full">
     <div>
-      <h1 class="mb-1 font-semibold text-2xl 2xl:text-3xl 2xl:font-bold">Reset your password</h1>
-      <h3 class="font-normal text-xl 2xl:text-[22px]">Put in the email attached to this account</h3>
+      <h1 class="mb-1 font-semibold text-2xl 2xl:text-3xl 2xl:font-bold">
+        Reset your password
+      </h1>
+      <h3 class="font-normal text-xl 2xl:text-[22px]">
+        Put in the email attached to this account
+      </h3>
     </div>
     <form class="mt-14 mb-5">
       <Email

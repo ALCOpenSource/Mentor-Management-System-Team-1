@@ -5,7 +5,7 @@
         <v-expansion-panel>
           <v-expansion-panel-title>
             <div class="flex items-center">
-              <Google size="47"/>
+              <Google size="47" />
               <div class="flex flex-col ml-2">
                 <h1 class="font-semibold text-lg 2xl:text-xl text-[#333333]">
                   Google Africa Scholarship Program

@@ -5,7 +5,7 @@
       <div class="flex flex-wrap items-center">
         <div class="flex flex-col mr-8">
           <h1
-            class="text-xl font-semibold cursor-pointer hover:underline transition-all"
+            class="text-lg 2xl:text-xl font-semibold cursor-pointer hover:underline transition-all"
           >
             Allison Davies
           </h1>
@@ -28,10 +28,10 @@
 </template>
 
 <script setup lang="ts">
-import UserAvatar from '../Common/UserAvatar.vue';
-import { IconDelete } from '../Icons';
+import UserAvatar from "../Common/UserAvatar.vue";
+import { IconDelete } from "../Icons";
 
-defineProps<Props>()
+defineProps<Props>();
 
 interface Props {
   onClick: () => void;

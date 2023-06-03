@@ -47,7 +47,6 @@ type Props = {
 };
 
 const updateSelectedResources = (id: number) => {
-
   if (!_selectedResources.value.includes(id)) {
     _selectedResources.value = _selectedResources.value.concat(id);
   } else {

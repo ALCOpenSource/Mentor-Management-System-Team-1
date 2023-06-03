@@ -1,11 +1,15 @@
 <template>
   <div class="active min-w-[190px] max-w-[200px] 2xl:min-w-[200px]">
-    <div class="btn">
-      <span>View</span>
-    </div>
+    <router-link :to="{ name: 'programs' }">
+      <div class="btn">
+        <span>View</span>
+      </div>
+    </router-link>
     <div class="flex mt-3 -ml-8 items-center">
-      <h1 class="text-[55px] 2xl:text-[65px] font-semibold  mr-3">6</h1>
-      <h2 class="text-[20px] 2xl:text-[22px] font-semibold 2xl:font-bold leading-[1]">
+      <h1 class="text-[55px] 2xl:text-[65px] font-semibold mr-3">6</h1>
+      <h2
+        class="text-[20px] 2xl:text-[22px] font-semibold 2xl:font-bold leading-[1]"
+      >
         Active <br />
         Programs
       </h2>

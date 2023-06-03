@@ -8,7 +8,9 @@
       align="center"
     >
       <v-col cols="6"
-        ><p class="font-semibold text-sm 2xl:text-base">{{ item.name }}</p></v-col
+        ><p class="font-semibold text-sm 2xl:text-base">
+          {{ item.name }}
+        </p></v-col
       >
       <v-col cols="1" class="font-semibold mr-4">
         <Checkbox

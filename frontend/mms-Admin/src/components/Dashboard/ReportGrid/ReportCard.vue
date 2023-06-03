@@ -4,7 +4,10 @@
     <div>
       <h1 class="font-normal text-lg">Google Africa Scholarship</h1>
       <div class="flex">
-        <small class="text-xs 2xl:text-sm"><span class="font-semibold">By Ibrahim Kabir </span>- 19th - 25th Oct 2022</small>
+        <small class="text-xs 2xl:text-sm"
+          ><span class="font-semibold">By Ibrahim Kabir </span>- 19th - 25th Oct
+          2022</small
+        >
       </div>
     </div>
   </div>
