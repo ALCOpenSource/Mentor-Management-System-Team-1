@@ -1,10 +1,5 @@
 <template>
-  <div
-    class="card"
-    @click="
-      openChat(thread.room_id, thread.sender_id, thread.uuid, thread.unread)
-    "
-  >
+  <div class="card" @click="openChat(thread.room_id, thread.receiver_id, thread.uuid, thread.unread)">
     <div class="flex gap-3 items-center">
       <UserAvatar :imageLink="thread?.user?.avatar_url ?? thread.avatar_url" />
       <div>
@@ -35,13 +30,8 @@ const props = defineProps<{
   thread?: Object;
 }>();
 const thread = props.thread;
-const openChat = (
-  roomid: string,
-  sender_id: string,
-  uuid: string,
-  unread: number
-) => {
-  emit("openChat", roomid, sender_id, uuid, unread);
+const openChat = (roomid: string, receiver_id: string, uuid: string, unread: number) => {
+  emit("openChat", roomid, receiver_id, uuid, unread); 
 };
 </script>
 

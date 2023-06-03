@@ -2,7 +2,7 @@
   <div>
     <div class="flex justify-between items-center">
       <div>
-        <h1 class="font-semibold text-xl 2xl:text-2xl">Braodcast Message</h1>
+        <h1 class="font-semibold text-xl 2xl:text-2xl">Broadcast Message</h1>
       </div>
       <router-link to="/admin/messages/inbox">
         <PrimaryBtn title="Close" />
@@ -49,10 +49,7 @@
         <small class="smallD bg-white p-1 px-2 rounded">09-01-23</small>
         <div class="broadcast-card">
           <p class="text-[#4D4D4D] text-base 2xl:text-lg">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
-            dignissim pharetra metus, ut cursus purus efficitur et. Duis ac enim
-            tellus. Phasellus eget tortor dapibus, laoreet mauris sed, dignissim
-            lectus.
+            {{message.message}}
           </p>
           <div class="flex justify-between items-center mt-3">
             <h3 class="font-semibold underline">Mentor Managers</h3>
