@@ -5,7 +5,7 @@
         Select someone to start a conversation
       </h1>
       <div class="flex gap-6 items-center">
-        <Pagination :pagination="userStore.pagination" />
+        <Pagination @fetchPage="handlePagination" :pagination="userStore.pagination"/>
         <div class="flex items-center gap-4">
           <IconSearch color="#058B94" size="20" class="cursor-pointer" />
           <Filter class="cursor-pointer" />
@@ -42,6 +42,42 @@ const handleAddToChat = (user: Object) => {
   // Add to Top of Chat Array
   messageStore.updateReceiverData(user);
 };
+
+let page = 0;
+const handlePagination = (type: string) => {
+  // Add to Top of Chat Array
+  switch (type) {
+    case 'first':
+      if(userStore?.pagination?.current_page !== 1) {
+        page = 1;
+      }
+      break;
+  
+    case 'previous':
+      if(userStore?.pagination?.links?.previous !== null) {
+        page = userStore?.pagination?.current_page - 1;
+      }
+      break;
+
+    case 'next':
+      if(userStore?.pagination?.links?.next !== null) {
+        page = userStore?.pagination?.current_page + 1;
+      }
+      break;
+  
+    case 'last':
+      if(userStore?.pagination?.current_page !== userStore?.pagination?.total_pages) {
+        page = userStore?.pagination?.total_pages;
+      }
+      break;
+
+    default:
+      break;
+  }
+  if(page !== 0) {
+    userStore.fetchUserPerPage(page);
+  }
+}
 </script>
 
 <script lang="ts">

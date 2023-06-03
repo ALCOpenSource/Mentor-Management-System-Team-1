@@ -29,34 +29,48 @@
           <v-expansion-panel-text>
             <ul>
               <li
-                v-for="(item, index) in selected"
-                :key="item.id"
-                @click="setSelected(item.id)"
+                v-for="selected in selected" :key="selected.id"
+                @click="setSelected(selected.id)"
               >
-                {{ item.name }}
+                {{ selected.name }}
               </li>
             </ul>
           </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
     </div>
-    <div class="msg-area">
+    <div v-if="messageStore.broadcast.data.length !== 0" class="msg-area">
       <div
         class="flex flex-col items-center center mb-5"
-        v-for="item in 5"
-        :key="item"
+        v-for="message in messageStore.broadcast.data"
+        :key="message"
       >
-        <small class="smallD bg-white p-1 px-2 rounded">09-01-23</small>
+        <small class="smallD bg-white p-1 px-2 rounded">{{message.human_date}}</small>
         <div class="broadcast-card">
           <p class="text-[#4D4D4D] text-base 2xl:text-lg">
             {{message.message}}
           </p>
           <div class="flex justify-between items-center mt-3">
-            <h3 class="font-semibold underline">Mentor Managers</h3>
+            <h3 class="font-semibold underline">Mentor Manager</h3>
             <div class="flex items-center">
-              <small class="text-[#4D4D4D] mr-2">09-01-23</small>
-              <DoubleTick />
+              <small class="text-[#4D4D4D] mr-2">{{ message.human_date }}</small>
+              <DoubleTick v-if="message.status === 'read'" />
             </div>
+
+              <div v-if="message.attachments && message.attachments.length > 0">
+                  <div v-for="attachment in message.attachments" :key="attachment">
+                    <template v-if="attachment.type === 'image'">
+                      <img :src="attachment.url" alt="attachment" />
+                      <p>{{ attachment.name }}</p>
+                      <p>{{ calculateFileSize(attachment.size) }}</p>
+                    </template>
+                    <template v-else>
+                      <a :href="attachment.url" target="_blank"></a>
+                      <p>{{ attachment.name }}</p>
+                      <p>{{ calculateFileSize(attachment.size) }}</p>
+                    </template>
+                </div>
+              </div>
           </div>
         </div>
       </div>
@@ -70,6 +84,7 @@
         rows="1"
         placeholder="|   Type a message..."
         v-model="broadcastInput"
+        @keyup.enter="broadcastMessage"
       />
       <Picker
         v-if="emojiPickerSelected"
@@ -90,6 +105,12 @@ import { IconArrowDown, IconArrowUp, Smiley, DoubleTick } from "@/assets/icons";
 import { Picker, EmojiIndex } from "emoji-mart-vue-fast/src";
 import data from "emoji-mart-vue-fast/data/all.json";
 import UploadFile from "@/components/Messages/UploadFile.vue";
+import { useUserStore } from "@/store/user"
+import { useMessageStore } from "@/store/message"
+import { defineComponent } from 'vue'
+
+const userStore = useUserStore()
+const messageStore = useMessageStore()
 
 const emojiPickerSelected = ref(false);
 let emojiIndex = new EmojiIndex(data);
@@ -103,43 +124,93 @@ const convertEmoji = (emoji: any) => {
 };
 const file = ref("");
 
+const attachments: any[] = [];
 const getFile = (files: any) => {
   // Do something with the file
-  file.value = files.name;
+  attachments.push(files);
 };
 
 const selected = ref([
   {
     id: 1,
     name: "Mentor Managers",
+    value: "mentor_manager"
   },
   {
     id: 2,
     name: "Mentors",
+    value: "mentor",
   },
   {
     id: 3,
-    name: "Perculiar",
+    name: "Admin",
+    value: "admin",
   },
   {
     id: 4,
-    name: "Kabiru",
+    name: "Assistant",
+    value: "assistant",
   },
 ]);
 
 const isSelected = ref<string[]>([]);
+const selectedRoles = ref<string[]>([]);
 
 const setSelected = (id: number) => {
-  const item = selected.value.find((item) => item.id === id);
+  const item = selected.value?.find((item: { id: number; }) => item.id === id);
   if (item) {
     const index = isSelected.value.findIndex((it) => it === item.name);
     if (index === -1) {
       isSelected.value.push(item.name);
+      selectedRoles.value.push(item.value);
     } else {
       isSelected.value.splice(index, 1);
+      selectedRoles.value.splice(index, 1);
     }
   }
 };
+
+const  calculateFileSize = (size: any) => {
+    if(size < 1024) {
+        return `${size} B`;
+    } else if(size < 1024 * 1024) {
+        return `${(size / 1024).toFixed(2)} KB`;
+    } else if(size < 1024 * 1024 * 1024) {
+        return `${(size / (1024 * 1024)).toFixed(2)} MB`;
+    } else {
+        return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+    }
+}
+
+const broadcastMessage = () => {
+
+    messageStore.sendBroadcast(broadcastInput, selectedRoles, attachments).then(() => {
+      const scrolldown = document.getElementById("scrolldown");
+      scrolldown?.scrollIntoView();
+
+      broadcastInput.value = '';
+    });
+}
+</script>
+
+<script lang="ts">
+
+export default defineComponent({
+  
+  beforeRouteEnter(to, from, next) {
+    const userStore = useUserStore()
+    const messageStore = useMessageStore()
+    if (userStore.users && messageStore.broadcast) {
+      next()
+    } else {
+      userStore.fetchUsers().then(() => {
+        return messageStore.loadBroadcast()  
+      }).then(() => {
+         next();
+      });
+    }
+  },
+})
 </script>
 
 <style scoped lang="scss">

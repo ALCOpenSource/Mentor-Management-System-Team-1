@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import { ref, watch, computed, onMounted } from "vue";
 import { useAuthStore } from "../../store/auth";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 import Email from "../../components/Forms/Email.vue";
@@ -60,6 +60,7 @@ const socialLoginRedirect = async () => {
 };
 
 const router = useRoute();
+const route = useRouter();
 
 const handleSocialLogin = async () => {
   const access_token = router.query.access_token as string;
