@@ -8,7 +8,7 @@
         srcset=""
       />
       <h1
-        class="text-base font-semibold cursor-pointer hover:underline transition-all"
+        class="text-sm 2xl:text-base font-semibold cursor-pointer hover:underline transition-all"
       >
         Google Africa Scholarship
       </h1>

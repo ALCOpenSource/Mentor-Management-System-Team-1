@@ -2,7 +2,7 @@
   <div class="flex gap-7">
     <div class="flex flex-col w-[309px] gap-5 mt-3">
       <div class="flex justify-between items-center">
-        <h1 class="font-semibold text-2xl">Programs</h1>
+        <h1 class="font-semibold text-xl 2xl:text-2xl">Programs</h1>
         <div class="flex items-center gap-5">
           <IconSearch color="#058B94" size="20" class="cursor-pointer" />
           <Filter class="cursor-pointer" />
@@ -26,8 +26,8 @@
       class="w-full h-[78vh] flex flex-col justify-center items-center border rounded-md"
     >
       <NoPrograms />
-      <h1 class="text-lg my-2">No item selected yet</h1>
-      <p class="text-[#808080]">
+      <h1 class="text-base 2xl:text-lg my-2">No item selected yet</h1>
+      <p class="text-[#808080] text-sm 2xl:text-base">
         Select an item from the list to view program details
       </p>
     </div>

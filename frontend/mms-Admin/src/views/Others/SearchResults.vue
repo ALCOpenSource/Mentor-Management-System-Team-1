@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="font-semibold text-2xl">Search Results</h1>
+    <h1 class="font-semibold text-xl 2xl:text-2xl">Search Results</h1>
     <div class="flex justify-between items-center mt-3 mb-3">
       <div>
         <PlainDropdown :options="options" title="All" />

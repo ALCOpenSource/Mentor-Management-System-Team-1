@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex justify-between items-center">
-      <h1 class="font-semibold text-2xl">Program Reports</h1>
+      <h1 class="font-semibold text-xl 2xl:text-2xl">Program Reports</h1>
       <div class="flex items-center gap-3">
         <Pagination />
         <Filter class="cursor-pointer" />
@@ -21,7 +21,7 @@
             <div class="flex items-center">
               <Reports />
               <div class="flex flex-col ml-5">
-                <h1 class="font-semibold text-xl text-[#333333]">
+                <h1 class="font-semibold text-lg 2xl:text-xl text-[#333333]">
                   Google Africa Scholarship Program
                 </h1>
                 <div class="flex justify-between">
@@ -50,7 +50,7 @@
               v-if="showDetails?.show && showDetails?.index === index"
               class="bg-green-100 py-[10px] px-[20px]"
             >
-              <h3>Some contenddjddt</h3>
+              <h3 class="text-sm">Some contenddjddt</h3>
             </div>
           </v-expand-transition>
         </div>

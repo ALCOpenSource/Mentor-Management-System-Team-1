@@ -1,20 +1,24 @@
 <template>
   <div>
     <div v-if="generalFaqs?.length">
-      <h1 class="text-xl font-semibold mb-5">General FAQ</h1>
+      <h1 class="text-lg 2xl:text-xl font-semibold mb-5">General FAQ</h1>
       <v-expansion-panels multiple v-model="expanded1">
         <v-expansion-panel v-for="(item, index) in generalFaqs" :key="item?.id">
           <v-expansion-panel-title>
             <IconCircleAdd v-if="!expanded1.includes(index)" />
             <IconCircleMinus v-else />
-            <p class="font-semibold ml-6">{{ item.question }}</p>
+            <p class="font-semibold text-sm 2xl:text-base ml-6">
+              {{ item.question }}
+            </p>
           </v-expansion-panel-title>
-          <v-expansion-panel-text> {{ item.answer }} </v-expansion-panel-text>
+          <v-expansion-panel-text class="text-sm">
+            {{ item.answer }}
+          </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
     </div>
     <div v-if="technicalFaqs?.length">
-      <h1 class="text-xl font-semibold my-5">Technical FAQ</h1>
+      <h1 class="text-lg 2xl:text-xl font-semibold my-5">Technical FAQ</h1>
       <v-expansion-panels multiple v-model="expanded2">
         <v-expansion-panel
           v-for="(item, index) in technicalFaqs"
@@ -23,9 +27,13 @@
           <v-expansion-panel-title>
             <IconCircleAdd v-if="!expanded2.includes(index)" />
             <IconCircleMinus v-else />
-            <p class="font-semibold ml-6">{{ item.question }}</p>
+            <p class="font-semibold text-sm 2xl:text-base ml-6">
+              {{ item.question }}
+            </p>
           </v-expansion-panel-title>
-          <v-expansion-panel-text> {{ item.answer }} </v-expansion-panel-text>
+          <v-expansion-panel-text class="text-sm">
+            {{ item.answer }}
+          </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
     </div>

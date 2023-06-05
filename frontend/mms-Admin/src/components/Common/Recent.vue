@@ -1,6 +1,6 @@
 <template>
   <div class="recent">
-    <h1 class="p-2 font-semibold text-lg">Recent</h1>
+    <h1 class="p-2 font-semibold text-base 2xl:text-lg">Recent</h1>
     <div class="flex flex-col gap-2">
       <MentorCard v-for="item in 6" :key="item" :details="details" />
     </div>

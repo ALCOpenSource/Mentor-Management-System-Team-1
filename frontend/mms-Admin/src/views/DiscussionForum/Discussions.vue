@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="font-semibold text-2xl">Discussion Forum</h1>
+    <h1 class="font-semibold text-xl 2xl:text-2xl">Discussion Forum</h1>
     <div class="add" @click="toggleTopicModal">
       <h1 class="text-[#808080]">Add new topic</h1>
       <IconCircleAdd />

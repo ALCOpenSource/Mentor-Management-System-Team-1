@@ -33,6 +33,12 @@ ul {
   min-width: 230px;
   height: 282px;
   border-radius: 5px;
+  font-size: 16px;
+
+  @media (max-width: 1280px) {
+    min-width: 200px;
+    font-size: 14px;
+  }
 
   li {
     border-bottom: 1px solid var(--card-light);

@@ -1,6 +1,8 @@
 <template>
   <div class="py-4 flex flex-col">
-    <label v-if="label" class="text-xl mb-2 font-semibold">{{ label }}</label>
+    <label v-if="label" class="text-lg 2xl:text-xl mb-2 font-semibold">{{
+      label
+    }}</label>
     <textarea
       rows="6"
       v-model="inputVal"
