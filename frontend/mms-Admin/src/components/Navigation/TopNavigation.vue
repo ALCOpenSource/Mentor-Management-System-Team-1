@@ -17,7 +17,7 @@ import Navlinks from "./Navlinks.vue";
 <style scoped>
 nav {
   background-color: var(--btn-primary);
-  padding: 1.2rem;
+  padding: 1rem;
   padding-left: 55px;
   z-index: 3;
   padding-right: 55px;
@@ -25,7 +25,7 @@ nav {
   display: flex;
   position: fixed;
   top: 0;
-  height: 13vh;
+  height: 12vh;
   left: 0;
   right: 0;
   justify-content: space-between;

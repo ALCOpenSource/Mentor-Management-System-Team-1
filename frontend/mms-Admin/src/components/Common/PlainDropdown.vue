@@ -2,7 +2,7 @@
   <v-menu activator="parent" transition="slide-y-transition">
     <template v-slot:activator="{ props }">
       <div class="flex items-center gap-2" :="props">
-        <h1 class="font-semibold">{{ title }}</h1>
+        <h1 class="font-semibold text-base">{{ title }}</h1>
         <Dropdown />
       </div>
     </template>

@@ -1,6 +1,6 @@
 <template>
   <div class="flex gap-5">
-    <div class="w-[319px] flex flex-col gap-8">
+    <div class="w-[250px] 2xl:w-[319px] flex flex-col gap-8">
       <div>
         <Category
           :category="category"
@@ -11,15 +11,15 @@
         />
       </div>
       <div>
-        <Recent :details="recentDetails"/>
+        <Recent :details="recentDetails" />
       </div>
     </div>
     <div class="w-full">
       <div class="flex justify-between items-center mb-5">
-        <h1 v-if="!isPending" class="text-2xl font-semibold">
+        <h1 v-if="!isPending" class="text-xl 2xl:text-2xl font-semibold">
           {{ category[selected].name }}
         </h1>
-        <h1 v-if="isPending" class="text-2xl font-semibold">
+        <h1 v-if="isPending" class="text-xl 2xl:text-2xl font-semibold">
           {{ pendingDetails.name }}
         </h1>
         <div class="flex justify-between items-center gap-5">

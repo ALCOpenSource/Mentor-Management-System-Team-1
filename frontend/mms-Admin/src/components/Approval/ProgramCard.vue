@@ -3,12 +3,16 @@
     <div class="flex gap-12 items-center">
       <UserAvatar />
       <h1
-        class="text-xl font-semibold cursor-pointer hover:underline transition-all"
+        class="text-lg 2xl:text-xl font-semibold cursor-pointer hover:underline transition-all"
       >
         Google Africa Scholarship Program
       </h1>
     </div>
-    <div class="flex items-center justify-center bg-[#CC000E] text-[#fff] text-base font-semibold px-1">{{count}}</div>
+    <div
+      class="flex items-center justify-center bg-[#CC000E] text-[#fff] text-base font-semibold px-1"
+    >
+      {{ count }}
+    </div>
   </div>
 </template>
 

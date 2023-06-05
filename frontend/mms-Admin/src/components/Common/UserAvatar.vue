@@ -28,7 +28,7 @@ export default defineComponent({
 
 <style>
 .avatar {
-  width: 55px;
+  width: 42px;
   border-radius: 50%;
   height: auto;
   cursor: pointer;

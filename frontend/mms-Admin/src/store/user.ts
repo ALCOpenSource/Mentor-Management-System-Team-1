@@ -35,7 +35,7 @@ interface User {
   social_links: Links | null;
   website: Site | null;
   flag: string;
-  tags: array | null;
+  tags: [] | null;
 }
 
 interface Links {
@@ -133,6 +133,12 @@ export const useUserStore = defineStore({
             this.pagination = res.data.pagination
         },
 
+        async fetchUserPerPage(page: number) {
+            const res = await axios.get('v1/user/all?page='+page)
+            this.users = res.data.data
+            this.pagination = res.data.pagination
+        },
+
         async updateUser(userData: userData) {
           
             try {
@@ -152,7 +158,7 @@ export const useUserStore = defineStore({
               }
               
               return response;
-            } catch (error) {
+            } catch (error: any) {
               this.toaster.error(error.response.data.message);
               return error.response;
             }
@@ -182,5 +188,5 @@ interface userData {
   social_links: Links | null;
   website: Site | null;
   flag: string;
-  tags: array | null;
+  tags: [] | null;
 }

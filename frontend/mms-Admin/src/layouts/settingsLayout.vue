@@ -1,13 +1,13 @@
 <template>
   <div>
     <div class="flex justify-between items-center mb-6">
-      <h1 class="text-2xl font-semibold">Settings</h1>
-      <div class="flex" v-if="route.path == archiveRoute">
+      <h1 class="text-2xl font-semibold 2xl:font-bold">Settings</h1>
+      <div class="flex gap-2" v-if="route.path == archiveRoute">
         <SearchBox />
         <Pagination />
       </div>
     </div>
-    <div class="flex gap-8">
+    <div class="flex gap-5 2xl:gap-8">
       <SideBar />
       <div class="w-full flex flex-col">
         <div class="card">

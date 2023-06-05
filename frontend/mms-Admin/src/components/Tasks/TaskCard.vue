@@ -18,17 +18,15 @@ type Props = {
 defineProps<Props>();
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .card {
   display: flex;
   cursor: pointer;
   gap: 1rem;
-  min-height: 100px;
   width: 100%;
-  overflow-x: hidden;
-  padding: 1rem;
-  border: 2px solid hsla(0, 0%, 90%, 1);
-  border-radius: 10px;
+  padding: 12px 15px;
+  border: 1px solid hsla(0, 0%, 90%, 1);
+  border-radius: 5px;
   transition: 200ms border-color ease-in, background 300ms ease-out;
 
   &.selected {
