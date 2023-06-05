@@ -127,12 +127,12 @@ const router = createRouter({
           children: [
             {
               path: "programs",
-              name: "programs",
+              name: "programs-reports",
               component: () => import("@/views/Reports/EmptyReport.vue")
             },
             {
               path: "tasks",
-              name: "tasks",
+              name: "tasks-reports",
               component: () => import("@/views/Reports/EmptyReport.vue")
             },
             {
