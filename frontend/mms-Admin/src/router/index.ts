@@ -97,6 +97,7 @@ const router = createRouter({
           path: "tasks",
           name: "tasks",
           component: blankLayout,
+          redirect: "/admin/tasks/all",
           meta: {
             requiresAuth: true,
           },

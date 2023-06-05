@@ -1,5 +1,5 @@
 <template>
-  <div class="status">
+  <div class="status text-lg font-semibold">
     <h1>{{ title }}</h1>
   </div>
 </template>
@@ -18,14 +18,12 @@ defineProps({
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 15px;
+  padding: 8px;
   width: 130px;
-  height: 100px;
+  height: 90px;
   color: var(--light-grid-background);
   background-color: var(--card-dark);
   border-radius: 10px;
-  font-weight: 600;
-  font-size: 1.2rem;
   cursor: pointer;
 
   &:hover {

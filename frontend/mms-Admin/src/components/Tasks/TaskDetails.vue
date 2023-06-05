@@ -4,7 +4,7 @@
       <TaskCardHeader :title="task.title" :daysDue="task.daysDue" />
     </div>
     <section class="bg-green-100 px-6 py-4 flex flex-col gap-2 text-gray-300">
-      <p class="leading-8 pb-4 text-lg">{{ task.description }}</p>
+      <p class="leading-8 pb-4 text-sm 2xl:text-base">{{ task.description }}</p>
       <TaskResource
         type="mentor-managers"
         text="Mentor Managers assigned to this program"

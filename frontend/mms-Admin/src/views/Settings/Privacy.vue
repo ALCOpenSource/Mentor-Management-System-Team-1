@@ -8,7 +8,9 @@
       align="center"
     >
       <v-col cols="6"
-        ><p class="font-semibold">{{ item.name }}</p></v-col
+        ><p class="font-semibold text-sm 2xl:text-base">
+          {{ item.name }}
+        </p></v-col
       >
       <v-col cols="1" class="font-semibold mr-4">
         <Checkbox
@@ -19,7 +21,7 @@
         />
       </v-col>
     </v-row>
-    <v-row class="mt-10" align-content="center" justify="center">
+    <v-row class="mt-10" align-content="center" justify="start">
       <v-col cols="8">
         <PrimaryBtn title="Save Changes" @click="handleSubmit" />
       </v-col>

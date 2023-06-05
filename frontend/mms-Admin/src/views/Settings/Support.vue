@@ -1,6 +1,6 @@
 <template>
-  <div class="mx-3 mt-10 mb-12">
-    <h1 class="text-xl font-semibold mb-5">How can we help you?</h1>
+  <div class="mx-3 mt-5 mb-12">
+    <h1 class="text-lg 2xl:text-xl font-semibold mb-5">How can we help you?</h1>
     <v-form ref="form" v-model="valid" @submit.prevent="handleSubmit">
       <v-text-field
         v-model="supportDetails.name"

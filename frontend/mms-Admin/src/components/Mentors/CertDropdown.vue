@@ -1,9 +1,9 @@
 <template>
-  <div class="cert w-2/4 mx-auto flex flex-col items-end pb-3">
+  <div class="cert w-3/4 mx-auto flex flex-col items-end pb-3">
     <img :src="largeCertificate" alt="" />
     <div v-if="!isPending" class="flex gap-5 items-center">
       <div class="flex gap-2 items-center">
-        <h1>Download as</h1>
+        <h1 class="text-sm 2xl:text-base whitespace-nowrap">Download as</h1>
         <div class="select-container">
           <select name="saveas" id="" v-model="select">
             <option value="pdf">PDF</option>
@@ -43,7 +43,7 @@ interface Props {
 <style scoped lang="scss">
 .cert {
   img {
-    width: 441px;
+    width: 100%;
     height: 336px;
     margin-bottom: 20px;
   }

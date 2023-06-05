@@ -1,8 +1,10 @@
 <template>
   <div class="relative min-h-[75vh]">
-    <h1 class="font-bold text-2xl mb-8">Create Criteria</h1>
+    <h1 class="font-bold text-xl 2xl:text-2xl mb-8">Create Criteria</h1>
     <div v-if="notice" class="bg-green-100 rounded-lg py-8 px-10 mb-8">
-      <p class="text-[#666666] text-xl mb-4 text-justify leading-10">
+      <p
+        class="text-[#666666] text-base 2xl:text-lg mb-4 text-justify 2xl:leading-10"
+      >
         To be accepted as a mentor or a mentor manager, an applicant must
         provide relevant information and documents regarding their past
         experience(s). The criteria setup lets you create input fields for these

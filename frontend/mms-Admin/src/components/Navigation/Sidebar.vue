@@ -1,20 +1,24 @@
 <template>
-  <div class="w-72 z-10 pt-12 sidebar">
-    <div class="pl-16 mb-14">
-      <h2 class="font-bold text-xl">Hi, {{ userStore.user?.name }}</h2>
-      <span class="text-mute"> {{ userStore.user?.tags[0] }} </span>
+  <div class="w-[270px] 2xl:w-72 z-10 pt-10 sidebar">
+    <div class="pl-16 mb-12">
+      <h2 class="font-semibold 2xl:font-bold text-lg 2xl:text-xl">
+        Hi, {{ userStore.user?.name }}
+      </h2>
+      <span class="text-mute text-base text-[#808080]">
+        {{ userStore.user?.tags[0] }}
+      </span>
     </div>
 
-    <section>
+    <section class="mb-8">
       <router-link
         :to="link.path"
         v-for="link in sidebarLinks"
         :key="link.pathname"
         active-class="active_link"
-        class="flex link text-black gap-2 mb-6 items-center py-4 text-lg pl-16"
+        class="flex link text-black gap-2 mb-4 items-center py-3 text-base 2xl:text-lg pl-16"
       >
         <div><component :is="link.icon" :color="'#808080'"></component></div>
-        <span class="link_pathname">{{ link.pathname }}</span>
+        <span class="link_pathname text-[#808080]">{{ link.pathname }}</span>
       </router-link>
     </section>
   </div>
@@ -60,7 +64,7 @@ const sidebarLinks = [
   },
   {
     pathname: "Tasks",
-    path: parentPath + "/tasks/all",
+    path: parentPath + "/tasks",
     icon: IconTask,
   },
   {
@@ -109,10 +113,10 @@ const sidebarLinks = [
 <style lang="scss">
 .sidebar {
   z-index: 1;
-  height: 87vh;
+  height: 88vh;
   overflow-y: scroll;
   position: fixed;
-  top: 13vh;
+  top: 12vh;
   left: 0;
   background: var(--light-grid-background);
 
@@ -142,6 +146,7 @@ const sidebarLinks = [
 
   .link_pathname {
     font-weight: bold;
+    color: black;
   }
 }
 </style>

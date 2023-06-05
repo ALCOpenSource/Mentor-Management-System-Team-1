@@ -8,7 +8,7 @@
           alt="avatar"
         />
         <div>
-          <h1 class="font-semibold text-xl">Allison Davies</h1>
+          <h1 class="font-semibold text-lg 2xl:text-xl">Allison Davies</h1>
           <p class="text-xs text-[#808080]">Mentor Manager</p>
         </div>
       </div>
@@ -23,10 +23,10 @@
       </v-menu>
     </div>
     <div class="mb-4">
-      <h1 class="text-xl text-[#333333] mb-2">
+      <h1 class="text-lg 2xl:text-xl text-[#333333] mb-2">
         The New MMS Discussion Forum Guidelines and Regulations
       </h1>
-      <p class="text-[#808080]">
+      <p class="text-[#808080] text-sm 2xl:text-base">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis
         molestie, dictum est a, mattis tellus. Sed dignissim, metus nec
         fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus

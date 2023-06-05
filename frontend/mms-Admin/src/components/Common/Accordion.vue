@@ -15,17 +15,19 @@
               {{ title }}
             </h1>
             <div v-if="generalCert">
-              <h1 class="font-semibold text-base text-[#333333]">
+              <h1 class="font-semibold text-sm 2xl:text-base text-[#333333]">
                 Allison Davies
               </h1>
-              <h1 class="font-semibold text-base text-[#333333] uppercase">
+              <h1
+                class="font-semibold text-sm 2xl:text-base text-[#333333] uppercase"
+              >
                 GADS CLOUD 2022 - COMPLETION
               </h1>
             </div>
             <div v-if="approval" class="flex flex-wrap items-center">
               <div class="flex flex-col mr-8">
                 <h1
-                  class="text-xl font-semibold cursor-pointer hover:underline transition-all"
+                  class="text-lg 2xl:text-xl font-semibold cursor-pointer hover:underline transition-all"
                 >
                   Allison Davies
                 </h1>
