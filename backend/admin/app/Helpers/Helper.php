@@ -30,7 +30,7 @@ function strHelper(string $methodname, ...$args)
  */
 function callStatic(string $className, string $methodname, ...$args)
 {
-    return call_user_func($className.'::'.$methodname, ...$args);
+    return $className."::".$methodname(...$args);
 }
 
 /**

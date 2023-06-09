@@ -197,7 +197,7 @@ Route::prefix('v1')->group(function () {
             Route::post('forward', [App\Http\Controllers\MessageController::class, 'forwardMessage']);
 
             // Broadcast message
-            Route::post('broadcast/{user_role?}', [App\Http\Controllers\MessageController::class, 'broadcastMessage']);
+            Route::post('broadcast', [App\Http\Controllers\MessageController::class, 'broadcastMessage']);
 
             // Mark message as unread
             // Commented out because I'm not sure if this is needed, just good to have incase it is needed. - @ghostscypher

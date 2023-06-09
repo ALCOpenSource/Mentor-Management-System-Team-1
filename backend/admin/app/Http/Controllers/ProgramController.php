@@ -6,6 +6,7 @@ use App\Http\Resources\ApiResource;
 use App\Models\Program;
 use App\Models\ProgramCriteria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class ProgramController extends Controller
 {
@@ -14,6 +15,8 @@ class ProgramController extends Controller
      *
      * @param mixed $file
      * @param mixed $program
+     *
+     * @return mixed
      */
     protected function updateAvatar($file, $program)
     {
@@ -21,18 +24,22 @@ class ProgramController extends Controller
 
         // If avatar already exists, delete it.
         if ($avatar) {
-            unlink(storage_path('app/public/'.$avatar->path));
+            callStatic(File::class, 'delete', storage_path('app/public/'.$avatar->path));
             $avatar->delete();
         }
 
         return $program->storeAttachment($file, 'avatar');
+
     }
+
 
     /**
      * Update program criteria.
      *
      * @param mixed $request
      * @param mixed $program
+     *
+     * @return mixed
      */
     protected function updateCriteria($request, $program)
     {
@@ -40,14 +47,14 @@ class ProgramController extends Controller
         if ($request->has('criteria')) {
             foreach ($request->criteria as $criteria) {
                 $program->criteria()->updateOrCreate([
-                    'id' => $criteria['id'] ?? null,
-                ], [
-                    'name' => $criteria['name'],
-                    'input_type' => $criteria['input_type'],
-                    'label' => $criteria['label'],
-                    'meta' => $criteria['meta'] ?? null,
-                    'pre_validation' => $criteria['pre_validation'] ?? null,
-                    'validation' => $criteria['validation'] ?? null,
+                        'id' => $criteria['id'] ?? null,
+                    ], [
+                        'name' => $criteria['name'],
+                        'input_type' => $criteria['input_type'],
+                        'label' => $criteria['label'],
+                        'meta' => ($criteria['meta'] ?? null),
+                        'pre_validation' => ($criteria['pre_validation'] ?? null),
+                        'validation' => ($criteria['validation'] ?? null),
                 ]);
             }
         }
@@ -78,36 +85,43 @@ class ProgramController extends Controller
      */
     public function createProgram(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:3000',
-            'avatar' => 'nullable|image|max:2048',
-            'assignees' => 'nullable|array',
-            'assignees.*' => 'nullable|integer|exists:users,id',
-            'criteria' => 'nullable|array',
-            'criteria.*.name' => 'required|string|max:255',
-            'criteria.*.input_type' => 'required|string|max:255',
-            'criteria.*.label' => 'required|string|max:255',
-            'criteria.*.meta' => 'nullable|array',
-            // 'criteria.*.pre_validation' => 'nullable|array',
-            // 'criteria.*.validation' => 'nullable|array',
-        ]);
+        $request->validate(
+            [
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string|max:3000',
+                'avatar' => 'nullable|image|max:2048',
+                'assignees' => 'nullable|array',
+                'assignees.*' => 'nullable|integer|exists:users,id',
+                'criteria' => 'nullable|array',
+                'criteria.*.name' => 'required|string|max:255',
+                'criteria.*.input_type' => 'required|string|max:255',
+                'criteria.*.label' => 'required|string|max:255',
+                'criteria.*.meta' => 'nullable|array',
+                // 'criteria.*.pre_validation' => 'nullable|array',
+                // 'criteria.*.validation' => 'nullable|array',
+            ]
+        );
 
-        $program = callStatic(Program::class, 'create', $request->only([
-            'name',
-            'description',
-        ]));
+        $program = callStatic(Program::class, 'create', $request->only(
+            [
+                'name',
+                'description',
+            ]
+            )
+        );
 
-        if ($request->hasFile('avatar')) {
+        if ($request->hasFile('avatar') === true) {
             $this->updateAvatar($request->file('avatar'), $program);
         }
 
         // If has assignees, assign them to the program.
         if ($request->has('assignees')) {
             foreach ($request->assignees as $assignee) {
-                $program->assignees()->create([
-                    'user_id' => $assignee,
-                ]);
+                $program->assignees()->create(
+                    [
+                        'user_id' => $assignee,
+                    ]
+                );
             }
         }
 
@@ -120,40 +134,47 @@ class ProgramController extends Controller
     /**
      * Update a Program.
      *
+     * @param mixed $request
      * @param mixed $program_id
+     *
+     * @return mixed
      */
     public function updateProgram(Request $request, $program_id)
     {
-        $request->validate([
-            'name' => 'nullable|string|max:255',
-            'description' => 'nullable|string|max:3000',
-            'avatar' => 'nullable|image|max:2048',
-            'assignees' => 'nullable|array',
-            'assignees.*' => 'nullable|integer|exists:users,id',
-            'criteria' => 'nullable|array',
-            'criteria.*.id' => 'nullable|integer|exists:program_criteria,id',
-            'criteria.*.name' => 'required|string|max:255',
-            'criteria.*.input_type' => 'required|string|max:255',
-            'criteria.*.label' => 'required|string|max:255',
-            'criteria.*.meta' => 'nullable|array',
-            // 'criteria.*.pre_validation' => 'nullable|array',
-            // 'criteria.*.validation' => 'nullable|array',
-        ]);
+        $request->validate(
+            [
+                'name' => 'nullable|string|max:255',
+                'description' => 'nullable|string|max:3000',
+                'avatar' => 'nullable|image|max:2048',
+                'assignees' => 'nullable|array',
+                'assignees.*' => 'nullable|integer|exists:users,id',
+                'criteria' => 'nullable|array',
+                'criteria.*.id' => 'nullable|integer|exists:program_criteria,id',
+                'criteria.*.name' => 'required|string|max:255',
+                'criteria.*.input_type' => 'required|string|max:255',
+                'criteria.*.label' => 'required|string|max:255',
+                'criteria.*.meta' => 'nullable|array',
+                // 'criteria.*.pre_validation' => 'nullable|array',
+                // 'criteria.*.validation' => 'nullable|array',
+            ]
+        );
 
         $program = callStatic(Program::class, 'find', $program_id);
 
-        if (! $program) {
+        if ((bool) $program === false) {
             return new ApiResource([
                 'error' => 'Program not found.',
                 'status' => 404,
             ]);
         }
 
-        foreach ($request->only([
-            'name',
-            'description',
-        ]) as $key => $value) {
-            if ($value) {
+        foreach ($request->only(
+            [
+                'name',
+                'description',
+            ]
+        ) as $key => $value) {
+            if ((bool) $value === true) {
                 $program->$key = $value;
             }
         }

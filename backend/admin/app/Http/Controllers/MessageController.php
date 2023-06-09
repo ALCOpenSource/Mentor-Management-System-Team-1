@@ -6,6 +6,7 @@ use App\Events\MessageDeleted;
 use App\Events\MessageDelivered;
 use App\Events\MessageRead;
 use App\Events\NewMessage;
+use App\Helpers\AppConstants;
 use App\Http\Resources\ApiResource;
 use App\Models\Message;
 use App\Models\User;
@@ -169,7 +170,7 @@ class MessageController extends Controller
             FROM messages m
             WHERE m.sender_id = ? OR m.receiver_id = ?
             GROUP BY m.room_id
-            ORDER BY created_at DESC
+            ORDER BY created_at ASC
             LIMIT 20 OFFSET ?
         ', [
             $user->id,
@@ -432,7 +433,7 @@ class MessageController extends Controller
      *
      * @param mixed|null $user_role
      */
-    public function broadcastMessage(Request $request, $user_role = null)
+    public function broadcastMessage(Request $request)
     {
         $user = $request->user();
 
@@ -442,6 +443,8 @@ class MessageController extends Controller
             'attachments.*' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf,doc,docx,xls,xlsx,zip,rar,txt|max:2048',
             'receiver_ids' => 'nullable|array',
             'receiver_ids.*' => 'nullable|integer|exists:users,id',
+            'roles' => 'nullable|array',
+            'roles.*' => 'nullable|string|in:' . implode(',', [AppConstants::ROLE_ADMIN, AppConstants::ROLE_MENTOR, AppConstants::ROLE_MENTOR_MANAGER]),
         ]);
 
         // If both attachments and message is empty return error
@@ -453,22 +456,22 @@ class MessageController extends Controller
         }
 
         // If receiver ids are not provided broadcast to all users
-        $receiverIds = $request->receiver_ids;
+        $receiverIds = $request->receiver_ids ?? [];
+        $receiverIds2 = User::where('id', '!=', $user->id)
+            ->select('id')
+            ->when($request->roles, function ($query) use ($request) {
+                $query->whereIn('role', $request->roles);
+            })
+            ->pluck('id')
+            ->toArray();
 
-        if (! $receiverIds) {
-            $receiverIds = User::where('id', '!=', $user->id)
-                ->select('id')
-                ->when($user_role, function ($query) use ($user_role) {
-                    $query->where('role', $user_role);
-                })
-                ->pluck('id')
-                ->toArray();
-        }
+        $receiverIds = array_unique(array_merge($receiverIds2, $receiverIds));
 
-        $receiverIds = array_unique($receiverIds);
+        // Remove current user id from receiver ids
+        $receiverIds = array_diff($receiverIds, [$user->id]);
 
         // If receiver ids are empty return error
-        if (! $receiverIds) {
+        if (count($receiverIds) == 0) {
             return new ApiResource([
                 'message' => 'No receiver found',
                 'status' => 422,
@@ -495,15 +498,27 @@ class MessageController extends Controller
             ]);
 
             // Attachments
+            $skip = false;
             if ($request->hasFile('attachments') && ! $attachments) {
                 $this->saveAttachments($request->attachments, $message);
 
                 // Save attachments for reuse
                 $attachments = $message->attachment()->get();
+                $skip = true;
             }
 
-            $message->attachment()->saveMany($attachments ?? []);
-
+            if($attachments && ! $skip){
+                foreach($attachments as $attachment){
+                    $message->attachment()->create([
+                        'name' => $attachment->name,
+                        'path' => $attachment->path,
+                        'size' => $attachment->size,
+                        'extension' => $attachment->extension,
+                        'mime_type' => $attachment->mime_type,
+                        'type' => $attachment->type,
+                    ]);
+                }
+            }
             // Send notification
             event(new NewMessage($message));
         }
@@ -526,11 +541,14 @@ class MessageController extends Controller
             ->select('broadcast_id')
             ->distinct('broadcast_id')
             ->where('type', 'broadcast')
+            ->latest()
             ->paginate(20);
+
+        $temp = $messages->reverse()->values();
 
         // Create new Paginator
         $messages = new LengthAwarePaginator(
-            $messages->map(function ($message) use ($user) {
+            $temp->map(function ($message) use ($user) {
                 $message = callStatic(Message::class, 'where', 'broadcast_id', $message->broadcast_id)
                     ->where('sender_id', $user->id)
                     ->orderBy('created_at', 'desc')
