@@ -98,7 +98,9 @@ const reports = [
 ];
 
 const  convertedDate = (originalDate: any) => {
-    return new Date(originalDate).toISOString().split('T')[0];
+    const options = { day: 'numeric', month: 'short', year: 'numeric' };
+
+    return new Date(originalDate).toLocaleDateString('en-US', options);
 }
 </script>
 
