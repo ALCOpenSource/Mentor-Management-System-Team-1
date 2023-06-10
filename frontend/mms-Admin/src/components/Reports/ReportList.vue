@@ -47,7 +47,7 @@
         v-for="report in reportStore.reports.data"
         :title="report.details"
         :author="report.created_by"
-        :date="report.created_at"
+        :date="convertedDate(report.created_at)"
         :id="report.id"
         :key="report.id"
       >
@@ -96,6 +96,12 @@ const reports = [
     id: 4,
   },
 ];
+
+const  convertedDate = (originalDate: any) => {
+    const options = { day: 'numeric', month: 'short', year: 'numeric' };
+
+    return new Date(originalDate).toLocaleDateString('en-US', options);
+}
 </script>
 
 <style scoped lang="scss">
