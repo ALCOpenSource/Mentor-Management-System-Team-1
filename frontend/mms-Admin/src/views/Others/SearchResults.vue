@@ -6,7 +6,7 @@
         <PlainDropdown :options="options" title="All" />
       </div>
       <div>
-        <Pagination />
+        <!-- <Pagination /> -->
       </div>
     </div>
     <div>

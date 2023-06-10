@@ -1,11 +1,11 @@
 <template>
-  <div class="w-5/12">
+  <div class="w-[300px]">
     <div
-      class="py-2 px-2 flex justify-between rounded-md bg-green-400 text-white"
+      class="py-1 px-1 flex justify-between items-center rounded-md bg-green-400 text-white"
     >
       <router-link to="/admin/reports/programs">
         <button
-          class="w-full p-2 text-xl px-4 rounded-md"
+          class="w-full py-2 text-base 2xl:text-xl font-normal px-4 rounded-md"
           :class="{ active: isActive('/admin/reports/programs') }"
         >
           Program Reports
@@ -14,17 +14,17 @@
 
       <router-link to="/admin/reports/tasks">
         <button
-          class="w-full text-xl flex p-2 px-4 rounded-md"
+          class="w-full py-2 text-base 2xl:text-xl font-normal px-4 rounded-md"
           :class="{ active: isActive('/admin/reports/tasks') }"
         >
           Tasks Reports
         </button>
       </router-link>
     </div>
-    <div class="mt-8 overflow-y-scroll pr-4 h-[70vh] fancy-scroll pb-2">
-      <section class="flex justify-between mb-3">
+    <div class="mt-5 overflow-y-scroll pr-2 h-[70vh] fancy-scroll pb-2">
+      <section class="flex justify-between items-center mb-3">
         <button class="flex items-center gap-2">
-          <span>All Reports</span>
+          <span class="text-sm 2xl:text-base">All Reports</span>
           <IconCaret />
         </button>
         <IconSearch color="#058B94" />
@@ -38,7 +38,7 @@
         :id="report.id"
         :key="report.id"
       >
-        <IconReportAlt color="#058B94" :size="40" />
+        <IconReportAlt color="#058B94" :size="30" />
       </ReportCard>
 
       <ReportCard
@@ -51,7 +51,7 @@
         :id="report.id"
         :key="report.id"
       >
-        <IconTask color="#058B94" size="40" />
+        <IconTask color="#058B94" size="35" />
       </ReportCard>
     </div>
   </div>
@@ -108,7 +108,7 @@ const  convertedDate = (originalDate: any) => {
 .active {
   color: #058b94;
   background-color: #fff;
-  font-weight: bold;
+  font-weight: 600;
   transition: all 200ms ease-in;
 }
 </style>

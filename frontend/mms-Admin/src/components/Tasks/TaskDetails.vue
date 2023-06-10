@@ -7,21 +7,27 @@
       <p class="leading-8 pb-4 text-sm 2xl:text-base">{{ task.description }}</p>
       <TaskResource
         type="mentor-managers"
-        text="Mentor Managers assigned to this program"
+        text="Mentor Managers assigned to this tasks"
         count="20"
         unread="20"
+        programId="1"
+        urlName="mentor-managers-assigned-tasks"
       />
       <TaskResource
         type="mentor"
-        text="Mentors assigned to this program"
+        text="Mentors assigned to this tasks"
         count="56"
         unread="90"
+        programId="1"
+        urlName="mentors-assigned-tasks"
       />
       <TaskResource
         type="reports"
         text="Task reports"
         count="40"
         unread="988"
+        programId="1"
+        urlName="tasks-reports"
       />
     </section>
     <section class="flex justify-end pr-6 gap-2 items-center py-6">

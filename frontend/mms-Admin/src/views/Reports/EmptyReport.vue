@@ -1,5 +1,5 @@
 <template>
-  <div class="w-5/6 flex flex-col gap-6">
+  <div class="w-full flex flex-col gap-6">
     <div class="flex justify-end">
       <PrimaryBtn title="Compose Report" />
     </div>

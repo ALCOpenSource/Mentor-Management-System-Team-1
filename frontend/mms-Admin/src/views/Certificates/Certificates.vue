@@ -29,7 +29,7 @@
               title="Generate New Certificate"
             />
           </router-link>
-          <Pagination />
+          <!-- <Pagination /> -->
           <IconSearch color="#058b94" />
           <Filter />
         </div>

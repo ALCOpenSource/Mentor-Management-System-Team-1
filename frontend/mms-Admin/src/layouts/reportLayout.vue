@@ -1,5 +1,5 @@
 <template>
-  <div class="flex gap-4">
+  <div class="flex gap-7 overflow-y-hidden">
     <ReportList />
     <router-view></router-view>
   </div>

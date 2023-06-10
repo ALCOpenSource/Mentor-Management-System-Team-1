@@ -66,13 +66,13 @@ const router = createRouter({
               component: () => import("@/views/Programs/CreateProgram.vue"),
             },
             {
-              path: "mentors-assigned/:id",
-              name: "mentors-assigned",
+              path: "mentors-assigned-program/:id",
+              name: "mentors-assigned-program",
               component: () => import("@/views/Programs/MentorsAssigned.vue"),
             },
             {
-              path: "mentor-managers-assigned/:id",
-              name: "mentor-managers-assigned",
+              path: "mentor-managers-assigned-program/:id",
+              name: "mentor-managers-assigned-program",
               component: () =>
                 import("@/views/Programs/MentorManagersAssigned.vue"),
             },
@@ -116,6 +116,22 @@ const router = createRouter({
               path: "edit",
               name: "edit",
               component: () => import("@/views/Tasks/Edit.vue"),
+            },
+            {
+              path: "mentors-assigned-tasks/:id",
+              name: "mentors-assigned-tasks",
+              component: () => import("@/views/Tasks/MentorsAssigned.vue"),
+            },
+            {
+              path: "mentor-managers-assigned-tasks/:id",
+              name: "mentor-managers-assigned-tasks",
+              component: () =>
+                import("@/views/Tasks/MentorManagersAssigned.vue"),
+            },
+            {
+              path: "tasks-reports/:id",
+              name: "tasks-reports",
+              component: () => import("@/views/Tasks/ProgramReports.vue"),
             },
           ],
         },

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex gap-8">
+  <div class="w-full">
     <ViewReport />
   </div>
 </template>

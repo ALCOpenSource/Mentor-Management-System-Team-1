@@ -11,7 +11,7 @@
             }"
           >
             <h1
-              class="text-lg 2xl:text-xl font-semibold cursor-pointer hover:underline transition-all"
+              class="text-base 2xl:text-xl font-semibold cursor-pointer hover:underline transition-all"
             >
               {{ user.name }}
             </h1>

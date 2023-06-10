@@ -33,14 +33,14 @@
         text="Mentor Managers assigned to this program"
         count="12"
         :programId="id"
-        urlName="mentor-managers-assigned"
+        urlName="mentor-managers-assigned-program"
       />
       <ProgramResource
         type="mentor"
         text="Mentors assigned to this program"
         count="56"
         :programId="id"
-        urlName="mentors-assigned"
+        urlName="mentors-assigned-program"
       />
       <ProgramResource
         type="reports"
@@ -75,6 +75,7 @@
     @closeModal="handleDelete"
   />
 </template>
+
 
 <script setup lang="ts">
 import { onMounted, watch, ref } from "vue";
