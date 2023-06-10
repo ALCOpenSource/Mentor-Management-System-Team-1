@@ -44,9 +44,10 @@
       <ReportCard
         path="/admin/reports/tasks/"
         v-show="isActive('/admin/reports/tasks')"
-        v-for="report in taskReports"
-        :title="report.title"
-        :author="report.author"
+        v-for="report in reportStore.reports.data"
+        :title="report.details"
+        :author="report.created_by"
+        :date="report.created_at"
         :id="report.id"
         :key="report.id"
       >
@@ -63,46 +64,48 @@ import { IconSearch, IconCaret } from "../Icons";
 import ReportCard from "@/components/Reports/ReportCard.vue";
 import IconReportAlt from "../Icons/IconReportAlt.vue";
 import IconTask from "../Icons/IconTask.vue";
+import { useReportStore } from "@/store/reports";
 
 const isActive = ref<Boolean>(false);
 const route = useRoute();
+const reportStore = useReportStore();
 
 watch(() => {
   isActive.value = (path: string) => route.path.startsWith(path);
 });
 
-const taskReports = [
-  {
-    title: "Authorize and find a melee",
-    author: "Alison Davis",
-    id: 3535,
-  },
-  {
-    title: "Zinc is not the real business",
-    author: "Peter Clarke",
-    id: 5214,
-  },
-  {
-    title: "Declan rice shipment coming through",
-    author: "Octomas Indovalin",
-    id: 3414,
-  },
-  {
-    title: "There are new elements to account for",
-    author: "George Calvary",
-    id: 4145,
-  },
-  {
-    title: "Set the new standards for newbies",
-    author: "Barack Obama",
-    id: 32141,
-  },
-  {
-    title: "Purify the outlets",
-    author: "Shan Oliseh Mali Anothonia",
-    id: 941,
-  },
-];
+// const taskReports = [
+//   {
+//     title: "Authorize and find a melee",
+//     author: "Alison Davis",
+//     id: 3535,
+//   },
+//   {
+//     title: "Zinc is not the real business",
+//     author: "Peter Clarke",
+//     id: 5214,
+//   },
+//   {
+//     title: "Declan rice shipment coming through",
+//     author: "Octomas Indovalin",
+//     id: 3414,
+//   },
+//   {
+//     title: "There are new elements to account for",
+//     author: "George Calvary",
+//     id: 4145,
+//   },
+//   {
+//     title: "Set the new standards for newbies",
+//     author: "Barack Obama",
+//     id: 32141,
+//   },
+//   {
+//     title: "Purify the outlets",
+//     author: "Shan Oliseh Mali Anothonia",
+//     id: 941,
+//   },
+// ];
 
 const reports = [
   {
