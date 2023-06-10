@@ -18,7 +18,6 @@ export default defineComponent({
   
   beforeRouteEnter(to, from, next) {
     const reportStore = useReportStore();
-    console.log('here')
     if (reportStore.reports) {
       // The authentication state is already loaded, so proceed to the dashboard
       next()

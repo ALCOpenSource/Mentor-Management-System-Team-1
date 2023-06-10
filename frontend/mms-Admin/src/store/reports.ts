@@ -26,11 +26,19 @@ export const useReportStore = defineStore({
     async loadReports() {
       const res = await axios.get('v1/report/task');
       this.reports = res.data;
-      console.log(this.reports)
     },
 
     async loadReport(task_id: Number) {
       const res = await axios.get('v1/report/task?task_id=' + task_id);
+      this.report = res.data;
+    },
+
+    async createReport(reportData: Object) {
+      const res = await axios.post('v1/report/task', messageData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       this.report = res.data;
     },
   },
