@@ -10,7 +10,7 @@
           <p class="font-semibold text-gray-300 min-w-1/4 truncate">
             By {{ author }}
           </p>
-          <p class="text-gray-300 w-1/2">19th - 25th Oct 22</p>
+          <p class="text-gray-300 w-1/2">{{ date }}</p>
         </div>
       </section>
     </div>
@@ -25,6 +25,7 @@ type Props = {
   path: string;
   title: string;
   author: string;
+  date: string;
   id: number;
 };
 

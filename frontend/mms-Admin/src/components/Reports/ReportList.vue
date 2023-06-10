@@ -47,7 +47,7 @@
         v-for="report in reportStore.reports.data"
         :title="report.details"
         :author="report.created_by"
-        :date="report.created_at"
+        :date="convertedDate(report.created_at)"
         :id="report.id"
         :key="report.id"
       >
@@ -96,6 +96,10 @@ const reports = [
     id: 4,
   },
 ];
+
+const  convertedDate = (originalDate: any) => {
+    return new Date(originalDate).toISOString().split('T')[0];
+}
 </script>
 
 <style scoped lang="scss">
