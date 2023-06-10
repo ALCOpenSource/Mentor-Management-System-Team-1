@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import {useAuthStore} from "./auth"
 
 interface userState {
     avatar: Avatar | null;
@@ -123,8 +124,20 @@ export const useUserStore = defineStore({
         },
 
         async fetchUser() {
-            const res = await axios.get('v1/user')
-            this.user = res.data.data
+            const authStore = useAuthStore();
+
+            await axios.get('v1/user').then(res=>{
+              if(res.data.success) {
+                this.user = res.data.data
+              }
+            }).catch(error => {
+                if(error.response.data.status === 401){
+                    console.log(error.response.data.status)
+                    authStore.removeToken();
+                    authStore.authUser = null;
+                    this.router.push({ name: "login" });
+                }
+            });
         },
 
         async fetchUsers() {
