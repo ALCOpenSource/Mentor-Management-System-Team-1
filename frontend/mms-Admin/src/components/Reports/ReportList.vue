@@ -74,39 +74,6 @@ watch(() => {
   isActive.value = (path: string) => route.path.startsWith(path);
 });
 
-// const taskReports = [
-//   {
-//     title: "Authorize and find a melee",
-//     author: "Alison Davis",
-//     id: 3535,
-//   },
-//   {
-//     title: "Zinc is not the real business",
-//     author: "Peter Clarke",
-//     id: 5214,
-//   },
-//   {
-//     title: "Declan rice shipment coming through",
-//     author: "Octomas Indovalin",
-//     id: 3414,
-//   },
-//   {
-//     title: "There are new elements to account for",
-//     author: "George Calvary",
-//     id: 4145,
-//   },
-//   {
-//     title: "Set the new standards for newbies",
-//     author: "Barack Obama",
-//     id: 32141,
-//   },
-//   {
-//     title: "Purify the outlets",
-//     author: "Shan Oliseh Mali Anothonia",
-//     id: 941,
-//   },
-// ];
-
 const reports = [
   {
     title: "Room Library article write on them for",

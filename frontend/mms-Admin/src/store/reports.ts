@@ -34,7 +34,16 @@ export const useReportStore = defineStore({
     },
 
     async createReport(reportData: Object) {
-      const res = await axios.post('v1/report/task', messageData, {
+      const res = await axios.post('v1/report/task', reportData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      this.report = res.data;
+    },
+
+    async updateReport(reportData: Object) {
+      const res = await axios.patch('v1/report/task', reportData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
