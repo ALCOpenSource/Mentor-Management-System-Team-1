@@ -5,22 +5,19 @@
       <div class="flex gap-8 p-4">
         <IconTask size="50" color="#058B94" />
         <div>
-          <h3 class="text-2xl font-bold">
+          <h3 class="text-lg 2xl:text-xl font-semibold">
             Room library article write fluent api the easy way
           </h3>
-          <div class="flex gap-4">
-            <p>By Alison Davis -</p>
-            <p>19th - 25th Oct 22</p>
-          </div>
+          <p class="text-xs text-gray-300"><span class="font-[500]">By Allison Davies - </span> 19th - 25th Oct 22</p>
         </div>
       </div>
 
       <!-- REPORT BODY -->
       <div class="bg-green-100 p-4">
-        <div class="flex flex-col gap-16">
+        <div class="flex flex-col gap-8">
           <section>
-            <h2 class="text-xl font-bold mb-2">Major Achievement</h2>
-            <p class="text-gray-400">
+            <h2 class="text-lg 2xl:text-xl font-semibold">Major Achievement</h2>
+            <p class="text-gray-400 text-sm 2xl:text-base">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et
               massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
               fringilla, mattis ligula consectetur, ultrices mauris. Maecenas
@@ -32,8 +29,8 @@
             </p>
           </section>
           <section>
-            <h2 class="text-xl font-bold mb-2">Major Achievement</h2>
-            <p class="text-gray-400">
+            <h2 class="text-lg 2xl:text-xl font-semibold mb-2">Major Achievement</h2>
+            <p class="text-gray-400 text-sm 2xl:text-base">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et
               massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
               fringilla, mattis ligula consectetur, ultrices mauris. Maecenas
@@ -45,8 +42,8 @@
             </p>
           </section>
           <section>
-            <h2 class="text-xl font-bold mb-2">Major Achievement</h2>
-            <p class="text-gray-400">
+            <h2 class="text-lg 2xl:text-xl font-semibold mb-2">Major Achievement</h2>
+            <p class="text-gray-400 text-sm 2xl:text-base">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et
               massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
               fringilla, mattis ligula consectetur, ultrices mauris. Maecenas

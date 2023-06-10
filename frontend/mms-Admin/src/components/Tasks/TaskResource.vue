@@ -22,7 +22,14 @@
       </span>
     </div>
     <div class="w-[60px]">
-      <SmallPrimaryBtn title="View" :full-width="true" />
+      <router-link
+        :to="{
+          name: urlName,
+          params: { id: `${programId}` },
+        }"
+      >
+        <SmallPrimaryBtn title="View" :full-width="true" />
+      </router-link>
     </div>
   </div>
 </template>
@@ -36,6 +43,8 @@ type Props = {
   text: string;
   unread: string;
   type: "mentor" | "mentor-managers" | "reports";
+  urlName?: string;
+  programId?: Number;
 };
 
 defineProps<Props>();

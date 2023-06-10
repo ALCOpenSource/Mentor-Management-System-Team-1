@@ -41,12 +41,12 @@
     </div>
     <div v-if="messageStore.broadcast.data.length !== 0" class="msg-area">
       <div
-        class="flex flex-col items-center center mb-5"
+        class="flex flex-col items-center center mb-5 w-full"
         v-for="message in messageStore.broadcast.data"
         :key="message"
       >
         <small class="smallD bg-white p-1 px-2 rounded">{{message.human_date}}</small>
-        <div class="broadcast-card">
+        <div class="broadcast-card w-full">
           <p class="text-[#4D4D4D] text-base 2xl:text-lg">
             {{message.message}}
           </p>

@@ -18,7 +18,7 @@
           </p>
           <span><CheckMark /></span>
         </div>
-        <Pagination />
+        <!-- <Pagination /> -->
       </div>
     </div>
     <div>

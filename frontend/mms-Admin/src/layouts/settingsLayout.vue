@@ -4,7 +4,7 @@
       <h1 class="text-2xl font-semibold 2xl:font-bold">Settings</h1>
       <div class="flex gap-2" v-if="route.path == archiveRoute">
         <SearchBox />
-        <Pagination />
+        <!-- <Pagination @fetchPage="handlePagination" :pagination="userStore.pagination"/> -->
       </div>
     </div>
     <div class="flex gap-5 2xl:gap-8">

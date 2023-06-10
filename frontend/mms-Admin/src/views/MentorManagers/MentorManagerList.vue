@@ -24,16 +24,17 @@
             @click="handleModalDecider('add')"
           />
         </div>
-        <Pagination />
+        <Pagination @fetchPage="handlePagination" :pagination="userStore.pagination"/>
         <IconSearch color="#058B94" class="cursor-pointer" />
         <Filter class="cursor-pointer" />
       </div>
     </div>
     <v-row no-gutters class="gap-3 mt-5 transition-all">
-      <v-col v-for="n in numberToDisplay" :cols="cols" class="transition-all">
+      <v-col v-for="user in userStore.users" :cols="cols" class="transition-all">
         <UserCard
           show-comment
           show-delete
+          :user="user"
           @delete="handleModalDecider('delete')"
           :is-mentor-manager="true"
         />
@@ -55,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, defineComponent } from "vue";
 import { GridOne, GridTwo, Filter, IconSearch } from "@/assets/icons";
 import PrimaryBtn from "@/components/Buttons/PrimaryBtn.vue";
 import SecondaryBtn from "@/components/Buttons/SecondaryBtn.vue";
@@ -63,7 +64,9 @@ import Pagination from "@/components/Common/Pagination.vue";
 import UserCard from "@/components/Common/UserCard.vue";
 import Modal from "../../components/Forms/Modal.vue";
 import { deleteSuccess } from "../../assets/images";
+import { useUserStore } from "@/store/user";
 
+const userStore = useUserStore();
 const activeGrid = ref("gridOne");
 const cols = ref(6);
 const numberToDisplay = ref(0);
@@ -164,6 +167,42 @@ const handleModalDecider = (value: string) => {
   }
 };
 
+let page = 0;
+const handlePagination = (type: string) => {
+  // Add to Top of Chat Array
+  switch (type) {
+    case 'first':
+      if(userStore?.pagination?.current_page !== 1) {
+        page = 1;
+      }
+      break;
+  
+    case 'previous':
+      if(userStore?.pagination?.links?.previous !== null) {
+        page = userStore?.pagination?.current_page - 1;
+      }
+      break;
+
+    case 'next':
+      if(userStore?.pagination?.links?.next !== null) {
+        page = userStore?.pagination?.current_page + 1;
+      }
+      break;
+  
+    case 'last':
+      if(userStore?.pagination?.current_page !== userStore?.pagination?.total_pages) {
+        page = userStore?.pagination?.total_pages;
+      }
+      break;
+
+    default:
+      break;
+  }
+  if(page !== 0) {
+    userStore.fetchUserPerPage(page);
+  }
+}
+
 onMounted(() => {
   changeGrid("gridOne");
 });
@@ -176,6 +215,21 @@ interface ModalData {
   secondaryText?: string;
   email?: boolean;
 }
+</script>
+
+<script lang="ts">
+export default defineComponent({
+  beforeRouteEnter(to, from, next) {
+    const userStore = useUserStore();
+    if (userStore.users) {
+      next();
+    } else {
+      userStore.fetchUsers().then(() => {
+        next();
+      });
+    }
+  },
+});
 </script>
 
 <style scoped></style>
