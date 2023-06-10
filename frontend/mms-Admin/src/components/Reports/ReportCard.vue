@@ -22,6 +22,7 @@ type Props = {
   path: string;
   title: string;
   author: string;
+  date: string;
   id: number;
 };
 
