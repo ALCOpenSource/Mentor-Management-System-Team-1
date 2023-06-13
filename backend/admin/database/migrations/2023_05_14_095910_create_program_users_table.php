@@ -10,9 +10,10 @@ return new class() extends Migration {
      */
     public function up(): void
     {
-        Schema::create('user_attachments', function (Blueprint $table) {
-            $table->uuid('uuid')->primary();
-            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
+        Schema::create('program_users', function (Blueprint $table) {
+            $table->id();
+            $table->foreignUuId('program_id')->constrained('programs')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -22,6 +23,6 @@ return new class() extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_attachments');
+        Schema::dropIfExists('program_users');
     }
 };

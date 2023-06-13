@@ -56,7 +56,7 @@ class Attachment extends Model
     /**
      * Morph to attachment.
      */
-    public function my_attachment(): \Illuminate\Database\Eloquent\Relations\MorphTo
+    public function attachment(): \Illuminate\Database\Eloquent\Relations\MorphTo
     {
         return $this->morphTo();
     }

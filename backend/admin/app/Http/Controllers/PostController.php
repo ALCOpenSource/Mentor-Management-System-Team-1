@@ -6,7 +6,6 @@ use App\Http\Resources\ApiResource;
 use App\Models\Post;
 use App\Models\PostDiscussions;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 
 class PostController extends Controller
 {
@@ -67,17 +66,18 @@ class PostController extends Controller
         if (! $request->body && ! $request->title && ! $request->attachment) {
             return new ApiResource(['data' => null, 'message' => 'body or title or attachment is required.', 'status' => 422]);
         }
+
         $attachment = null;
         $post = new Post();
         $post->title = $request->title;
         $post->body = $request->body;
-        $post->slug = $this->createUrlSlug($request->title);
+        $post->slug = slugify($request->title);
         $post->meta_title = $request->meta_title;
         $post->meta_description = $request->meta_description;
         $post->meta_keywords = $request->meta_keywords;
         $post->user_id = $request->user()->id;
-
         $post->save();
+
         $attachment = isset($request->attachment);
 
         if ($attachment) {
@@ -109,6 +109,7 @@ class PostController extends Controller
         if (! $request->body && ! $request->title && ! $request->attachment) {
             return new ApiResource(['data' => null, 'message' => 'body or title or attachment is required.', 'status' => 422]);
         }
+
         $post = callStatic(Post::class, 'where', function ($query) {
             $query->where('user_id', auth()->user()->id);
         })->where('uuid', $post_id)->first();
@@ -123,7 +124,6 @@ class PostController extends Controller
         $post->meta_description = $request->meta_description;
         $post->meta_keywords = $request->meta_keywords;
         $post->user_id = $request->user()->id;
-
         $post->save();
 
         if ($request->attachment) {
@@ -160,28 +160,6 @@ class PostController extends Controller
     }
 
     /**
-     * Get Post image.
-     *
-     * @param mixed $fileName
-     */
-    public function getPostImage($fileName)
-    {
-        $path = storage_path('storage/app/post/attachments/'.$fileName);
-
-        if (! callStatic(File::class, 'exists', $path)) {
-            abort(404);
-        }
-
-        $file = callStatic(File::class, 'get', $path);
-        $type = callStatic(File::class, 'mimeType', $path);
-
-        return response()->make($file, 200, [
-            'Content-Type' => $type,
-            'Content-Disposition' => 'inline; filename="'.$fileName.'"',
-        ]);
-    }
-
-    /**
      * Delete post.
      *
      * @param mixed $post_id
@@ -211,7 +189,6 @@ class PostController extends Controller
     {
         $request->validate([
             'comment' => 'required|string',
-            'is_owner' => 'nullable|string',
             'attachment' => 'nullable|file|max:10240|mimes:jpg,jpeg,png,webm,txt,mpeg,ogg,mp4,webm,3gp,mov,flv,avi,wmv,ts',
         ]);
 
@@ -219,20 +196,16 @@ class PostController extends Controller
         if (! $request->comment && ! $request->attachment) {
             return new ApiResource(['data' => null, 'message' => 'body or title or attachment is required.', 'status' => 422]);
         }
-        $is_owner = false;
+
         $owner = callStatic(Post::class, 'where', function ($query) {
             $query->where('user_id', auth()->user()->id);
         })->where('uuid', $post_id)->first();
-        if ($owner) {
-            $is_owner = true;
-        }
 
         $comment = new PostDiscussions();
         $comment->comment = $request->comment;
         $comment->post_uuid = $post_id;
-        $comment->is_owner = $is_owner;
+        $comment->is_owner = $owner->user_id == auth()->user()->id;
         $comment->user_id = $request->user()->id;
-
         $comment->save();
 
         if ($request->attachment) {
@@ -270,7 +243,6 @@ class PostController extends Controller
             return new ApiResource(['data' => null, 'error' => 'Comment not found.', 'status' => 404]);
         }
         $comment->comment = $request->comment;
-
         $comment->save();
 
         if ($request->attachment) {
