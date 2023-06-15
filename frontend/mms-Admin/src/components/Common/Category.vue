@@ -1,6 +1,6 @@
 <template>
   <div class="category">
-    <h1 class="p-2 font-semibold text-lg">Category</h1>
+    <h1 class="p-2 font-semibold text-base 2xl:text-lg">Category</h1>
     <ul>
       <li
         v-for="(item, index) in category"
@@ -9,14 +9,16 @@
         @click="(e) => selected(e, index)"
       >
         <span class="flex items-center justify-between">
-          <img :src="item.imgUrl" alt="" class="w-1/6"/>
-          <p class="w-3/4 font-semibold text-base ml-3">{{ item.name }}</p>
+          <img :src="item.imgUrl" alt="" class="w-1/6" />
+          <p class="w-3/4 font-semibold text-sm 2xl:text-base ml-3">
+            {{ item.name }}
+          </p>
           <p class="text-2xl font-bold">{{ item.count }}</p>
         </span>
       </li>
       <li v-if="isPending" class="list-card" @click="(e) => pendingSelect(e)">
         <span class="flex justify-between items-center">
-          <p>{{ pendingDetails?.name }}</p>
+          <p class="text-sm 2xl:text-base">{{ pendingDetails?.name }}</p>
           <p class="px-[7px] bg-[#FF5964] text-[#fff] rounded-md">
             {{ pendingDetails?.count }}
           </p>

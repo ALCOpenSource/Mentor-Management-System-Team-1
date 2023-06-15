@@ -8,9 +8,9 @@
         srcset=""
       />
       <h1
-        class="text-xl font-semibold cursor-pointer hover:underline transition-all"
+        class="text-lg 2xl:text-xl font-semibold cursor-pointer hover:underline transition-all"
       >
-      Google Africa Scholarship Program
+        Google Africa Scholarship Program
       </h1>
     </div>
     <div>

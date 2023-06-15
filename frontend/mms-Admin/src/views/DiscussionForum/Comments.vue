@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex justify-between items-center mb-6">
-      <h1 class="font-semibold text-2xl">Comments</h1>
+      <h1 class="font-semibold text-xl 2xl:text-2xl">Comments</h1>
       <router-link to="/admin/discussion-forum/discussions"
         ><PrimaryBtn title="Close"
       /></router-link>
@@ -32,7 +32,7 @@
     <div class="comment-wrapper">
       <div class="comment mb-4">
         <div class="flex justify-between items-center">
-          <h1 class="font-semibold">Ibrahim Kekule</h1>
+          <h1 class="font-semibold text-base">Ibrahim Kekule</h1>
           <MoreIcon class="cursor-pointer" />
         </div>
         <p class="text-xs text-[#808080]">
@@ -45,7 +45,7 @@
       </div>
       <div class="comment mb-4">
         <div class="flex justify-between items-center">
-          <h1 class="font-semibold">Sarah Tasha</h1>
+          <h1 class="font-semibold text-base">Sarah Tasha</h1>
           <MoreIcon class="cursor-pointer" />
         </div>
         <p class="text-xs text-[#808080]">
@@ -62,7 +62,7 @@
       </div>
       <div class="comment mb-3">
         <div class="flex justify-between items-center">
-          <h1 class="font-semibold">Ibrahim Kekule</h1>
+          <h1 class="font-semibold text-base">Ibrahim Kekule</h1>
           <MoreIcon class="cursor-pointer" />
         </div>
         <p class="text-xs text-[#808080]">

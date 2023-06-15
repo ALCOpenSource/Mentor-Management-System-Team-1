@@ -1,13 +1,15 @@
 <template>
   <div class="flex justify-between gap-5">
     <div class="transition-all w-full">
-      <h1 class="font-bold text-2xl mb-8">Edit Program</h1>
+      <h1 class="font-bold text-xl 2xl:text-2xl mb-8">Edit Program</h1>
       <div class="flex items-center mb-8">
-        <v-avatar size="90px">
+        <v-avatar size="80px">
           <v-img src="https://picsum.photos/300/300" alt="pic"></v-img>
         </v-avatar>
         <div class="ml-6">
-          <h1 class="mb-2 text-xl font-semibold">Set Profile Picture</h1>
+          <h1 class="mb-2 text-lg 2xl:text-xl font-semibold">
+            Set Profile Picture
+          </h1>
           <UploadProfilePic @upload="getSrc" :pry="false" title="Select file" />
         </div>
       </div>

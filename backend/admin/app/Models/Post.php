@@ -51,6 +51,18 @@ class Post extends Model
     }
 
     /**
+     * Get Human readable.
+     */
+    public function getIsPublishedHumanAttribute()
+    {
+        if ($this->is_published === true) {
+            return 'Published';
+        }
+
+        return 'Not Published';
+    }
+
+    /**
      * Get discussions.
      */
     public function discussions(): \Illuminate\Database\Eloquent\Relations\HasMany

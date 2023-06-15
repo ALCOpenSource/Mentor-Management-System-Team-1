@@ -39,6 +39,7 @@ class Message extends Model
         'updated_at' => 'datetime',
         'read_at' => 'datetime',
         'delivered_at' => 'datetime',
+        'forwarded' => 'boolean',
     ];
 
     protected $hidden = [

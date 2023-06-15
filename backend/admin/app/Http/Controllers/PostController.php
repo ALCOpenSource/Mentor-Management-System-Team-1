@@ -6,7 +6,6 @@ use App\Http\Resources\ApiResource;
 use App\Models\Post;
 use App\Models\PostDiscussions;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 
 class PostController extends Controller
 {
@@ -15,7 +14,13 @@ class PostController extends Controller
      */
     public function getPosts()
     {
-        $post = callStatic(Post::class, 'all');
+        $post = callStatic(Post::class, 'latest')
+            ->paginate(20);
+
+        // If post is empty return error.
+        if (! $post) {
+            return new ApiResource(['data' => null, 'error' => 'Posts not found.', 'status' => 404]);
+        }
 
         return new ApiResource($post);
     }
@@ -57,21 +62,22 @@ class PostController extends Controller
             'attachment' => 'nullable|file|max:10240|mimes:jpg,jpeg,png,webm,txt,mpeg,ogg,mp4,webm,3gp,mov,flv,avi,wmv,ts',
         ]);
 
-        // If body is empty and attachment is empty return error
+        // If body is empty and attachment is empty return error.
         if (! $request->body && ! $request->title && ! $request->attachment) {
             return new ApiResource(['data' => null, 'message' => 'body or title or attachment is required.', 'status' => 422]);
         }
+
         $attachment = null;
         $post = new Post();
         $post->title = $request->title;
         $post->body = $request->body;
-        $post->slug = $this->createUrlSlug($request->title);
+        $post->slug = slugify($request->title);
         $post->meta_title = $request->meta_title;
         $post->meta_description = $request->meta_description;
         $post->meta_keywords = $request->meta_keywords;
         $post->user_id = $request->user()->id;
-
         $post->save();
+
         $attachment = isset($request->attachment);
 
         if ($attachment) {
@@ -99,10 +105,11 @@ class PostController extends Controller
             'attachment' => 'nullable|file|max:10240|mimes:jpg,jpeg,png,webm,txt,mpeg,ogg,mp4,webm,3gp,mov,flv,avi,wmv,ts',
         ]);
 
-        // If body is empty and attachment is empty return error
+        // If body is empty and attachment is empty return error.
         if (! $request->body && ! $request->title && ! $request->attachment) {
             return new ApiResource(['data' => null, 'message' => 'body or title or attachment is required.', 'status' => 422]);
         }
+
         $post = callStatic(Post::class, 'where', function ($query) {
             $query->where('user_id', auth()->user()->id);
         })->where('uuid', $post_id)->first();
@@ -110,7 +117,6 @@ class PostController extends Controller
         if (! $post) {
             return new ApiResource(['data' => null, 'message' => 'Post not found.', 'status' => 404]);
         }
-        // callStatic(Post::class, "where", "uuid", $post_id)->first();
 
         $post->title = $request->title;
         $post->body = $request->body;
@@ -118,7 +124,6 @@ class PostController extends Controller
         $post->meta_description = $request->meta_description;
         $post->meta_keywords = $request->meta_keywords;
         $post->user_id = $request->user()->id;
-
         $post->save();
 
         if ($request->attachment) {
@@ -155,28 +160,6 @@ class PostController extends Controller
     }
 
     /**
-     * Get Post image.
-     *
-     * @param mixed $fileName
-     */
-    public function getPostImage($fileName)
-    {
-        $path = storage_path('storage/app/post/attachments/'.$fileName);
-
-        if (! callStatic(File::class, 'exists', $path)) {
-            abort(404);
-        }
-
-        $file = callStatic(File::class, 'get', $path);
-        $type = callStatic(File::class, 'mimeType', $path);
-
-        return response()->make($file, 200, [
-            'Content-Type' => $type,
-            'Content-Disposition' => 'inline; filename="'.$fileName.'"',
-        ]);
-    }
-
-    /**
      * Delete post.
      *
      * @param mixed $post_id
@@ -206,28 +189,23 @@ class PostController extends Controller
     {
         $request->validate([
             'comment' => 'required|string',
-            'is_owner' => 'nullable|string',
             'attachment' => 'nullable|file|max:10240|mimes:jpg,jpeg,png,webm,txt,mpeg,ogg,mp4,webm,3gp,mov,flv,avi,wmv,ts',
         ]);
 
-        // If comment is empty and attachment is empty return error
+        // If comment is empty and attachment is empty return error.
         if (! $request->comment && ! $request->attachment) {
             return new ApiResource(['data' => null, 'message' => 'body or title or attachment is required.', 'status' => 422]);
         }
-        $is_owner = false;
+
         $owner = callStatic(Post::class, 'where', function ($query) {
             $query->where('user_id', auth()->user()->id);
         })->where('uuid', $post_id)->first();
-        if ($owner) {
-            $is_owner = true;
-        }
 
         $comment = new PostDiscussions();
         $comment->comment = $request->comment;
         $comment->post_uuid = $post_id;
-        $comment->is_owner = $is_owner;
+        $comment->is_owner = $owner->user_id == auth()->user()->id;
         $comment->user_id = $request->user()->id;
-
         $comment->save();
 
         if ($request->attachment) {
@@ -242,22 +220,29 @@ class PostController extends Controller
      *
      * @param mixed $request
      * @param mixed $post_id
+     * @param mixed $comment_id
      */
-    public function updatePostComment(Request $request, $post_id)
+    public function updatePostComment(Request $request, $post_id, $comment_id)
     {
         $request->validate([
             'comment' => 'required|string',
             'attachment' => 'nullable|file|max:10240|mimes:jpg,jpeg,png,webm,txt,mpeg,ogg,mp4,webm,3gp,mov,flv,avi,wmv,ts',
         ]);
 
-        // If comment is empty and attachment is empty return error
+        // If comment is empty and attachment is empty return error.
         if (! $request->comment && ! $request->attachment) {
-            return new ApiResource(['data' => null, 'message' => 'body or title or attachment is required.', 'status' => 422]);
+            return new ApiResource(['data' => null, 'error' => 'Comment or attachment is required.', 'status' => 422]);
         }
 
-        $comment = callStatic(PostDiscussions::class, 'where', 'post_uuid', $post_id)->first();
-        $comment->comment = $request->comment;
+        $comment = callStatic(PostDiscussions::class, 'where', 'post_uuid', $post_id)
+            ->where('uuid', $comment_id)
+            ->first();
 
+        // If comment is empty return error.
+        if (! $comment) {
+            return new ApiResource(['data' => null, 'error' => 'Comment not found.', 'status' => 404]);
+        }
+        $comment->comment = $request->comment;
         $comment->save();
 
         if ($request->attachment) {
@@ -331,6 +316,11 @@ class PostController extends Controller
     {
         $comment = callStatic(PostDiscussions::class, 'where', 'post_uuid', $post_id)
             ->where('uuid', $comment_id)->first();
+
+        // If comment is empty return error.
+        if (! $comment) {
+            return new ApiResource(['data' => null, 'error' => 'Comment not found.', 'status' => 404]);
+        }
 
         return new ApiResource(['data' => $comment]);
     }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasUuidAttachments;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -13,6 +14,7 @@ class User extends Authenticatable
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
+    use HasUuidAttachments;
 
     /**
      * The attributes that are mass assignable.
@@ -116,6 +118,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Approval request for the user.
+     */
+    public function approvalRequest(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(ApprovalRequest::class, 'request');
+    }
+
+    /**
      * Get the user sessions for the user.
      */
     public function userSessions(): \Illuminate\Database\Eloquent\Relations\HasMany
@@ -169,14 +179,6 @@ class User extends Authenticatable
     public function tasks(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Task::class, 'created_by');
-    }
-
-    /**
-     * User attachments.
-     */
-    public function attachments(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
-        return $this->hasMany(UserAttachments::class);
     }
 
     /**
@@ -527,5 +529,13 @@ class User extends Authenticatable
         $this->setMetadata('tags', $tags, 'array', 'tags', [
             'tags' => $tags,
         ]);
+    }
+
+    /**
+     * Get is approved attribute.
+     */
+    public function getIsApprovedAttribute(): bool
+    {
+        return $this->approvalRequest()->where('approved', true)->exists();
     }
 }

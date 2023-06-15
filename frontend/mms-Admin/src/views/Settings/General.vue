@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex items-center mb-8">
-      <v-avatar size="90px">
+      <v-avatar size="80px">
         <v-img
           :src="
             userBio.profilePicture ||
@@ -11,14 +11,16 @@
         ></v-img>
       </v-avatar>
       <div class="ml-6">
-        <h1 class="mb-2 text-xl font-semibold">Set Profile Picture</h1>
+        <h1 class="mb-2 text-lg 2xl:text-xl font-semibold">
+          Set Profile Picture
+        </h1>
         <UploadProfilePic @upload="getSrc" :pry="true" title="Upload Picture" />
       </div>
     </div>
     <div>
       <v-row align="center">
         <v-col cols="2">
-          <h1 class="font-semibold">Full Name</h1>
+          <h1 class="font-semibold text-sm 2xl:text-base">Full Name</h1>
         </v-col>
         <v-col>
           <v-row>
@@ -43,7 +45,7 @@
       </v-row>
       <v-row>
         <v-col cols="2">
-          <h1 class="pt-3 font-semibold">About</h1>
+          <h1 class="pt-3 font-semibold text-sm 2xl:text-base">About</h1>
         </v-col>
         <v-col>
           <textarea
@@ -56,7 +58,7 @@
       </v-row>
       <v-row align="center">
         <v-col cols="2">
-          <h1 class="font-semibold">Website</h1>
+          <h1 class="font-semibold text-sm 2xl:text-base">Website</h1>
         </v-col>
         <v-col>
           <input
@@ -68,7 +70,7 @@
       </v-row>
       <v-row align="center">
         <v-col cols="2">
-          <h1 class="font-semibold">Country</h1>
+          <h1 class="font-semibold text-sm 2xl:text-base">Country</h1>
         </v-col>
         <v-col>
           <v-row align="center">
@@ -107,7 +109,9 @@
               </span>
             </v-col>
             <v-col cols="2"
-              ><h1 class="font-semibold text-center">City</h1></v-col
+              ><h1 class="font-semibold text-center text-sm 2xl:text-base">
+                City
+              </h1></v-col
             >
             <v-col cols="5" class="my-select">
               <select v-model="userBio.city" class="input">
@@ -143,14 +147,16 @@
       </v-row>
       <v-row>
         <v-col cols="2">
-          <h1 class="pt-1 font-semibold">Social</h1>
+          <h1 class="pt-1 font-semibold text-sm 2xl:text-base">Social</h1>
         </v-col>
         <v-col cols="10">
           <v-row justify="space-between">
             <v-col class="mr-6">
               <v-row no-gutters>
                 <v-col cols="12" class="gits mb-3">
-                  <span>
+                  <span
+                    class="text-sm font-[500] 2xl:text-base 2xl:font-semibold"
+                  >
                     <GitHub />
                     GitHub
                   </span>
@@ -161,7 +167,9 @@
                   />
                 </v-col>
                 <v-col cols="12" class="gits">
-                  <span>
+                  <span
+                    class="text-sm font-[500] 2xl:text-base 2xl:font-semibold"
+                  >
                     <LinkedIn />
                     LinkedIn
                   </span>
@@ -176,8 +184,10 @@
             <v-col class="ml-6">
               <v-row no-gutters>
                 <v-col cols="12" class="gits mb-3">
-                  <span>
-                    <Instagram />
+                  <span
+                    class="text-xs font-[500] 2xl:text-base 2xl:font-semibold"
+                  >
+                    <Instagram class="w-full" />
                     Instagram
                   </span>
                   <input
@@ -187,7 +197,9 @@
                   />
                 </v-col>
                 <v-col cols="12" class="gits">
-                  <span>
+                  <span
+                    class="text-sm font-[500] 2xl:text-base 2xl:font-semibold"
+                  >
                     <Twitter />
                     Twitter
                   </span>
@@ -202,7 +214,7 @@
           </v-row>
         </v-col>
       </v-row>
-      <div class="w-[175px] float-right mt-8 mb-4">
+      <div class="float-right mt-8 mb-4">
         <PrimaryBtn title="Save Changes" @click="handleSubmit" />
       </div>
     </div>
@@ -348,6 +360,11 @@ export default defineComponent({
   padding: 10px 15px;
   width: 100%;
   position: relative;
+  font-size: 16px;
+
+  @media (max-width: 1280px) {
+    font-size: 14px;
+  }
 }
 
 input:focus,
@@ -384,14 +401,18 @@ select:focus {
   input {
     width: 100%;
     border-radius: 0 5px 5px 0;
+    font-size: 14px;
   }
   span {
     border-radius: 5px 0 0 5px;
-    font-weight: 600;
     display: flex;
     align-items: center;
     min-width: 110px;
     gap: 5px;
+
+    @media (max-width: 1280px) {
+      min-width: 90px;
+    }
   }
 }
 </style>

@@ -36,7 +36,7 @@ export default defineComponent({
     <div class="dashboard_page flex">
       <Sidebar />
       <div
-        class="content sm:mt-16 md:mt-20 xl:mt-24 ml-72 w-full pl-8 py-8 pr-14"
+        class="content sm:mt-16 2xl:mt-24 ml-[270px] 2xl:ml-72 w-full pl-8 py-8 pr-14"
       >
         <router-view></router-view>
       </div>
