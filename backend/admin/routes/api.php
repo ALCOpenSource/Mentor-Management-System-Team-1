@@ -51,8 +51,7 @@ Route::prefix('auth')->group(function () {
 
 // Version 1
 Route::prefix('v1')->group(function () {
-    
-Route::post('cert', [App\Http\Controllers\CertificateController::class, 'generateCert']);
+    Route::post('cert', [App\Http\Controllers\CertificateController::class, 'generateCert']);
     // Country endpoints
     Route::prefix('countries')->group(function () {
         // Returns country list
