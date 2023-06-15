@@ -294,6 +294,23 @@ function containsMentions(string $str, User $user): bool
     return preg_match($pattern, $str);
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Generate certificates.
  */
