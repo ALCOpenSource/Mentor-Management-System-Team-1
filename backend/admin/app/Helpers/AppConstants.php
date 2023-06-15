@@ -240,4 +240,14 @@ class AppConstants
     public const PROGRAM_MANAGER_TAG = 'program manager';
     public const MENTOR_TAG = 'mentor';
     public const MENTOR_MANAGER_TAG = 'mentor manager';
+
+    // Supported program criteria input types
+    public const PROGRAM_CRITERIA_INPUT_TYPES = [
+        'single_input',
+        'multi_input',
+        'yes_no',
+        'file',
+        'link',
+        'multi_choice',
+    ];
 }

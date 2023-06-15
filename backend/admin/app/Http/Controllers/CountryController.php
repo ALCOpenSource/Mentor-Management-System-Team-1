@@ -19,7 +19,7 @@ class CountryController extends Controller
             return new ApiResource(callStatic(Cache::class, 'get', 'countries'));
         }
 
-        $countries = callStatic(Country::class, 'all');
+        $countries = callStatic(Country::class, 'orderBy', 'code')->all();
 
         // Cache forever
         callStatic(Cache::class, 'put', 'countries', $countries, 0);
@@ -45,7 +45,7 @@ class CountryController extends Controller
         }
 
         // Cache forever
-        callStatic(Cache::class, 'put', $cache_key, $country->cities, 0);
+        callStatic(Cache::class, 'put', $cache_key, $country->cities()->orderBy('name')->all(), 0);
 
         return new ApiResource($country->cities);
     }

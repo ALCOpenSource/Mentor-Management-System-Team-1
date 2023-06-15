@@ -1,7 +1,7 @@
 <template>
   <span><Google size="35" /></span>
   <section class="flex flex-col">
-    <h3 class="font-semibold truncate w-[230px]">
+    <h3 class="font-semibold truncate w-[230px] text-sm 2xl:text-base">
       {{ title ?? "No Title" }}
     </h3>
     <div class="flex gap-5">

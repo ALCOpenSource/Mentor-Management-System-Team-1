@@ -34,9 +34,7 @@ function strHelper(string $methodname, ...$args)
  */
 function callStatic(string $className, string $methodname, ...$args)
 {
-    $class = new $className();
-
-    return $class->__callStatic($methodname, $args);
+    return $className."::".$methodname(...$args);
 }
 
 /**
@@ -48,7 +46,7 @@ function callStatic(string $className, string $methodname, ...$args)
  */
 function callStaticMethod(object $class, string $methodname, ...$args)
 {
-    return $class->__callStatic($methodname, $args);
+    return callStatic(get_class($class), $methodname, ...$args);
 }
 
 /**
@@ -231,7 +229,7 @@ function slugify(string $str): string
  */
 function getFileType(string $mimeType): string
 {
-    // Pregematch for image, video, audio, or file
+    // Preg match for image, video, audio, or file
     preg_match('/(image|video|audio|file|doc)/', strtolower($mimeType), $matches);
 
     if (count($matches) > 0) {
@@ -292,6 +290,14 @@ function containsMentions(string $str, User $user): bool
     $pattern = '/(^|\s)(@here|@everyone|@'.$user_name.'|@'.$user_email.')(\s|$)/';
 
     return preg_match($pattern, $str);
+}
+
+/**
+ * Remove @ symbol from the beginning of a string.
+ */
+function removeAtSymbol(string $str): string
+{
+    return preg_replace('/^@/', '', $str);
 }
 
 /**

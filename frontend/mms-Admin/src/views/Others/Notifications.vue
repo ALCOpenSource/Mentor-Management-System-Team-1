@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="font-semibold text-2xl">Notifications</h1>
+    <h1 class="font-semibold text-xl 2xl:text-2xl">Notifications</h1>
     <div class="flex justify-between items-center mt-3 mb-3">
       <div>
         <PlainDropdown :options="options" title="All" />
@@ -10,12 +10,15 @@
           class="flex items-center gap-1 cursor-pointer"
           @click="markAllAsRead"
         >
-          <p class="text-base font-semibold" :class="allRead ? 'read' : ''">
+          <p
+            class="text-sm 2xl:text-base font-semibold"
+            :class="allRead ? 'read' : ''"
+          >
             Mark all as read
           </p>
           <span><CheckMark /></span>
         </div>
-        <Pagination />
+        <!-- <Pagination /> -->
       </div>
     </div>
     <div>
@@ -34,11 +37,15 @@
           />
           <div class="flex flex-col">
             <h3>
-              <span class="text-xl font-semibold">Lex Murphy</span>
-              <span class="text-xl">
+              <span class="text-base 2xl:text-xl font-semibold"
+                >Lex Murphy</span
+              >
+              <span class="text-base 2xl:text-xl">
                 requested approval for Gads Certificate by
               </span>
-              <span class="text-xl font-semibold">Roseline Anapuna</span>
+              <span class="text-base 2xl:text-xl font-semibold"
+                >Roseline Anapuna</span
+              >
             </h3>
             <small class="text-[#B3B3B3]">Today at 9:42 AM</small>
           </div>

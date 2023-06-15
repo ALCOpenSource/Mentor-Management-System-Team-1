@@ -3,7 +3,9 @@
     <div class="flex items-center px-4 gap-6 py-2">
       <span><Google size="50" /></span>
       <section class="flex flex-col">
-        <h3 class="font-semibold text-xl">Google Africa Scholarship Program</h3>
+        <h3 class="font-semibold text-lg 2xl:text-xl">
+          Google Africa Scholarship Program
+        </h3>
         <div class="flex gap-8">
           <div class="flex gap-2 items-center">
             <IconCalendar />
@@ -17,8 +19,8 @@
       </section>
     </div>
     <section class="bg-green-100 px-6 py-4 flex flex-col gap-2">
-      <h1 class="font-semibold text-xl">About:</h1>
-      <p class="pb-2 text-gray-300">
+      <h1 class="font-semibold text-lg 2xl:text-xl">About:</h1>
+      <p class="pb-2 text-gray-300 text-sm 2xl:text-base">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi.
         Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla,
         mattis ligula consectetur, ultrices mauris. Maecenas vitae mattis
@@ -31,14 +33,14 @@
         text="Mentor Managers assigned to this program"
         count="12"
         :programId="id"
-        urlName="mentor-managers-assigned"
+        urlName="mentor-managers-assigned-program"
       />
       <ProgramResource
         type="mentor"
         text="Mentors assigned to this program"
         count="56"
         :programId="id"
-        urlName="mentors-assigned"
+        urlName="mentors-assigned-program"
       />
       <ProgramResource
         type="reports"
@@ -73,6 +75,7 @@
     @closeModal="handleDelete"
   />
 </template>
+
 
 <script setup lang="ts">
 import { onMounted, watch, ref } from "vue";

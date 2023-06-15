@@ -2,7 +2,7 @@
   <div>
     <div class="flex justify-between items-center">
       <div>
-        <h1 class="font-semibold text-2xl">Broadcast Message</h1>
+        <h1 class="font-semibold text-xl 2xl:text-2xl">Broadcast Message</h1>
       </div>
       <router-link to="/admin/messages/inbox">
         <PrimaryBtn title="Close" />
@@ -12,7 +12,7 @@
       <v-expansion-panels variant="inset">
         <v-expansion-panel>
           <v-expansion-panel-title>
-            <h1>
+            <h2 class="text-base">
               Select recepient<span v-if="isSelected.length > 0">: </span>
               <span
                 v-for="item in isSelected"
@@ -20,7 +20,7 @@
                 v-if="isSelected.length > 0"
                 >{{ item }},
               </span>
-            </h1>
+            </h2>
             <template v-slot:actions="{ expanded }">
               <v-icon v-if="!expanded"><IconArrowDown /></v-icon>
               <v-icon v-else><IconArrowUp /></v-icon>
@@ -41,13 +41,13 @@
     </div>
     <div v-if="messageStore.broadcast.data.length !== 0" class="msg-area">
       <div
-        class="flex flex-col items-center center mb-5"
+        class="flex flex-col items-center center mb-5 w-full"
         v-for="message in messageStore.broadcast.data"
         :key="message"
       >
         <small class="smallD bg-white p-1 px-2 rounded">{{message.human_date}}</small>
-        <div class="broadcast-card">
-          <p class="text-[#4D4D4D] text-xl">
+        <div class="broadcast-card w-full">
+          <p class="text-[#4D4D4D] text-base 2xl:text-lg">
             {{message.message}}
           </p>
           <div class="flex justify-between items-center mt-3">

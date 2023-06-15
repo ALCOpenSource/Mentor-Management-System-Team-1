@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../views/Dashboard/Dashboard.vue";
 import dashboardLayout from "@/layouts/dashboardLayout.vue";
 import settingsLayout from "@/layouts/settingsLayout.vue";
+import reportLayout from "@/layouts/reportLayout.vue"
 import { useAuthStore } from "@/store/auth";
 import blankLayout from "@/layouts/blankLayout.vue";
 
@@ -65,13 +66,13 @@ const router = createRouter({
               component: () => import("@/views/Programs/CreateProgram.vue"),
             },
             {
-              path: "mentors-assigned/:id",
-              name: "mentors-assigned",
+              path: "mentors-assigned-program/:id",
+              name: "mentors-assigned-program",
               component: () => import("@/views/Programs/MentorsAssigned.vue"),
             },
             {
-              path: "mentor-managers-assigned/:id",
-              name: "mentor-managers-assigned",
+              path: "mentor-managers-assigned-program/:id",
+              name: "mentor-managers-assigned-program",
               component: () =>
                 import("@/views/Programs/MentorManagersAssigned.vue"),
             },
@@ -96,6 +97,7 @@ const router = createRouter({
           path: "tasks",
           name: "tasks",
           component: blankLayout,
+          redirect: "/admin/tasks/all",
           meta: {
             requiresAuth: true,
           },
@@ -115,12 +117,51 @@ const router = createRouter({
               name: "edit",
               component: () => import("@/views/Tasks/Edit.vue"),
             },
+            {
+              path: "mentors-assigned-tasks/:id",
+              name: "mentors-assigned-tasks",
+              component: () => import("@/views/Tasks/MentorsAssigned.vue"),
+            },
+            {
+              path: "mentor-managers-assigned-tasks/:id",
+              name: "mentor-managers-assigned-tasks",
+              component: () =>
+                import("@/views/Tasks/MentorManagersAssigned.vue"),
+            },
+            {
+              path: "tasks-reports/:id",
+              name: "tasks-reports",
+              component: () => import("@/views/Tasks/ProgramReports.vue"),
+            },
           ],
         },
         {
           path: "reports",
           name: "reports",
-          component: () => import("@/views/Reports/Reports.vue"),
+          component: reportLayout,
+          redirect: "/admin/reports/tasks",
+          children: [
+            {
+              path: "programs",
+              name: "programs-reports",
+              component: () => import("@/views/Reports/EmptyReport.vue")
+            },
+            {
+              path: "tasks",
+              name: "tasks-reports",
+              component: () => import("@/views/Reports/EmptyReport.vue")
+            },
+            {
+              path: "tasks/:id",
+              name: "task-report",
+              component: () => import("@/views/Reports/TaskReports.vue")
+            },
+            {
+              path: "programs/:id",
+              name: "programs-report",
+              component: () => import("@/views/Reports/ProgramReports.vue")
+            }
+          ],
           meta: {
             requiresAuth: true,
           },

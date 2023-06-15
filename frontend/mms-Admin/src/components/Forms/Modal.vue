@@ -2,11 +2,11 @@
   <v-row justify="center">
     <v-dialog v-model="isModalOpen" width="600" persistent>
       <div class="flex bg-white py-6 rounded-xl gap-8 flex-col items-center">
-        <h2 class="font-bold text-2xl">{{ title }}</h2>
+        <h2 class="font-bold text-xl 2xl:text-2xl">{{ title }}</h2>
         <v-card-text>
           <img v-if="src" :src="src" alt="img" />
-          <p class="text-center text-lg px-16">{{ cardText }}</p>
-          <h2 v-if="centerTitle" class="font-bold text-2xl">
+          <p class="text-center text-base 2xl:text-lg px-16">{{ cardText }}</p>
+          <h2 v-if="centerTitle" class="font-bold text-xl 2xl:text-2xl">
             {{ centerTitle }}
           </h2>
           <div v-if="email" class="min-w-[450px]">
