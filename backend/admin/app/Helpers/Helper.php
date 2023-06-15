@@ -294,13 +294,16 @@ function containsMentions(string $str, User $user): bool
     return preg_match($pattern, $str);
 }
 
+/**
+ * Generate certificates.
+ */
 function generateCertificate(string $name)
 {
     try {
         $sampleCertPath = public_path('certs/cert.jpg');
 
         if (! File::exists($sampleCertPath)) {
-            // Sample certificate image does not exist
+            // Sample certificate image does not exist.
             return false;
         }
 
@@ -310,13 +313,13 @@ function generateCertificate(string $name)
         $destinationPath = public_path('certs/');
 
         if (! File::isDirectory($destinationPath)) {
-            // Create the destination directory if it doesn't exist
+            // Create the destination directory if it doesn't exist.
             File::makeDirectory($destinationPath, 0o755, true);
         }
 
         $fontPath = public_path('fonts/2.ttf');
         if (! File::exists($fontPath)) {
-            // Font file does not exist
+            // Font file does not exist.
             return false;
         }
 
@@ -333,7 +336,7 @@ function generateCertificate(string $name)
 
         return $imagePath;
     } catch (NotSupportedException|NotWritableException $e) {
-        // Unable to generate or save the certificate
+        // Unable to generate or save the certificate.
         return false;
     }
 }

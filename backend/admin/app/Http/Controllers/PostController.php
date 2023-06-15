@@ -6,8 +6,6 @@ use App\Http\Resources\ApiResource;
 use App\Models\Post;
 use App\Models\PostDiscussions;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
-use Image;
 
 class PostController extends Controller
 {
