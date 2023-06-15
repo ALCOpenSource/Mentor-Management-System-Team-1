@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\PostDiscussions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Image;
 
 class PostController extends Controller
 {
@@ -32,7 +33,7 @@ class PostController extends Controller
         $slugExist = callStatic(Post::class, 'where', 'slug', $slug)->first();
         if ($slugExist) {
             $numbers = rand(1, 100);
-            $slug = $slug.'-'.$numbers;
+            $slug = $slug . '-' . $numbers;
 
             return $this->createUrlSlug($slug);
         }
@@ -58,7 +59,7 @@ class PostController extends Controller
         ]);
 
         // If body is empty and attachment is empty return error
-        if (! $request->body && ! $request->title && ! $request->attachment) {
+        if (!$request->body && !$request->title && !$request->attachment) {
             return new ApiResource(['data' => null, 'message' => 'body or title or attachment is required.', 'status' => 422]);
         }
         $attachment = null;
@@ -100,14 +101,14 @@ class PostController extends Controller
         ]);
 
         // If body is empty and attachment is empty return error
-        if (! $request->body && ! $request->title && ! $request->attachment) {
+        if (!$request->body && !$request->title && !$request->attachment) {
             return new ApiResource(['data' => null, 'message' => 'body or title or attachment is required.', 'status' => 422]);
         }
         $post = callStatic(Post::class, 'where', function ($query) {
             $query->where('user_id', auth()->user()->id);
         })->where('uuid', $post_id)->first();
 
-        if (! $post) {
+        if (!$post) {
             return new ApiResource(['data' => null, 'message' => 'Post not found.', 'status' => 404]);
         }
         // callStatic(Post::class, "where", "uuid", $post_id)->first();
@@ -161,9 +162,9 @@ class PostController extends Controller
      */
     public function getPostImage($fileName)
     {
-        $path = storage_path('storage/app/post/attachments/'.$fileName);
+        $path = storage_path('storage/app/post/attachments/' . $fileName);
 
-        if (! callStatic(File::class, 'exists', $path)) {
+        if (!callStatic(File::class, 'exists', $path)) {
             abort(404);
         }
 
@@ -172,7 +173,7 @@ class PostController extends Controller
 
         return response()->make($file, 200, [
             'Content-Type' => $type,
-            'Content-Disposition' => 'inline; filename="'.$fileName.'"',
+            'Content-Disposition' => 'inline; filename="' . $fileName . '"',
         ]);
     }
 
@@ -187,7 +188,7 @@ class PostController extends Controller
             $query->where('user_id', auth()->user()->id);
         })->where('uuid', $post_id)->first();
 
-        if (! $post) {
+        if (!$post) {
             return new ApiResource(['data' => null, 'message' => 'Post not found.', 'status' => 404]);
         }
 
@@ -211,7 +212,7 @@ class PostController extends Controller
         ]);
 
         // If comment is empty and attachment is empty return error
-        if (! $request->comment && ! $request->attachment) {
+        if (!$request->comment && !$request->attachment) {
             return new ApiResource(['data' => null, 'message' => 'body or title or attachment is required.', 'status' => 422]);
         }
         $is_owner = false;
@@ -251,7 +252,7 @@ class PostController extends Controller
         ]);
 
         // If comment is empty and attachment is empty return error
-        if (! $request->comment && ! $request->attachment) {
+        if (!$request->comment && !$request->attachment) {
             return new ApiResource(['data' => null, 'message' => 'body or title or attachment is required.', 'status' => 422]);
         }
 
@@ -292,7 +293,7 @@ class PostController extends Controller
         })->where('post_uuid', $post_id)
             ->where('uuid', $comment_id)->first();
 
-        if (! $comment) {
+        if (!$comment) {
             return new ApiResource(['data' => null, 'message' => 'Post not found.', 'status' => 404]);
         }
 

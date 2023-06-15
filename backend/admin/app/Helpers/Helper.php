@@ -6,6 +6,11 @@
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\Exception\NotWritableException;
+use Intervention\Image\Exception\NotSupportedException;
+
 
 /**
  * Call a string helper method.
@@ -289,3 +294,49 @@ function containsMentions(string $str, User $user): bool
 
     return preg_match($pattern, $str);
 }
+
+function generateCertificate(string $name)
+{
+    try {
+        $sampleCertPath = public_path('certs/cert.jpg');
+        
+        if (!File::exists($sampleCertPath)) {
+            // Sample certificate image does not exist
+            return false;
+        }
+
+        $image = Image::make($sampleCertPath);
+
+        $imageName = $name . '-' . 'cert';
+        $destinationPath = public_path('certs/');
+
+        if (!File::isDirectory($destinationPath)) {
+            // Create the destination directory if it doesn't exist
+            File::makeDirectory($destinationPath, 0755, true);
+        }
+
+        $fontPath = public_path('fonts/2.ttf');
+        if (!File::exists($fontPath)) {
+            // Font file does not exist
+            return false;
+        }
+
+        $image->text($name, 500, 320, function ($font) use ($fontPath) {
+            $font->file($fontPath);
+            $font->size(40);
+            $font->color('#001a1a');
+            $font->align('center');
+            $font->valign('bottom');
+        });
+
+        $imagePath = $destinationPath . $imageName . '.png';
+        $image->save($imagePath);
+
+        return $imagePath;
+    } catch (NotSupportedException | NotWritableException $e) {
+        // Unable to generate or save the certificate
+        return false;
+    }
+}
+
+

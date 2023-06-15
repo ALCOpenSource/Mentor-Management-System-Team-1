@@ -37,7 +37,6 @@ class Post extends Model
     ];
 
     protected $appends = [
-        'is_published_human',
         'attachments',
         'preview',
     ];
