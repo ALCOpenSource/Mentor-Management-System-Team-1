@@ -4,8 +4,11 @@
 // Path: app\Helpers\Helper.php
 
 use App\Models\User;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Intervention\Image\Image;
+use Intervention\Image\ImageManager;
 
 /**
  * Call a string helper method.
@@ -28,9 +31,9 @@ function strHelper(string $methodname, ...$args)
  *
  * @return mixed
  */
-function callStatic(string $className, string $methodname, ...$args)
+function callStatic(string $className, string $methodName, ...$args)
 {
-    return $className."::".$methodname(...$args);
+    return call_user_func([$className, $methodName], ...$args);
 }
 
 /**
@@ -294,4 +297,53 @@ function containsMentions(string $str, User $user): bool
 function removeAtSymbol(string $str): string
 {
     return preg_replace('/^@/', '', $str);
+}
+
+/**
+ * Generate certificates.
+ */
+function generateCertificate(string $name)
+{
+    try {
+        $filesystem = app(Filesystem::class);
+        $sampleCertPath = public_path('certs/cert.jpg');
+
+        if (! $filesystem->exists($sampleCertPath)) {
+            // Sample certificate image does not exist
+            return false;
+        }
+
+        $imageManager = new ImageManager(['driver' => 'gd']);
+        $image = $imageManager->make($sampleCertPath);
+
+        $imageName = $name.'-cert';
+        $destinationPath = public_path('certs/');
+
+        if (! $filesystem->isDirectory($destinationPath)) {
+            // Create the destination directory if it doesn't exist
+            $filesystem->makeDirectory($destinationPath);
+        }
+
+        $fontPath = public_path('fonts/2.ttf');
+        if (! $filesystem->exists($fontPath)) {
+            // Font file does not exist
+            return false;
+        }
+
+        $image->text($name, 500, 320, function ($font) use ($fontPath) {
+            $font->file($fontPath);
+            $font->size(40);
+            $font->color('#001a1a');
+            $font->align('center');
+            $font->valign('bottom');
+        });
+
+        $imagePath = $destinationPath.$imageName.'.png';
+        $image->save($imagePath);
+
+        return $imagePath;
+    } catch (\Intervention\Image\Exception\NotSupportedException|\Intervention\Image\Exception\NotWritableException $e) {
+        // Unable to generate or save the certificate
+        return false;
+    }
 }

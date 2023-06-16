@@ -37,7 +37,6 @@ class Post extends Model
     ];
 
     protected $appends = [
-        'is_published_human',
         'attachments',
         'preview',
     ];
@@ -55,7 +54,7 @@ class Post extends Model
      */
     public function getIsPublishedHumanAttribute()
     {
-        if ($this->is_published === true) {
+        if (true === $this->is_published) {
             return 'Published';
         }
 

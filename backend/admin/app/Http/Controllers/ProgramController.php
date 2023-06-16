@@ -29,9 +29,7 @@ class ProgramController extends Controller
         }
 
         return $program->storeAttachment($file, 'avatar');
-
     }
-
 
     /**
      * Update program criteria.
@@ -47,14 +45,14 @@ class ProgramController extends Controller
         if ($request->has('criteria')) {
             foreach ($request->criteria as $criteria) {
                 $program->criteria()->updateOrCreate([
-                        'id' => $criteria['id'] ?? null,
-                    ], [
-                        'name' => $criteria['name'],
-                        'input_type' => $criteria['input_type'],
-                        'label' => $criteria['label'],
-                        'meta' => ($criteria['meta'] ?? null),
-                        'pre_validation' => ($criteria['pre_validation'] ?? null),
-                        'validation' => ($criteria['validation'] ?? null),
+                    'id' => $criteria['id'] ?? null,
+                ], [
+                    'name' => $criteria['name'],
+                    'input_type' => $criteria['input_type'],
+                    'label' => $criteria['label'],
+                    'meta' => ($criteria['meta'] ?? null),
+                    'pre_validation' => ($criteria['pre_validation'] ?? null),
+                    'validation' => ($criteria['validation'] ?? null),
                 ]);
             }
         }
@@ -102,15 +100,18 @@ class ProgramController extends Controller
             ]
         );
 
-        $program = callStatic(Program::class, 'create', $request->only(
-            [
-                'name',
-                'description',
-            ]
+        $program = callStatic(
+            Program::class,
+            'create',
+            $request->only(
+                [
+                    'name',
+                    'description',
+                ]
             )
         );
 
-        if ($request->hasFile('avatar') === true) {
+        if (true === $request->hasFile('avatar')) {
             $this->updateAvatar($request->file('avatar'), $program);
         }
 
@@ -161,7 +162,7 @@ class ProgramController extends Controller
 
         $program = callStatic(Program::class, 'find', $program_id);
 
-        if ((bool) $program === false) {
+        if (false === (bool) $program) {
             return new ApiResource([
                 'error' => 'Program not found.',
                 'status' => 404,
@@ -174,7 +175,7 @@ class ProgramController extends Controller
                 'description',
             ]
         ) as $key => $value) {
-            if ((bool) $value === true) {
+            if (true === (bool) $value) {
                 $program->$key = $value;
             }
         }
