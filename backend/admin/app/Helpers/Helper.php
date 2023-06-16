@@ -4,8 +4,8 @@
 // Path: app\Helpers\Helper.php
 
 use App\Models\User;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
@@ -31,9 +31,9 @@ function strHelper(string $methodname, ...$args)
  *
  * @return mixed
  */
-function callStatic(string $className, string $methodname, ...$args)
+function callStatic(string $className, string $methodName, ...$args)
 {
-    return $className.'::'.$methodname(...$args);
+    return call_user_func([$className, $methodName], ...$args);
 }
 
 /**
@@ -305,9 +305,10 @@ function removeAtSymbol(string $str): string
 function generateCertificate(string $name)
 {
     try {
+        $filesystem = app(Filesystem::class);
         $sampleCertPath = public_path('certs/cert.jpg');
 
-        if (! File::exists($sampleCertPath)) {
+        if (! $filesystem->exists($sampleCertPath)) {
             // Sample certificate image does not exist
             return false;
         }
@@ -318,13 +319,13 @@ function generateCertificate(string $name)
         $imageName = $name.'-cert';
         $destinationPath = public_path('certs/');
 
-        if (! File::isDirectory($destinationPath)) {
+        if (! $filesystem->isDirectory($destinationPath)) {
             // Create the destination directory if it doesn't exist
-            File::makeDirectory($destinationPath, 0o755, true);
+            $filesystem->makeDirectory($destinationPath);
         }
 
         $fontPath = public_path('fonts/2.ttf');
-        if (! File::exists($fontPath)) {
+        if (! $filesystem->exists($fontPath)) {
             // Font file does not exist
             return false;
         }
