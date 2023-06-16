@@ -444,7 +444,7 @@ class MessageController extends Controller
             'receiver_ids' => 'nullable|array',
             'receiver_ids.*' => 'nullable|integer|exists:users,id',
             'roles' => 'nullable|array',
-            'roles.*' => 'nullable|string|in:' . implode(',', [AppConstants::ROLE_ADMIN, AppConstants::ROLE_MENTOR, AppConstants::ROLE_MENTOR_MANAGER]),
+            'roles.*' => 'nullable|string|in:'.implode(',', [AppConstants::ROLE_ADMIN, AppConstants::ROLE_MENTOR, AppConstants::ROLE_MENTOR_MANAGER]),
         ]);
 
         // If both attachments and message is empty return error
@@ -471,7 +471,7 @@ class MessageController extends Controller
         $receiverIds = array_diff($receiverIds, [$user->id]);
 
         // If receiver ids are empty return error
-        if (count($receiverIds) == 0) {
+        if (0 == count($receiverIds)) {
             return new ApiResource([
                 'message' => 'No receiver found',
                 'status' => 422,
@@ -507,8 +507,8 @@ class MessageController extends Controller
                 $skip = true;
             }
 
-            if($attachments && ! $skip){
-                foreach($attachments as $attachment){
+            if ($attachments && ! $skip) {
+                foreach ($attachments as $attachment) {
                     $message->attachment()->create([
                         'name' => $attachment->name,
                         'path' => $attachment->path,

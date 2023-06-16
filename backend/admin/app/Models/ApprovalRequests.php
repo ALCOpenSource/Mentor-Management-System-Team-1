@@ -42,7 +42,6 @@ class ApprovalRequests extends Model
         'request_type',
     ];
 
-
     /**
      * Static::boot method to set requested_by to the current user.
      *
@@ -55,7 +54,6 @@ class ApprovalRequests extends Model
         static::creating(function ($model) {
             $model->requested_by = auth()->user()->id;
         });
-
     }
 
     /**
@@ -87,5 +85,4 @@ class ApprovalRequests extends Model
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
-
 }
