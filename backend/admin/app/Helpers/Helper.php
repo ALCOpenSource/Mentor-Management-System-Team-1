@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Intervention\Image\Exception\NotSupportedException;
 use Intervention\Image\Exception\NotWritableException;
-use Intervention\Image\Facades\Image;
-
+use Intervention\Image\Image;
+use Intervention\Image\ImageManager;
+use Illuminate\Support\Facades\Storage;
 /**
  * Call a string helper method.
  *
@@ -307,25 +308,26 @@ function generateCertificate(string $name)
 {
     try {
         $sampleCertPath = public_path('certs/cert.jpg');
-
-        if (! File::exists($sampleCertPath)) {
-            // Sample certificate image does not exist.
+        
+        if (!File::exists($sampleCertPath)) {
+            // Sample certificate image does not exist
             return false;
         }
 
-        $image = Image::make($sampleCertPath);
+        $imageManager = new ImageManager(['driver' => 'gd']);
+        $image = $imageManager->make($sampleCertPath);
 
-        $imageName = $name.'-cert';
+        $imageName = $name . '-' . 'cert';
         $destinationPath = public_path('certs/');
 
-        if (! File::isDirectory($destinationPath)) {
-            // Create the destination directory if it doesn't exist.
-            File::makeDirectory($destinationPath, 0o755, true);
+        if (!File::isDirectory($destinationPath)) {
+            // Create the destination directory if it doesn't exist
+            File::makeDirectory($destinationPath, 0755, true);
         }
 
         $fontPath = public_path('fonts/2.ttf');
-        if (! File::exists($fontPath)) {
-            // Font file does not exist.
+        if (!File::exists($fontPath)) {
+            // Font file does not exist
             return false;
         }
 
@@ -337,12 +339,13 @@ function generateCertificate(string $name)
             $font->valign('bottom');
         });
 
-        $imagePath = $destinationPath.$imageName.'.png';
+        $imagePath = $destinationPath . $imageName . '.png';
         $image->save($imagePath);
 
         return $imagePath;
-    } catch (NotSupportedException|NotWritableException $e) {
-        // Unable to generate or save the certificate.
+    } catch (\Intervention\Image\Exception\NotSupportedException | \Intervention\Image\Exception\NotWritableException $e) {
+        // Unable to generate or save the certificate
         return false;
     }
+
 }
