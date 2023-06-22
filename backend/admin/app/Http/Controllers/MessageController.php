@@ -169,10 +169,12 @@ class MessageController extends Controller
             SELECT distinct(m.room_id)
             FROM messages m
             WHERE m.sender_id = ? OR m.receiver_id = ?
+            AND ((m.broadcast = 0 OR m.broadcast IS NULL) AND m.sender_id != ?)
             GROUP BY m.room_id
             ORDER BY created_at ASC
             LIMIT 20 OFFSET ?
         ', [
+            $user->id,
             $user->id,
             $user->id,
             ($page - 1) * 20,
@@ -431,6 +433,62 @@ class MessageController extends Controller
     /**
      * Broadcast message.
      *
+     * @param mixed $user
+     * @param mixed $request
+     * @param mixed $receiver_id
+     * @param mixed $broadcast_id
+     *
+     * @return Message $message
+     */
+    protected function sendBroadcast($user, $request, $receiver_id, $broadcast_id)
+    {
+        static $skip = false;
+        static $attachments = null;
+
+        // If receiver is the sender, skip
+        if ($user->id == $request->receiver_id) {
+            return;
+        }
+
+        // Create a copy of the message
+        $message = $user->messages()->create([
+            'receiver_id' => $receiver_id,
+            'message' => $request->message,
+            'type' => 'broadcast',
+            'broadcast_id' => $broadcast_id,
+        ]);
+
+        // Attachments
+        if ($request->hasFile('attachments') && ! $attachments) {
+            $this->saveAttachments($request->attachments, $message);
+
+            // Save attachments for reuse
+            $attachments = $message->attachment()->get();
+            $skip = true;
+        }
+
+        if ($attachments && ! $skip) {
+            foreach ($attachments as $attachment) {
+                $message->attachment()->create([
+                    'name' => $attachment->name,
+                    'path' => $attachment->path,
+                    'size' => $attachment->size,
+                    'extension' => $attachment->extension,
+                    'mime_type' => $attachment->mime_type,
+                    'type' => $attachment->type,
+                ]);
+            }
+        }
+
+        // Send notification
+        event(new NewMessage($message));
+
+        return $message;
+    }
+
+    /**
+     * Broadcast message.
+     *
      * @param mixed|null $user_role
      */
     public function broadcastMessage(Request $request)
@@ -481,46 +539,9 @@ class MessageController extends Controller
         $request->merge(['receiver_ids' => $receiverIds]);
         $message = null;
         $broadcast_id = strHelper('uuid');
-        $attachments = null;
 
         foreach ($receiverIds as $receiver_id) {
-            // If receiver is the sender, skip
-            if ($user->id == $request->receiver_id) {
-                continue;
-            }
-
-            // Create a copy of the message
-            $message = $user->messages()->create([
-                'receiver_id' => $receiver_id,
-                'message' => $request->message,
-                'type' => 'broadcast',
-                'broadcast_id' => $broadcast_id,
-            ]);
-
-            // Attachments
-            $skip = false;
-            if ($request->hasFile('attachments') && ! $attachments) {
-                $this->saveAttachments($request->attachments, $message);
-
-                // Save attachments for reuse
-                $attachments = $message->attachment()->get();
-                $skip = true;
-            }
-
-            if ($attachments && ! $skip) {
-                foreach ($attachments as $attachment) {
-                    $message->attachment()->create([
-                        'name' => $attachment->name,
-                        'path' => $attachment->path,
-                        'size' => $attachment->size,
-                        'extension' => $attachment->extension,
-                        'mime_type' => $attachment->mime_type,
-                        'type' => $attachment->type,
-                    ]);
-                }
-            }
-            // Send notification
-            event(new NewMessage($message));
+            $message = $this->sendBroadcast($user, $request, $receiver_id, $broadcast_id);
         }
 
         // Remove receiver_id from the message

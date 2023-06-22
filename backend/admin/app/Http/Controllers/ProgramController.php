@@ -226,9 +226,10 @@ class ProgramController extends Controller
     /**
      * Archive a Program.
      *
+     * @param mixed $request
      * @param mixed $program_id
      */
-    public function archiveProgram($program_id)
+    public function archiveProgram(Request $request, $program_id)
     {
         $program = callStatic(Program::class, 'find', $program_id);
 
@@ -240,10 +241,15 @@ class ProgramController extends Controller
         }
 
         // TODO: Check roles and permissions to archive program.
+        if ($request->force_delete) {
+            $program->forceDelete();
+
+            return new ApiResource(['message' => 'Program deleted permanently.']);
+        }
 
         $program->delete();
 
-        return new ApiResource(['data' => $program]);
+        return new ApiResource(['message' => 'Program archived.']);
     }
 
     /**

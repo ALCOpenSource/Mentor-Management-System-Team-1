@@ -31,9 +31,9 @@ function strHelper(string $methodname, ...$args)
  *
  * @return mixed
  */
-function callStatic(string $className, string $methodName, ...$args)
+function callStatic(string $className, string $methodname, ...$args)
 {
-    return call_user_func([$className, $methodName], ...$args);
+    return $className::$methodname(...$args);
 }
 
 /**
@@ -92,7 +92,7 @@ function addUserSession($request)
  */
 function linkifyUrl(string $text): string
 {
-    // URLs starting with http://, https://, or ftp://
+    // URLs starting with http://, https://, or ftp://.
     $matches = [];
 
     $pattern = '/(https?:\/\/[^\s]+)/';
@@ -228,7 +228,7 @@ function slugify(string $str): string
  */
 function getFileType(string $mimeType): string
 {
-    // Preg match for image, video, audio, or file
+    // Preg match for image, video, audio, or file.
     preg_match('/(image|video|audio|file|doc)/', strtolower($mimeType), $matches);
 
     if (count($matches) > 0) {
