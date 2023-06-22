@@ -31,7 +31,7 @@ function strHelper(string $methodname, ...$args)
  *
  * @return mixed
  */
-function callStatic(string $className, string $methodName, ...$args)
+function callStatic(string $className, string $methodname, ...$args)
 {
     return $className::$methodname(...$args);
 }

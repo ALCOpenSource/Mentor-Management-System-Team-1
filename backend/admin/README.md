@@ -4,8 +4,8 @@
 
 ### Prerequisites
 
-*   PHP 8.1 or higher
-*   Composer
+-   PHP 8.1 or higher
+-   Composer
 
 ### Installation
 
@@ -68,7 +68,7 @@ return new ApiResource(User::paginate(10));
 
 ### Prerequisites
 
-*   Docker
+-   Docker
 
 ### Installation
 
@@ -86,7 +86,6 @@ Below is a diagram showing the architecture of the project.
 
 ![Architecture](./architecture.png)
 
-
 ### Frontend
 
 Frontend contains only Nginx which is used to host the compiled version of Vue3 app. The app is compiled using `npm run build` and the compiled files are placed in the `dist` folder. The `dist` folder is then served by Nginx.
@@ -95,11 +94,11 @@ Frontend contains only Nginx which is used to host the compiled version of Vue3 
 
 Backend contains 5 services which are:
 
-1. Nginx (Acts purely as reverse proxy in this case)
-2. Laravel Octane (Used to serve the Laravel app on localhost)
-3. Redis (Used for caching)
-4. MariaDB (Used for storing data)
-5. Pusher websocket server (Used for realtime notifications)
+1.  Nginx (Acts purely as reverse proxy in this case)
+2.  Laravel Octane (Used to serve the Laravel app on localhost)
+3.  Redis (Used for caching)
+4.  MariaDB (Used for storing data)
+5.  Pusher websocket server (Used for realtime notifications)
 
 The apps are served using Laravel Octane. Laravel Octane is a high performance application server for Laravel. It is built on top of Swoole, a production-grade async PHP runtime. It is used to serve the Laravel app on localhost.
 
@@ -113,14 +112,13 @@ The API documentation can be found [Here](https://www.postman.com/skillcatapp/wo
 
 There are many things that can be improved on the project. Below are the major concerns I feel still need a bit of work.
 
-1. The API documentation is not complete. I have only documented the endpoints that I have used in the frontend. I have not documented the endpoints that I have not used in the frontend.
-2. Roles need to be nailed down and implemented. Currently, I have only implemented the admin role. I have not implemented the other roles. This is because I am not sure what the other roles are supposed to do or how the affect the system.
-3. Adding @ mentions is also something that needs to be implemented. Currently, I have only implemented the ability to add a comment. I have not implemented the ability to mention a user in a comment.
-4. Additional improvement on text editor to support other formats e.g. Markdown and LaTeX.
-5. Add ability to customize things such as email templates which is currently unavailable.
-6. Tighten role permissions. This includes clearly defining what each role can do and what they cannot do.
-7. Adding meilisearch to improve search functionality. This will enable a much more robust full text search.
-
+1.  The API documentation is not complete. I have only documented the endpoints that I have used in the frontend. I have not documented the endpoints that I have not used in the frontend.
+2.  Roles need to be nailed down and implemented. Currently, I have only implemented the admin role. I have not implemented the other roles. This is because I am not sure what the other roles are supposed to do or how the affect the system.
+3.  Adding @ mentions is also something that needs to be implemented. Currently, I have only implemented the ability to add a comment. I have not implemented the ability to mention a user in a comment.
+4.  Additional improvement on text editor to support other formats e.g. Markdown and LaTeX.
+5.  Add ability to customize things such as email templates which is currently unavailable.
+6.  Tighten role permissions. This includes clearly defining what each role can do and what they cannot do.
+7.  Adding meilisearch to improve search functionality. This will enable a much more robust full text search.
 
 ## License
 

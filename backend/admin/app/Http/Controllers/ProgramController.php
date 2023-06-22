@@ -241,8 +241,9 @@ class ProgramController extends Controller
         }
 
         // TODO: Check roles and permissions to archive program.
-        if($request->force_delete) {
+        if ($request->force_delete) {
             $program->forceDelete();
+
             return new ApiResource(['message' => 'Program deleted permanently.']);
         }
 
