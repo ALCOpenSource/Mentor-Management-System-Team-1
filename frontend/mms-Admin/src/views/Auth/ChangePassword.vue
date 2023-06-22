@@ -21,8 +21,12 @@ const toggleModal = () => {
 <template>
   <div class="w-3/5 mx-auto flex flex-col justify-center h-full">
     <div>
-      <h1 class="mb-1">Set new password</h1>
-      <h3>Put in the email attached to this account</h3>
+      <h1 class="mb-1 font-semibold text-2xl 2xl:text-3xl 2xl:font-bold">
+        Set new password
+      </h1>
+      <h3 class="font-normal text-xl 2xl:text-[22px]">
+        Put in the email attached to this account
+      </h3>
     </div>
     <form class="mt-14 mb-5" @submit.prevent="onPasswordChange">
       <Password
@@ -38,9 +42,11 @@ const toggleModal = () => {
         @click="toggleModal"
       />
     </form>
-    <p class="flex justify-end font-semibold underline">
-      Remember Password? Login
-    </p>
+    <router-link :to="{ name: 'login' }">
+      <p class="flex justify-end font-semibold underline">
+        Remember Password? Login
+      </p>
+    </router-link>
   </div>
   <Modal
     title="Password Changed Successfully"
@@ -52,14 +58,7 @@ const toggleModal = () => {
 </template>
 
 <style scoped lang="scss">
-h1 {
-  font-weight: 700;
-  font-size: 32px;
-}
-
 h3 {
-  font-weight: 400;
-  font-size: 22px;
   color: var(--text-inactive);
 }
 

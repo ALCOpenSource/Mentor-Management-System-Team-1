@@ -1,7 +1,11 @@
 <template>
   <div class="flex justify-between items-center mb-4">
-    <h2 class="font-semibold text-lg pb-2">{{ title }}</h2>
-    <span class="bg-white extra_info p-1 rounded-md px-4 font-semibold">
+    <h2 class="font-[500] 2xl:font-semibold text-base 2xl:text-lg">
+      {{ title }}
+    </h2>
+    <span
+      class="bg-white extra_info p-[2px] 2xl:p-1 rounded-md px-3 2xl:px-4 font-semibold"
+    >
       {{ extraInfo }}
     </span>
   </div>

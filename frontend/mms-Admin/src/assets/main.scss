@@ -3,12 +3,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 :root {
   --btn-primary: #058b94;
   --btn-primary-hover: #035d63;
   --btn-secondary-hover: #e6fdfe;
   --btn-disabled: #808080;
   --btn-secondary: #fff;
+  --text-primary: #023c40;
   --text-inactive: #808080;
   --text-active: #000;
   --border: #e6e6e6;
@@ -63,8 +65,12 @@ body {
 }
 
 .v-field__input {
-  font-size: large;
+  font-size: 16px;
   padding: 0 !important;
+
+  @media (max-width: 1280px) {
+    font-size: 14px;
+  }
 }
 
 .v-field--active {
@@ -86,7 +92,7 @@ body {
 }
 
 .v-expansion-panel-title--active > .v-expansion-panel-title__overlay {
-  background-color: var(--btn-primary);
+  display: none !important;
 }
 
 .v-expansion-panel {
@@ -131,5 +137,41 @@ body {
     position: absolute !important;
     z-index: 9999 !important;
     bottom: 50px !important;
+  }
+}
+
+.scrollbar {
+  &::-webkit-scrollbar {
+    width: 5px;
+    transition: all 0.5s ease-in-out;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #06b9c6;
+    border-radius: 50px;
+
+    &:hover {
+      background: #058b94;
+    }
+  }
+}
+
+.fancy-scroll {
+  &::-webkit-scrollbar {
+    width: 5px;
+    transition: all 0.5s ease-in-out;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #06b9c6;
+    border-radius: 50px;
   }
 }

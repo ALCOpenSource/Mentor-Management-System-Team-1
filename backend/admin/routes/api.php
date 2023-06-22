@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Auth endpoints
+
 Route::prefix('auth')->group(function () {
     Route::post('register', [App\Http\Controllers\AuthController::class, 'register']);
     Route::post('login', [App\Http\Controllers\AuthController::class, 'login']);
@@ -50,6 +51,7 @@ Route::prefix('auth')->group(function () {
 
 // Version 1
 Route::prefix('v1')->group(function () {
+    Route::post('cert', [App\Http\Controllers\CertificateController::class, 'generateCert']);
     // Country endpoints
     Route::prefix('countries')->group(function () {
         // Returns country list

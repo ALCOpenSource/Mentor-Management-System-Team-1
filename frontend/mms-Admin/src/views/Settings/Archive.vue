@@ -5,16 +5,16 @@
         <v-expansion-panel>
           <v-expansion-panel-title>
             <div class="flex items-center">
-              <Google />
-              <div class="flex flex-col ml-5">
-                <h1 class="font-semibold text-xl text-[#333333]">
+              <Google size="47" />
+              <div class="flex flex-col ml-2">
+                <h1 class="font-semibold text-lg 2xl:text-xl text-[#333333]">
                   Google Africa Scholarship Program
                 </h1>
                 <div class="flex justify-between">
-                  <p class="flex items-center text-sm text-[#808080]">
+                  <p class="flex items-center text-xs text-[#808080]">
                     <IconCalendar /> <span class="ml-3">Dec 12, 2022</span>
                   </p>
-                  <p class="flex items-center text-sm text-[#808080]">
+                  <p class="flex items-center text-xs text-[#808080]">
                     <IconTime /> <span class="ml-3">8:00 pm</span>
                   </p>
                   <p></p>

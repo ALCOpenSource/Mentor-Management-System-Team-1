@@ -1,8 +1,8 @@
 <template>
-  <div className="flex gap-4 pt-8 overflow-y-hidden">
-    <div className="w-6/12 overflow-x-hidden">
+  <div className="flex gap-7 overflow-y-hidden">
+    <div className="w-[359px] overflow-x-hidden">
       <section className="flex justify-between pb-6 overflow-y-auto ">
-        <h1 className="font-bold text-2xl">Tasks</h1>
+        <h1 className="font-semibold text-xl 2xl:text-2xl">Tasks</h1>
         <div class="flex items-center gap-2">
           <span class="cursor-pointer">
             <IconSearch color="#058B94" />
@@ -13,7 +13,7 @@
         </div>
       </section>
       <section
-        class="flex flex-col h-[80vh] task_list gap-4 overflow-y-auto overflow-x-hidden"
+        class="flex flex-col h-[80vh] task_list gap-2 overflow-y-auto overflow-x-hidden"
       >
         <TaskCard
           v-for="task in allTasks"
@@ -27,11 +27,11 @@
       </section>
     </div>
     <div className="flex flex-col gap-2 w-full">
-      <router-link to="create">
-        <div class="flex justify-end">
-        <PrimaryBtn title="Create New Task" />
+      <div class="flex justify-end">
+        <router-link :to="{ name: 'create' }">
+          <PrimaryBtn title="Create New Task" />
+        </router-link>
       </div>
-      </router-link>
       <TaskDetails :task="taskToShow" />
     </div>
   </div>

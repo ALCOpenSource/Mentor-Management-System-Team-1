@@ -37,7 +37,6 @@ class Post extends Model
     ];
 
     protected $appends = [
-        'is_published_human',
         'attachments',
         'preview',
     ];
@@ -48,6 +47,18 @@ class Post extends Model
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get Human readable.
+     */
+    public function getIsPublishedHumanAttribute()
+    {
+        if (true === $this->is_published) {
+            return 'Published';
+        }
+
+        return 'Not Published';
     }
 
     /**

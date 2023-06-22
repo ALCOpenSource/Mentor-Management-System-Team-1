@@ -1,6 +1,6 @@
 <template>
-  <div class="mx-3 mt-10 mb-12">
-    <h1 class="text-xl font-semibold mb-5">How can we help you?</h1>
+  <div class="mx-3 mt-5 mb-12">
+    <h1 class="text-lg 2xl:text-xl font-semibold mb-5">How can we help you?</h1>
     <v-form ref="form" v-model="valid" @submit.prevent="handleSubmit">
       <v-text-field
         v-model="supportDetails.name"
@@ -26,7 +26,7 @@
         rows="5"
       ></textarea>
       <div class="flex justify-between items-center mt-8 mb-5">
-        <Docs class="cursor-pointer"/>
+        <Docs class="cursor-pointer" />
         <div class="w-[115px]">
           <PrimaryBtn title="Send" type="submit" />
         </div>
@@ -49,8 +49,8 @@ import Email from "../../components/Forms/Email.vue";
 import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 import Modal from "../../components/Forms/Modal.vue";
 import { profileSuccess } from "../../assets/images";
-import { Docs } from "@/assets/icons"
-import {useSupportStore} from "../../store/support"
+import { Docs } from "@/assets/icons";
+import { useSupportStore } from "../../store/support";
 
 const supportStore = useSupportStore();
 
@@ -71,16 +71,16 @@ const toggleModal = () => {
   isModalOpen.value = !isModalOpen.value;
 };
 
-const handleSubmit = async() => {
+const handleSubmit = async () => {
   if (valid.value) {
     // Handle the Form submission
-  const response = await supportStore.createTicket(supportDetails);
-  
-  if (response && response.data && response.data.success) {
-    toggleModal();
-    // Handle the success here, toggle modal
-    return;
-  }
+    const response = await supportStore.createTicket(supportDetails);
+
+    if (response && response.data && response.data.success) {
+      toggleModal();
+      // Handle the success here, toggle modal
+      return;
+    }
   }
 };
 </script>

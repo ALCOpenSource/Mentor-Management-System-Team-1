@@ -16,12 +16,10 @@
 </template>
 
 <script setup lang="ts">
-
 defineProps({
   color: {
     type: String,
-    default: '#058B94'
-  }
-})
-
+    default: "#058B94",
+  },
+});
 </script>

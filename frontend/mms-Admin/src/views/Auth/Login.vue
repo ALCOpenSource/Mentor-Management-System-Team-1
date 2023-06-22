@@ -1,8 +1,10 @@
 <template>
   <div class="mx-auto flex h-full w-3/5 flex-col justify-center">
     <div>
-      <h1 class="mb-1">Welcome!</h1>
-      <h3>Login to continue</h3>
+      <h1 class="mb-1 font-semibold text-2xl 2xl:text-3xl 2xl:font-bold">
+        Welcome!
+      </h1>
+      <h3 class="font-normal text-xl 2xl:text-[22px]">Login to continue</h3>
     </div>
     <v-form v-model="valid" class="mt-14 mb-5" @submit.prevent="handleLogin">
       <Email @update:email="(value) => (loginData.email = value)" />
@@ -24,14 +26,14 @@
       <img src="../../assets/images/google.png" alt="" />
       <span>Signin with Google</span>
     </button>
-    <p class="text-center">New User? <span class="underline">Signup</span></p>
+    <!-- <p class="text-center">New User? <span class="underline">Signup</span></p> -->
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, watch, computed, onMounted } from "vue";
-import {useAuthStore} from "../../store/auth"
-import { useRoute } from 'vue-router'
+import { useAuthStore } from "../../store/auth";
+import { useRoute, useRouter } from "vue-router";
 
 import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 import Email from "../../components/Forms/Email.vue";
@@ -47,40 +49,33 @@ const isAdmin = ref(true);
 
 const authStore = useAuthStore();
 
-const handleLogin = async() => {
+const handleLogin = async () => {
   if (valid.value && isAdmin.value) {
-    await authStore.handleLogin(loginData.value)
-  } 
+    await authStore.handleLogin(loginData.value);
+  }
 };
 
-const socialLoginRedirect = async() => {
-  await authStore.socialLoginRedirect()
-}
+const socialLoginRedirect = async () => {
+  await authStore.socialLoginRedirect();
+};
 
-const router = useRoute()
+const router = useRoute();
+const route = useRouter();
 
 const handleSocialLogin = async () => {
   const access_token = router.query.access_token as string;
   if (access_token) {
-      await authStore.handleSocialLogin(access_token)
+    await authStore.handleSocialLogin(access_token);
   }
 };
 
 onMounted(() => {
   handleSocialLogin();
 });
-
 </script>
 
 <style scoped lang="scss">
-h1 {
-  font-weight: 700;
-  font-size: 32px;
-}
-
 h3 {
-  font-weight: 400;
-  font-size: 22px;
   color: var(--text-inactive);
 }
 

@@ -14,7 +14,6 @@
 </template>
 
 <script lang="ts" setup>
-
 defineProps({
   color: {
     type: String,
@@ -29,5 +28,4 @@ defineProps({
     default: "24",
   },
 });
-
 </script>

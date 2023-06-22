@@ -8,5 +8,8 @@ export { default as placeholderImg } from "./placeholder_image.svg";
 export { default as profileSuccess } from "./profile_success.png";
 export { default as deleteSuccess } from "./delete_sucessful.png";
 export { default as smallCertificate } from "./smallCert.png";
-export { default as largeCertificate } from "./cert.png";
-export {default as updateSuccessful} from "./task_update_success.png"
+export { default as largeCertificate } from "./large-certificate.jpg";
+export { default as updateSuccessful } from "./task_update_success.png";
+export { default as category1 } from "./category1.png";
+export { default as category2 } from "./category2.png";
+export { default as category3 } from "./category3.png";

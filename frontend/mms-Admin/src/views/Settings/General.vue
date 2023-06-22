@@ -1,18 +1,26 @@
 <template>
   <div>
     <div class="flex items-center mb-8">
-      <v-avatar size="90px">
-        <v-img :src="userBio.profilePicture || 'https://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder.png'" :alt="userBio.firstName"></v-img>
+      <v-avatar size="80px">
+        <v-img
+          :src="
+            userBio.profilePicture ||
+            'https://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder.png'
+          "
+          :alt="userBio.firstName"
+        ></v-img>
       </v-avatar>
       <div class="ml-6">
-        <h1 class="mb-2 text-xl font-semibold">Set Profile Picture</h1>
-        <UploadProfilePic @upload="getSrc" />
+        <h1 class="mb-2 text-lg 2xl:text-xl font-semibold">
+          Set Profile Picture
+        </h1>
+        <UploadProfilePic @upload="getSrc" :pry="true" title="Upload Picture" />
       </div>
     </div>
     <div>
       <v-row align="center">
         <v-col cols="2">
-          <h1 class="font-semibold">Full Name</h1>
+          <h1 class="font-semibold text-sm 2xl:text-base">Full Name</h1>
         </v-col>
         <v-col>
           <v-row>
@@ -37,7 +45,7 @@
       </v-row>
       <v-row>
         <v-col cols="2">
-          <h1 class="pt-3 font-semibold">About</h1>
+          <h1 class="pt-3 font-semibold text-sm 2xl:text-base">About</h1>
         </v-col>
         <v-col>
           <textarea
@@ -50,7 +58,7 @@
       </v-row>
       <v-row align="center">
         <v-col cols="2">
-          <h1 class="font-semibold">Website</h1>
+          <h1 class="font-semibold text-sm 2xl:text-base">Website</h1>
         </v-col>
         <v-col>
           <input
@@ -62,16 +70,25 @@
       </v-row>
       <v-row align="center">
         <v-col cols="2">
-          <h1 class="font-semibold">Country</h1>
+          <h1 class="font-semibold text-sm 2xl:text-base">Country</h1>
         </v-col>
         <v-col>
           <v-row align="center">
             <v-col cols="5" class="my-select">
               <select
-              v-model="userBio.country" @change.prevent="onSelect" class="input" required>
+                v-model="userBio.country"
+                @change.prevent="onSelect"
+                class="input"
+                required
+              >
                 <option value="" hidden disabled>Select Country</option>
-                <option v-for="country in locationStore.country"
-              :key="country.code" :value="country.code">{{ country.name }} </option>
+                <option
+                  v-for="country in locationStore.country"
+                  :key="country.code"
+                  :value="country.code"
+                >
+                  {{ country.name }}
+                </option>
               </select>
               <span class="">
                 <svg
@@ -92,13 +109,20 @@
               </span>
             </v-col>
             <v-col cols="2"
-              ><h1 class="font-semibold text-center">City</h1></v-col
+              ><h1 class="font-semibold text-center text-sm 2xl:text-base">
+                City
+              </h1></v-col
             >
             <v-col cols="5" class="my-select">
               <select v-model="userBio.city" class="input">
                 <option value="" hidden disabled>Select City</option>
-                <option v-for="city in locationStore.city"
-              :key="city.code" :value="city.name">{{ city.name }}</option>
+                <option
+                  v-for="city in locationStore.city"
+                  :key="city.code"
+                  :value="city.name"
+                >
+                  {{ city.name }}
+                </option>
               </select>
               <span class="">
                 <svg
@@ -123,14 +147,16 @@
       </v-row>
       <v-row>
         <v-col cols="2">
-          <h1 class="pt-1 font-semibold">Social</h1>
+          <h1 class="pt-1 font-semibold text-sm 2xl:text-base">Social</h1>
         </v-col>
         <v-col cols="10">
           <v-row justify="space-between">
             <v-col class="mr-6">
               <v-row no-gutters>
                 <v-col cols="12" class="gits mb-3">
-                  <span>
+                  <span
+                    class="text-sm font-[500] 2xl:text-base 2xl:font-semibold"
+                  >
                     <GitHub />
                     GitHub
                   </span>
@@ -141,7 +167,9 @@
                   />
                 </v-col>
                 <v-col cols="12" class="gits">
-                  <span>
+                  <span
+                    class="text-sm font-[500] 2xl:text-base 2xl:font-semibold"
+                  >
                     <LinkedIn />
                     LinkedIn
                   </span>
@@ -156,8 +184,10 @@
             <v-col class="ml-6">
               <v-row no-gutters>
                 <v-col cols="12" class="gits mb-3">
-                  <span>
-                    <Instagram />
+                  <span
+                    class="text-xs font-[500] 2xl:text-base 2xl:font-semibold"
+                  >
+                    <Instagram class="w-full" />
                     Instagram
                   </span>
                   <input
@@ -167,7 +197,9 @@
                   />
                 </v-col>
                 <v-col cols="12" class="gits">
-                  <span>
+                  <span
+                    class="text-sm font-[500] 2xl:text-base 2xl:font-semibold"
+                  >
                     <Twitter />
                     Twitter
                   </span>
@@ -182,7 +214,7 @@
           </v-row>
         </v-col>
       </v-row>
-      <div class="w-[175px] float-right mt-8 mb-4">
+      <div class="float-right mt-8 mb-4">
         <PrimaryBtn title="Save Changes" @click="handleSubmit" />
       </div>
     </div>
@@ -198,7 +230,7 @@
 
 <script setup lang="ts">
 import { ref, watch, computed } from "vue";
-import { storeToRefs } from 'pinia'
+import { storeToRefs } from "pinia";
 import LinkedIn from "../../assets/icons/LinkedIn.vue";
 import Twitter from "../../assets/icons/Twitter.vue";
 import Instagram from "../../assets/icons/Instagram.vue";
@@ -207,13 +239,13 @@ import PrimaryBtn from "../../components/Buttons/PrimaryBtn.vue";
 import UploadProfilePic from "../../components/Settings/UploadProfilePic.vue";
 import Modal from "../../components/Forms/Modal.vue";
 import { profileSuccess } from "../../assets/images";
-import {useUserStore} from "../../store/user"
-import {useLocationStore} from "../../store/location"
-import router from "../../router/index"
+import { useUserStore } from "../../store/user";
+import { useLocationStore } from "../../store/location";
+import router from "../../router/index";
 
 const userStore = useUserStore();
 const locationStore = useLocationStore();
-const { city, country } = storeToRefs(locationStore)
+const { city, country } = storeToRefs(locationStore);
 //let path = null
 
 const isModalOpen = ref(false);
@@ -232,12 +264,10 @@ const userBio = ref({
 });
 //
 const getSrc = async (file: File, src: string) => {
-  if(userStore.avatar && userStore.avatar.avatar_url)
-  {
-    userBio.value.profilePicture = src
+  if (userStore.avatar && userStore.avatar.avatar_url) {
+    userBio.value.profilePicture = src;
     //path = file
     await userStore.uploadAvatar(file);
-
   }
 };
 
@@ -248,7 +278,7 @@ const toggleModal = () => {
 const handleSubmit = async () => {
   // Handle the Form submission
   const response = await userStore.updateUser(userBio);
-  
+
   if (response && response.data && response.data.success) {
     toggleModal();
     // setTimeout(() => {
@@ -259,13 +289,15 @@ const handleSubmit = async () => {
   }
 };
 
-const onSelect = async() => {
+const onSelect = async () => {
   // update select options if a new country is selected
   await locationStore.setCity(userBio.value.country);
-}
+};
 
 const filteredCities = computed(() => {
-  return locationStore.city?.filter((city: { code: string; }) => city.code === userBio.value.country);
+  return locationStore.city?.filter(
+    (city: { code: string }) => city.code === userBio.value.country
+  );
 });
 
 watch(country, () => {
@@ -284,11 +316,9 @@ watch(filteredCities, () => {
     }
   }
 });
-
-
 </script>
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
 
 function getCountryCode(countryName: any, countries: any) {
   for (let key in countries) {
@@ -300,26 +330,28 @@ function getCountryCode(countryName: any, countries: any) {
 }
 
 export default defineComponent({
-  beforeRouteEnter(to, from, next) {     
-    const locationStore = useLocationStore(); 
-    const userStore = useUserStore(); 
+  beforeRouteEnter(to, from, next) {
+    const locationStore = useLocationStore();
+    const userStore = useUserStore();
     if (locationStore.country && locationStore.city) {
       // The location state is already loaded, so proceed to General Settings
-      next()
+      next();
     } else {
       // The location state is not loaded yet, so wait for it before proceeding
-      const country = userStore.user?.country_name || 'Afghanistan'
-      locationStore.setCountry().then(() => {
-        const countryCode = getCountryCode(country, locationStore.country);
-        return locationStore.setCity(countryCode);
-      }).then(() => {
-        next();
-      });
+      const country = userStore.user?.country_name || "Afghanistan";
+      locationStore
+        .setCountry()
+        .then(() => {
+          const countryCode = getCountryCode(country, locationStore.country);
+          return locationStore.setCity(countryCode);
+        })
+        .then(() => {
+          next();
+        });
     }
   },
-})
+});
 </script>
-
 
 <style scoped lang="scss">
 .input {
@@ -328,6 +360,11 @@ export default defineComponent({
   padding: 10px 15px;
   width: 100%;
   position: relative;
+  font-size: 16px;
+
+  @media (max-width: 1280px) {
+    font-size: 14px;
+  }
 }
 
 input:focus,
@@ -364,14 +401,18 @@ select:focus {
   input {
     width: 100%;
     border-radius: 0 5px 5px 0;
+    font-size: 14px;
   }
   span {
     border-radius: 5px 0 0 5px;
-    font-weight: 600;
     display: flex;
     align-items: center;
     min-width: 110px;
     gap: 5px;
+
+    @media (max-width: 1280px) {
+      min-width: 90px;
+    }
   }
 }
 </style>

@@ -1,17 +1,20 @@
 <template>
-  <div class="card">
+  <div class="card" @click="openChat(thread.room_id, thread.receiver_id, thread.uuid, thread.unread)">
     <div class="flex gap-3 items-center">
-      <UserAvatar />
+      <UserAvatar :imageLink="thread?.user?.avatar_url ?? thread.avatar_url" />
       <div>
-        <h1 class="text-md font-semibold">John Doe</h1>
-        <p class="text-xs">Can we go ahead to join ...</p>
+        <h1 class="text-sm 2xl:text-base font-semibold">
+          {{ thread?.user?.name ?? thread.name }}
+        </h1>
+        <p class="text-xs">{{ thread.preview }}</p>
       </div>
     </div>
     <div class="flex flex-col items-center justify-center">
-      <p>30m</p>
+      <p class="text-xs">{{ thread?.human_date }}</p>
       <small
+        v-if="thread.unread && thread.unread !== 0"
         class="flex justify-center items-center bg-[#FF5964] text-white rounded w-[15px] h-[15px]"
-        >3</small
+        >{{ thread.unread }}</small
       >
     </div>
   </div>
@@ -19,6 +22,17 @@
 
 <script setup lang="ts">
 import UserAvatar from "../Common/UserAvatar.vue";
+import { onMounted } from "vue";
+
+const emit = defineEmits(["openChat"]);
+
+const props = defineProps<{
+  thread?: Object;
+}>();
+const thread = props.thread;
+const openChat = (roomid: string, receiver_id: string, uuid: string, unread: number) => {
+  emit("openChat", roomid, receiver_id, uuid, unread); 
+};
 </script>
 
 <style scoped lang="scss">

@@ -1,10 +1,16 @@
 <template>
   <div>
-    <h1 class="text-xl font-semibold">General Notifications</h1>
+    <h1 class="text-lg 2xl:text-xl font-semibold">General Notifications</h1>
     <v-row no-gutters class="my-2" align="center">
       <v-col cols="6"></v-col>
-      <v-col cols="1" class="font-semibold mr-4">Email</v-col>
-      <v-col cols="1" class="font-semibold whitespace-nowrap">In-app</v-col>
+      <v-col cols="1" class="font-semibold text-sm 2xl:text-base mr-4"
+        >Email</v-col
+      >
+      <v-col
+        cols="1"
+        class="font-semibold text-sm 2xl:text-base whitespace-nowrap"
+        >In-app</v-col
+      >
     </v-row>
     <v-row
       v-for="item in generalNotifications"
@@ -14,7 +20,7 @@
       class="my-4"
     >
       <v-col cols="6"
-        ><p>{{ item.name }}</p></v-col
+        ><p class="text-sm 2xl:text-base">{{ item.name }}</p></v-col
       >
       <v-col cols="1" class="mr-4"
         ><Checkbox
@@ -32,11 +38,19 @@
         />
       </v-col>
     </v-row>
-    <h1 class="text-xl font-semibold mt-12">Discussion Notifications</h1>
+    <h1 class="text-lg 2xl:text-xl font-semibold mt-12">
+      Discussion Notifications
+    </h1>
     <v-row no-gutters class="my-2" align="center">
       <v-col cols="6"></v-col>
-      <v-col cols="1" class="font-semibold mr-4">Email</v-col>
-      <v-col cols="1" class="font-semibold whitespace-nowrap">In-app</v-col>
+      <v-col cols="1" class="font-semibold text-sm 2xl:text-base mr-4"
+        >Email</v-col
+      >
+      <v-col
+        cols="1"
+        class="font-semibold text-sm 2xl:text-base whitespace-nowrap"
+        >In-app</v-col
+      >
     </v-row>
     <v-row
       v-for="item in discussionNotifications"
@@ -46,7 +60,7 @@
       class="my-4"
     >
       <v-col cols="6"
-        ><p>{{ item.name }}</p></v-col
+        ><p class="text-sm 2xl:text-base">{{ item.name }}</p></v-col
       >
       <v-col cols="1" class="mr-4"
         ><Checkbox
@@ -64,9 +78,9 @@
         />
       </v-col>
     </v-row>
-    <v-row class="mt-10" align-content="center" justify="center">
+    <v-row class="mt-10" align-content="center" justify="start">
       <v-col cols="6">
-        <PrimaryBtn title="Save Changes" @click="handleSubmit"/>
+        <PrimaryBtn title="Save Changes" @click="handleSubmit" />
       </v-col>
     </v-row>
     <Modal

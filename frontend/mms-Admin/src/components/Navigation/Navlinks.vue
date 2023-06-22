@@ -1,12 +1,16 @@
 <template>
   <div class="flex gap-8 items-center">
     <div class="relative">
-      <MessageIcon />
-      <span class="indicator">{{ messageCount }}</span>
+      <router-link :to="{ name: 'messages' }">
+        <MessageIcon />
+        <span v-if="userStore.user.unread_messages_count !== 0" class="indicator">{{ userStore.user.unread_messages_count }}</span>
+      </router-link>
     </div>
     <div class="relative">
-      <NotificationIcon />
-      <span class="indicator">{{ notificationCount }}</span>
+      <router-link :to="{ name: 'notifications' }">
+        <NotificationIcon />
+        <span v-if="userStore.user.unread_notifications_count !== 0" class="indicator">{{ userStore.user.unread_notifications_count }}</span>
+      </router-link>
     </div>
     <v-menu>
       <template v-slot:activator="{ props }">
@@ -38,8 +42,8 @@ import { useAuthStore } from "../../store/auth";
 const userStore = useUserStore();
 const authStore = useAuthStore();
 
-const notificationCount = ref(3)
-const messageCount = ref(4)
+// const notificationCount = ref(3);
+// const messageCount = ref(4);
 
 const handleLogout = async () => {
   await authStore.handleLogout();
@@ -53,7 +57,7 @@ const handleLogout = async () => {
   right: -5px;
   width: 17px;
   height: 17px;
-  background-color: #CC000E;
+  background-color: #cc000e;
   border-radius: 50%;
   border: 2px solid var(--bg-primary);
   color: #fff;
