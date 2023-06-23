@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import PrimaryBtn from "@/components/Buttons/PrimaryBtn.vue";
-import { IconNotSelected } from "@/components/icons";
+import { IconNotSelected } from "@/components/Icons";
 </script>
 
 <style></style>
