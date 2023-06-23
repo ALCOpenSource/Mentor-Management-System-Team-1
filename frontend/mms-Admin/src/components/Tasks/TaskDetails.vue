@@ -1,7 +1,10 @@
 <template>
-  <section v-if="!ts.selectedTask.hasOwnProperty('title')">
-    <h1>No Task Selected</h1>
-    <p>Kindly select a task you want to preview</p>
+  <section
+    v-if="!ts.selectedTask.hasOwnProperty('title')"
+    class="flex flex-col rounded-md border border-green-200 w-full h-96 items-center justify-center"
+  >
+    <h2 class="text-xl font-semibold">No Task Selected</h2>
+    <p class="text-gray-300 text-sm">Select a task to preview</p>
   </section>
   <section
     v-else
