@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../views/Dashboard/Dashboard.vue";
 import dashboardLayout from "@/layouts/dashboardLayout.vue";
 import settingsLayout from "@/layouts/settingsLayout.vue";
-import reportLayout from "@/layouts/reportLayout.vue"
+import reportLayout from "@/layouts/reportLayout.vue";
 import { useAuthStore } from "@/store/auth";
 import blankLayout from "@/layouts/blankLayout.vue";
 
@@ -144,23 +144,23 @@ const router = createRouter({
             {
               path: "programs",
               name: "programs-reports",
-              component: () => import("@/views/Reports/EmptyReport.vue")
+              component: () => import("@/views/Reports/EmptyReport.vue"),
             },
             {
               path: "tasks",
               name: "tasks-reports",
-              component: () => import("@/views/Reports/EmptyReport.vue")
+              component: () => import("@/views/Reports/EmptyReport.vue"),
             },
             {
               path: "tasks/:id",
               name: "task-report",
-              component: () => import("@/views/Reports/TaskReports.vue")
+              component: () => import("@/views/Reports/TaskReports.vue"),
             },
             {
               path: "programs/:id",
               name: "programs-report",
-              component: () => import("@/views/Reports/ProgramReports.vue")
-            }
+              component: () => import("@/views/Reports/ProgramReports.vue"),
+            },
           ],
           meta: {
             requiresAuth: true,

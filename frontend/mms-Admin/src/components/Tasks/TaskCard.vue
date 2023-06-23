@@ -10,12 +10,13 @@ import TaskCardHeader from "./TaskCardHeader.vue";
 type Props = {
   title: string;
   description: string;
-  daysDue: number;
+  daysDue: string;
   isSelected: boolean;
   onClick: () => void;
 };
+const props = defineProps<Props>();
 
-defineProps<Props>();
+console.log("props from [TaskCard]", props);
 </script>
 
 <style lang="scss">
