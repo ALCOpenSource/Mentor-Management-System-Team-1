@@ -5,10 +5,10 @@
     }}</label>
     <textarea
       rows="6"
-      v-model="inputVal"
+      v-model="textAreaVal"
       required
       :placeholder="placeholder"
-      @input="$emit('update:textInput', inputVal)"
+      @input="$emit('update:textAreaVal', textAreaVal)"
       class="p-4 text-lg input border font-light rounded-md focus:outline-[#058b94]"
     >
     </textarea>
@@ -25,7 +25,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-defineEmits(["update:textInput"]);
+defineEmits(["update:textAreaVal"]);
 
-const inputVal = ref(props.initialValue || "");
+const textAreaVal = ref(props.initialValue || "");
 </script>

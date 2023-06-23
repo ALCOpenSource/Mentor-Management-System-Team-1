@@ -27,7 +27,7 @@ import type { ResourceType } from "@/typings/components";
 type Props = {
   resources: ResourceType[];
   selectedResources: number[];
-  onClick: (resourceId: number) => void;
+  onClick: (resourceId: string) => void;
 };
 
 defineProps<Props>();

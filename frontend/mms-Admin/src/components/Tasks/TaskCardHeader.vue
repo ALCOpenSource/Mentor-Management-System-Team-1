@@ -10,7 +10,7 @@
     <div class="flex gap-2 items-center">
       <span><IconCalendar /></span>
       <span class="text-gray-300 mt-1 text-xs"
-        >{{ daysDue }} days from now</span
+        >{{ calculateDaysLeft(daysDue) }} days from now</span
       >
     </div>
   </section>
@@ -22,8 +22,14 @@ import { IconTask } from "../Icons";
 
 type Props = {
   title: string;
-  daysDue: number;
+  daysDue: string;
   truncate?: boolean;
+};
+
+const calculateDaysLeft = (date: string) => {
+  const daysLeft = new Date(Date.now()).getTime() - new Date(date).getTime();
+  const differenceInDays = Math.floor(daysLeft / (1000 * 3600 * 24));
+  return differenceInDays;
 };
 
 defineProps<Props>();

@@ -17,6 +17,7 @@
     "@meforma/vue-toaster": "^1.3.0",
     "axios": "^1.3.4",
     "emoji-mart-vue-fast": "^12.0.1",
+    "epic-spinners": "^2.0.0",
     "laravel-echo": "^1.15.1",
     "pinia": "^2.0.32",
     "pusher-js": "^8.0.2",
