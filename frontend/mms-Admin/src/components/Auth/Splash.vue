@@ -1,6 +1,6 @@
 <template>
   <div class="splash flex h-full w-full flex-col items-center justify-center">
-    <img src="../../assets/images/Logo-Onley-3-01 1.png" alt="logo" />
+    <img src="../../assets/images/Logo-Onley-3-01.png" alt="logo" />
     <h1>Mentor Management System</h1>
   </div>
 </template>

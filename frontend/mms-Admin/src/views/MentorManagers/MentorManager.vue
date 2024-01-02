@@ -1,0 +1,83 @@
+<template>
+  <div class="flex gap-7">
+    <div class="flex flex-col w-[309px] gap-5">
+      <div class="flex justify-between items-center">
+        <h1 class="font-semibold text-2xl">Mentor Managers</h1>
+        <div class="flex items-center gap-5">
+          <IconSearch color="#058B94" size="20" class="cursor-pointer" />
+          <Filter class="cursor-pointer" />
+        </div>
+      </div>
+      <div class="mentor-cards scrollbar">
+        <div v-for="item in 10" :key="item">
+          <MentorCard :details="mentorData" class="mb-3" />
+        </div>
+      </div>
+    </div>
+    <div class="h-[77vh] w-full flex flex-col overflow-hidden">
+      <Header is-mentor-manager />
+      <div class="h-full flex flex-col">
+        <div class="border-b border-[#ccc]">
+          <v-tabs v-model="tab" color="#058b94" align-tabs="center" fixed-tabs>
+            <v-tab :value="1">About</v-tab>
+            <v-tab :value="2">Programs</v-tab>
+            <v-tab :value="3">Mentors</v-tab>
+            <v-tab :value="4">Tasks</v-tab>
+            <v-tab :value="5">Certificates</v-tab>
+          </v-tabs>
+        </div>
+        <div class="mt-3">
+          <v-window v-model="tab">
+            <v-window-item :value="1">
+              <About />
+            </v-window-item>
+            <v-window-item :value="2">
+              <Programs />
+            </v-window-item>
+            <v-window-item :value="3">
+              <Manager />
+            </v-window-item>
+            <v-window-item :value="4">
+              <Tasks />
+            </v-window-item>
+            <v-window-item :value="5">
+              <Certificates />
+            </v-window-item>
+          </v-window>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+import { IconSearch, Filter } from "@/assets/icons";
+import {
+  MentorCard,
+  About,
+  Programs,
+  Header,
+  Tasks,
+  Certificates,
+  Manager,
+} from "@/components/Mentors";
+
+const tab = ref(null);
+
+// Should be fetched from the backend
+const mentorData = {
+  name: "Alison Davis",
+  text: "Added 0ct. 10 2022",
+  imgUrl: "http://picsum.photos/100/100",
+};
+</script>
+
+<style scoped lang="scss">
+.mentor-cards {
+  min-width: 317px;
+  height: 70vh;
+  overflow-y: scroll;
+  padding-right: 5px;
+}
+</style>

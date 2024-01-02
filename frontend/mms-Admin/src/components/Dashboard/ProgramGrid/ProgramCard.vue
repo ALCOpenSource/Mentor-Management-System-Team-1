@@ -1,9 +1,9 @@
 <template>
-  <div class="pCard flex flex-col">
-    <div class="flex items-center mb-2">
+  <div class="pCard w-full gap-3 flex flex-col">
+    <div class="flex items-center">
       <img :src="gads" alt="gads logo" />
-      <div class="flex flex-col g-2 ml-6">
-        <h1 class="font-normal text-lg">GADS Program 2022</h1>
+      <div class="flex flex-col g-2 ml-5">
+        <h1 class="font-normal text-base 2xl:text-lg">GADS Program 2022</h1>
         <div class="flex g-4 items-center">
           <small>50%</small>
           <v-progress-linear
@@ -16,22 +16,20 @@
       </div>
     </div>
     <div>
-      <p>June 13, 2022 -> Feb 10, 2023</p>
+      <p class="text-sm text-[#4D4D4D]">June 13, 2022 -> Feb 10, 2023</p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import {gads} from "../../../assets/images";
+import { gads } from "../../../assets/images";
 </script>
 
 <style scoped lang="scss">
 .pCard {
-  padding: 15px;
+  padding: 10px 12px;
   border-radius: 7px;
   background-color: var(--card-light);
-  min-width: 330px;
-  max-width: 350px;
   cursor: pointer;
 
   &:hover {
